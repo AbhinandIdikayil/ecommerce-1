@@ -1,0 +1,357 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html,body{
+    height: 100%;
+    width: 100%;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Stalinist+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+
+
+/* .main{
+    width: 100vw;
+    background-color: lightgrey;
+    padding: 3px 40px;
+}
+.one{
+    width: 100%;
+    text-align: right;
+    padding: 0px 45px;
+}
+
+.three{
+    text-align: right;
+    padding: 0px 45px;
+}
+.two{
+    padding: 0px 45px;
+    text-align: left;
+}
+@media (max-width:500px) {
+    *{
+        padding: 0;
+    }
+    .one{
+        display: none;
+        padding: 0 0 0 0;
+    }
+    .three a {
+        display: none;
+        padding: 0 0 0 0 ;
+        background-color: blue;
+    }
+    .three{
+        background-color: blue;
+        width: 50%;
+    }
+    .two{
+        background-color: rgb(141, 116, 18);
+        width: 50%;
+        display: flex;
+        text-align: left;
+    }
+    
+} */
+#main5 #i{
+    font-size: 25px;
+}
+a{
+    font-size: 17px;
+}
+#a{
+  color: black;
+}
+
+#main{
+    padding: 4px 50px;
+    background-color: rgb(255, 249, 249);
+    box-shadow: 1px 1px 5px black;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+.one{
+    display: flex;
+    justify-content: end;
+}
+.three{
+    display: flex;
+    justify-content: end;
+    gap: 25px;
+}
+.three div{
+    gap: 25px;
+}
+#main1{
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px;
+}
+
+#main3{
+    padding: 0px 18px;
+    gap: 25px;
+}
+#main3 a{
+    color: black;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+#main4{
+    padding: 0px 18px;
+    font-weight: 800;
+}
+#main5{
+    padding: 0px 18px;
+} 
+.three a{
+    color: black;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+@media (max-width:576px) {
+    #main2,#main3,#main4,#main5{
+        padding: 0px 2px;
+    }
+    .three{
+        background-color: blueviolet;
+    }
+    #main1{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.product-content{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,auto));
+    gap: 2rem;
+    align-items: center;
+    margin-top: 5rem;
+}
+.box{
+    position: relative;
+}
+.box-img img{
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+    transition: all .45s ease;
+}
+.box h3{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.1;
+}
+.box h4{
+    font-size: 15px;
+    color: blue;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+.inbox{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+.price{
+    display: inline-block;
+    padding: 4px 16px;
+    background-color: transparent;
+    border: 2px solid #ef4444;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all .45s ease;
+}
+.price:hover{
+    font-size: 19px;
+    color: #ef4444;
+    margin-right: 4px;
+
+}
+.heart i{
+    position: absolute;
+    height: 42px;
+    width: 42px;
+    display: inline-flex;
+    top: 20px;
+    right: 25px;
+    align-items: center;
+    justify-content: center;
+    background-color: blanchedalmond;
+    color: #ef4444;
+    font-size: 22px;
+    border-radius: 50%;
+    transition: all .45s ease;
+}
+.box .box-img img{
+    width: 100%;
+    height: 100%;
+}
+.box-img{
+    border: 1px solid;
+}
+/* @media (max-width: 575.98px) {
+    .custom-cols-sm .col {
+      flex: 0 0 50%; 
+      max-width: 50%;
+    }
+    #cards{
+        width: 42%;
+        height: 50%;
+    }
+  } */
+section{
+  display: flex;
+  gap: 40px;
+}
+#nav{
+  width: 150px;
+  padding: 20px;
+}
+#nav div{
+  display: flex;
+  flex-direction: column;
+}
+
+
+  .product-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 30px 30px;
+  }
+
+  .product {
+    border-radius: 5px;
+      border: 1px solid #949494;
+      padding: 5px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(247, 247, 247);
+  }
+.product h3{
+    font-size: 15px;
+}
+  .product img {
+    width: 100%; /* Set your fixed width */
+    height: 250px; /* Set your fixed height */
+    object-fit: cover; /* Maintain aspect ratio */
+    margin-bottom: 10px;
+  }
+  #div{
+    width: 100%;
+  }
+  #btn-div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  #btn-div input{
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    width: 50%;
+    border: none;
+  }
+  #btn-div #two{
+    background-color: white;
+    border: 1px solid black;
+    font-weight: 600;
+    color: black;
+  }
+  @media (max-width:420px) {
+    .product h3{
+        font-size: 12px;
+    }
+    #div{
+      width: 100%;
+      height: 20px;
+      font-size: 12px;
+    }
+    .product img {
+      width: 100%; 
+      height: 150px; 
+      object-fit: cover; 
+      margin-bottom: 10px;
+    }
+    .product-container {
+        padding: 10px ;
+      }
+    
+
+  }
+
+@media (max-width:576px) {
+  #nav{
+    display: none;
+  }
+  section{
+    display: block;
+  }
+  .product-container {
+    gap: 10px;
+  }
+}
+
+  @media (min-width:300px) {
+    .product-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    
+  }
+
+  @media (min-width: 576px) {
+    .product-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .product-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    .product-container {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+
+
+.product-card {
+
+  @media (max-width:410px) {
+    width: calc(100% / 1); /* Two products per row on small screens */
+  }
+
+  @media (min-width: 600px) {
+    width: calc(100% / 2); /* Two products per row on small screens */
+  }
+
+  @media (min-width: 768px) {
+    width: calc(100% / 3); /* Three products per row on medium screens */
+  }
+
+  @media (min-width: 1024px) {
+    width: calc(100% / 4); /* Four products per row on large screens */
+  }
+}

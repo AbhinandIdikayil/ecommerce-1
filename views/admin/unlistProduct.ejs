@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Nest Dashboard</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+
+        <!-- Template CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
+        <link href="/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+        <style>
+            .page-footer {
+            position: fixed;
+            right: 0;
+            bottom: 50px;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            z-index: 1;
+            }
+
+            .page-footer a {
+            display: flex;
+            margin-left: 4px;
+            }
+            #option{
+                width: 10px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="index.html" class="brand-wrap">
+                    <h3>Admin</h3>
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/home">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item has-submenu active">
+                        <a class="menu-link" href="page-products-list">
+                            <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/page-products-list" class="active">Product List</a>
+                            <!-- <a href="page-products-grid.html">Product grid</a>
+                            <a href="page-products-grid-2.html">Product grid 2</a>
+                            <a href="page-categories.html">Categories</a> -->
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-orders-1.html">
+                            <i class="icon material-icons md-person"></i>
+                            <!-- <i class="icon material-icons md-shopping_cart"></i> -->
+                            <span class="text">users</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user-list">User list</a>
+                        </div>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/category">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Category</span>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/order-list">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Orders</span>
+                        </a>
+                       
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" disabled href="/admin/coupon">
+                            <i style=" color: rgb(195, 198, 201);" class="ri-coupon-2-fill ri-xl"></i>
+                            <span style="margin-left: 10px;" class="text">Coupon</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/banner">
+                            <i class="icon material-icons md-image"></i>
+                            <span class="text">Banners</span>
+                        </a>
+                    </li>
+                    <!--<li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-sellers-cards.html">
+                            <i class="icon material-icons md-store"></i>
+                            <span class="text">Sellers</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-sellers-cards.html">Sellers cards</a>
+                            <a href="page-sellers-list.html">Sellers list</a>
+                            <a href="page-seller-detail.html">Seller profile</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-form-product-1.html">
+                            <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Add product</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-form-product-1.html">Add product 1</a>
+                            <a href="page-form-product-2.html">Add product 2</a>
+                            <a href="page-form-product-3.html">Add product 3</a>
+                            <a href="page-form-product-4.html">Add product 4</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-transactions-1.html">
+                            <i class="icon material-icons md-monetization_on"></i>
+                            <span class="text">Transactions</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-transactions-1.html">Transaction 1</a>
+                            <a href="page-transactions-2.html">Transaction 2</a>
+                        </div>
+                    </li> -->
+                    <!-- <li class="menu-item has-submenu">
+                        <a class="menu-link" href="/admin/user-list">
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text"> Users</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user-list">User list</a>
+                        </div>
+                    </li> -->
+                    <!--<li class="menu-item">
+                        <a class="menu-link" href="page-reviews.html">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Reviews</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i> <span class="text">Brands</span> </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" disabled href="#">
+                            <i class="icon material-icons md-pie_chart"></i>
+                            <span class="text">Statistics</span>
+                        </a>
+                    </li>
+                </ul> -->
+                <hr />
+                <!-- <ul class="menu-aside">
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-settings"></i>
+                            <span class="text">Settings</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-settings-1.html">Setting sample 1</a>
+                            <a href="page-settings-2.html">Setting sample 2</a>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="page-blank.html">
+                            <i class="icon material-icons md-local_offer"></i>
+                            <span class="text"> Starter page </span>
+                        </a>
+                    </li>
+                </ul> -->
+                <br />
+                <br />
+            </nav>
+        </aside>
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                    <form class="searchform">
+                        <div class="input-group">
+                            <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
+                            <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
+                        </div>
+                        <datalist id="search_terms">
+                            <option value="Products"></option>
+                            <option value="New orders"></option>
+                            <option value="Apple iphone"></option>
+                            <option value="Ahmed Hassan"></option>
+                        </datalist>
+                    </form>
+                </div>
+                
+                 <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                    <ul class="nav">
+                        <!-- <li class="nav-item">
+                            <a class="nav-link btn-icon" href="#">
+                                <i class="material-icons md-notifications animation-shake"></i>
+                                <span class="badge rounded-pill">3</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a href="/home/signout" class="requestfullscreen nav-link btn-icon">logout</a>
+                        </li>
+                        <!-- <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                                <a class="dropdown-item text-brand" href="#"><img src="/imgs/theme/flag-us.png" alt="English" />English</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-fr.png" alt="Français" />Français</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-jp.png" alt="Français" />日本語</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-cn.png" alt="Français" />中国人</a>
+                            </div>
+                        </li> -->
+                        <!-- <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/imgs/people/avatar-2.png" alt="User" /></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            </div>
+                        </li> -->
+                    </ul>
+                </div> 
+            </header>
+
+            <!-- for adding the product -->
+
+            <!-- <form id="form" action="/admin/add-product" method="post" enctype="multipart/form-data" style="display: none;">
+
+                <div class="form-group mt-5 mb-5 ml-5 mr-5 col-md-6">
+                    <input type="text" class="form-control" name="productname" placeholder="product name">
+                </div>
+                <div >
+                    <select  name="productcategory">
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="books">Books</option>
+                      </select>
+                </div>
+                <div>
+                    <input type="text" name="productprice" placeholder="price">
+                </div>
+                <div>           
+                    <input type="text" name="productstock" placeholder="stock">
+                </div>
+                <div>
+                    <input type="file" name="images" placeholder="images" multiple>
+                </div>
+
+                <div>
+                    <input type="submit" value="submit">
+                </div>
+            </form> -->
+            
+            <div class="container my-5">
+                <div class="row justify-content-center" id="form" style="display: none;">
+                <div class="col-lg-9">
+                    <% if(category.length > 0){ %>
+                    <h1 class="mb-3"> Add product </h1>
+                    <form  method="post" action="/admin/add-product/<%= %>" enctype="multipart/form-data" >
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <label for="your-name" class="form-label">Product Name</label>
+                          <input name="productname"   type="text" class="form-control border" id="your-name" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="your-subject" class="form-label">images</label>
+                            <input name="images" type="file" multiple class="form-control border" id="your-subject" >
+                        </div>
+                        
+                            <label for="option" class="form-label">Product category</label>
+                            <select name="productcategory" >
+                            <% category.forEach((categories,ind) => { %>
+                                <option name="productcategory" id="option" value="<%= categories._id %>"> <%= categories.categoryname %> </option>
+                            <%})%>
+                            </select>
+
+                        <label for="option">section</label>
+                        <select name="productsection" >
+                            <option name="productsection" id="option" value="Men">Men</option>
+                            <option name="producsection" id="option"  value="Women">Women</option>
+                        </select>
+                            <div class="col-md-6">
+                                <label for="your-email" class="form-label">product stock</label>
+                                <input name="productstock" type="text" class="form-control border" id="your-email"  required>
+                                </div>
+                                <div class="col-md-6">
+                                <label for="your-subject" class="form-label">Price</label>
+                                <input  name="productprice" type="text" class="form-control border" id="your-subject">
+                            </div>
+
+                        <!-- <div class="col-12">
+                          <label for="your-message" class="form-label">product description</label>
+                          <textarea class="form-control" id="your-message"  name="productstock" rows="5" required></textarea>
+                        </div> -->
+                        
+                        <div class="col-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <button  type="submit" class="btn btn-success w-100 fw-bold" >Add</button>
+                            </div>
+                            <% }else{ %>
+                                <h3 class="text-danger text-center ">Add categories</h3>
+                           <% } %>
+                            <div class="col-md-6 mx-auto text-center">
+                                <button  type="button" class="btn btn-dark w-100 fw-bold " id="go-back-btn" onclick="displayOthers()" >Go back</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+                <!-- for editing the products -->
+              <div class="container my-5">
+                <div class="row justify-content-center" id="form-2" style="display: none;">
+                  <div class="col-lg-9">
+                    <h1 class="mb-3">Edit product</h1>
+                    <form id="main-form"  method="post"  enctype="multipart/form-data" >
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <label for="your-name" class="form-label">Product Name</label>
+                          <input name="productname"   type="text" class="form-control border" id="your-name" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="your-subject" class="form-label">images</label>
+                            <input name="images" type="file" multiple class="form-control border" id="your-subject" >
+                        </div>
+
+                        <label for="option" class="form-label">Product category</label>
+                        <select name="productcategory" >
+                            <option name="productcategory" id="option" value="Formal shoes">Formal shoes</option>
+                            <option name="productcategory" id="option"  value="Casual shoes">casual shoes</option>
+                        </select>
+                        
+                        <label for="option">section</label>
+                        <select name="productsection" >
+                            <option name="productsection" id="option" value="Men">Men</option>
+                            <option name="producsection" id="option"  value="Women">Women</option>
+                        </select>
+                       
+
+                        <div class="col-md-6">
+                          <label for="your-email" class="form-label">product stock</label>
+                          <input name="productstock" type="text" class="form-control border" id="your-email"  required>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="your-subject" class="form-label">Price</label>
+                          <input  name="productprice" type="text" required class="form-control border" id="your-subject">
+                        </div>
+                        <!-- <div class="col-12">
+                          <label for="your-message" class="form-label">product description</label>
+                          <textarea class="form-control" id="your-message"  name="productstock" rows="5" required></textarea>
+                        </div> -->
+                        <div class="col-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <button  type="submit" class="btn btn-dark w-100 fw-bold" >Add</button>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              
+
+
+            <section class="content-main" >
+                <div class="content-header">
+                    <div>
+                        <h2 class="content-title card-title"> UnListed products</h2>
+                         
+                    </div>
+                    <div>
+                       <!-- <button style="border: none;" onclick="hideOthers()">
+                        <a href="#" class="btn btn-primary btn-sm rounded">Add product</a>
+                       </button> -->
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <!-- <button style="border: none;" >
+                            <a href="/admin/ unlist-product" class="btn btn-primary btn-sm rounded">Unlist product</a>
+                           </button> -->
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col col-check flex-grow-0">
+                                
+                                
+                            </div>
+                            <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                <select class="form-select">
+                                    <option selected>All category</option>
+                                    <option>Men</option>
+                                    <option>Women</option>
+                                </select>
+                            </div>
+                            
+                          
+                        <!-- <div class="col-md-2 col-6">
+                                <select class="form-select">
+                                    <option selected>Status</option>
+                                    <option>Active</option>
+                                    <option>Disabled</option>
+                                    <option>Show all</option>
+                                </select>
+                            </div> -->
+                        </div>
+                    </header>
+                    <!-- card-header end// -->
+                    <div class="card-body">
+                       
+                        <!-- itemlist  .// -->
+                        <% if(product.length > 0){ %>
+                            <% product.forEach(products => { %>
+
+                                <% if(products.delete){ %>
+                                    <article class="itemlist">
+                                        <div class="row align-items-center">
+                                            <div class="col col-check flex-grow-0">
+                                                
+                                            </div>
+                                            <div class="col-lg-2 col-sm-4 col-7 flex-grow-1 col-name">
+                                                <a class="itemside" href="#">
+                                                    <div class="left">
+                                                        <img src="/images/product/<%= products.images[0] %>" class="img-sm img-thumbnail" alt="Item" />
+                                                    </div>
+                                                    <div class="info">
+                                                        <h6 class="mb-0" id="name"> <%= products.productname %> </h6>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-2 col-2 col-date">
+                                                <span id="price"> qty-<%= products.stock %>   </span>
+                                            </div>
+                                            <div class="col-lg-1 col-sm-2 col-4 col-price"><span id="category">   <%=products.category.categoryname %>  </span></div>
+                                            <div class="col-lg-1 col-sm-2 col-4 col-status">
+                                                <span class="badge rounded-pill alert-success" id="section"> <%= products.section %> </span>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-2 col-4 col-date">
+                                                <span id="price">  &#8377; <%= products.price %>   </span>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-2 col-3 col-action text-center">
+                                                <a href="/admin/unlist-product/<%= products._id %>" class="btn btn-sm font-sm rounded btn-brand" data-bs="<%= products._id %>" onclick="hideOthersFromEdit(this)" >
+                                                     <i class="ri-recycle-line ri-3x "></i> 
+                                                    </a>
+                                            </div>
+                                        </div>
+                                        <!-- row .// -->
+                                    </article>
+                                <% } %>
+                                    
+                                
+
+                            <% }) %>
+                        <% } else {%>
+                            <h4 class="text-center">No unlisted products are available</h4>
+                        <%}%>
+                        
+                        <!-- itemlist  .// -->
+                    </div>
+                    <!-- card-body end// -->
+                </div>
+              
+            </section>
+            <!-- content-main end// -->
+          
+        </main>
+
+       
+
+        <script src="/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/js/vendors/select2.min.js"></script>
+        <script src="/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/js/main.js" type="text/javascript"></script>
+    </body>
+</html>

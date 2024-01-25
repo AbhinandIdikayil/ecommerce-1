@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/admin/login.css">
+    
+</head>
+<body>
+    <div id="page">
+        <form action="/admin" method="post">
+            <div>
+                <h2>Login</h2>
+            </div>
+            <% if(typeof message !== 'undefined') {%>
+                <label for="" style="color: red;"> <%= message %>  </label>
+            <% } %>
+            <div>
+                <input name="email" type="text" placeholder="Email">
+            </div>
+            <div>
+                <input name="password" type="password" placeholder="password">
+            </div>
+            <div >
+                <input type="submit" value="Login" id="btn">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

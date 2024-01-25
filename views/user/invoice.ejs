@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="styles/style.css"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+    
+
+    <body class="bg-gray-50 ">
+        <!-- Invoice -->
+        <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
+          <div class="sm:w-11/12 lg:w-3/4 mx-auto">
+            <!-- Card -->
+            <div class="flex flex-col p-4 sm:p-10 bg-white shadow-md rounded-xl border-1">
+              <!-- Grid -->
+              <div class="flex justify-between">
+                <div>
+                  <h1 class="mt-2 text-lg md:text-xl font-semibold text-blue-600">Minishop</h1>
+                </div>
+                <!-- Col -->
+      
+                <div class="text-end">
+                  <h2 class="text-2xl md:text-3xl font-semibold text-gray-800 ">Invoice #</h2>
+                </div>
+                <!-- Col -->
+              </div>
+              <!-- End Grid -->
+      
+              <!-- Grid -->
+              <div class="mt-8 grid sm:grid-cols-2 gap-3">
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800 ">Bill to:</h3>
+                  <h3 class="text-lg font-semibold text-gray-800 "><%=order?.userDetails?.firstname%></h3>
+                  <address class="mt-2 not-italic text-gray-500">
+                    <%=order?.userDetails?.address%>,<br>
+                    <%=order?.userDetails?.housename%>, <%=order.userDetails.pincode%>,<br>
+                    <%=order?.userDetails?.districtORcity%><br>
+                  </address>
+                </div>
+                <!-- Col -->
+      
+                <div class="sm:text-end space-y-2">
+                  <!-- Grid -->
+                  <div class="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
+                    <dl class="grid sm:grid-cols-5 gap-x-3">
+                      <dt class="col-span-3 font-semibold text-gray-800 ">Invoice date:</dt>
+                      <dd class="col-span-2 text-gray-500"><%=date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '-')%></dd>
+                    </dl>
+                    <dl class="grid sm:grid-cols-5 gap-x-3">
+                    </dl>
+                  </div>
+                  <!-- End Grid -->
+                </div>
+                <!-- Col -->
+              </div>
+              <!-- End Grid -->
+      
+              <!-- Table -->
+              <div class="mt-6">
+                <div class="border border-gray-200 p-4 rounded-lg space-y-4 dark:border-gray-700">
+                  <div class="hidden sm:grid sm:grid-cols-5">
+                    <div class="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">Item</div>
+                    <div class="text-start text-xs font-medium text-gray-500 uppercase">Qty</div>
+                    <div class="text-start text-xs font-medium text-gray-500 uppercase">Rate</div>
+                    <div class="text-end text-xs font-medium text-gray-500 uppercase">Amount</div>
+                  </div>
+      
+                  <div class="hidden sm:block border-b border-gray-200 dark:border-gray-700"></div>
+      
+                  <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                    <div class="col-span-full sm:col-span-2">
+                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Item</h5>
+                      <p class="font-medium text-gray-800 "><%=order.productDetails.productname%></p>
+                    </div>
+                    <div>
+                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Qty</h5>
+                      <p class="text-gray-800 "> <%=order.orderItems.quantity%></p>
+                    </div>
+                    <div>
+                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Rate</h5>
+                      <p class="text-gray-800 ">5</p>
+                    </div>
+                    <div>
+                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Amount</h5>
+                      <p class="sm:text-end text-gray-800 ">&#x20B9; <%=order.orderItems.productPrice%></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Table -->
+      
+              <!-- Flex -->
+              <div class="mt-8 flex sm:justify-end">
+                <div class="w-full max-w-2xl sm:text-end space-y-2">
+                  <!-- Grid -->
+                  <%let quantity = order.orderItems.quantity%>
+                  <%let price = order.orderItems.productPrice%>
+                  <div class="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
+                    <dl class="grid sm:grid-cols-5 gap-x-3">
+                      <dt class="col-span-3 font-semibold text-gray-800 ">Subtotal:</dt>
+                      <dd class="col-span-2 text-gray-500"> &#x20B9; <%= quantity * price %></dd>
+                    </dl>
+                    <dl class="grid sm:grid-cols-5 gap-x-3">
+                      <dt class="col-span-3 font-semibold text-gray-800 ">Discount</dt>
+                      <dd class="col-span-2 text-gray-500"><%= order.orderItems.offer %>%</dd>
+                    </dl>
+                    <dl class="grid sm:grid-cols-5 gap-x-3">
+                      <dt class="col-span-3 font-semibold text-gray-800 ">Total:</dt>
+                      <dd class="col-span-2 text-gray-500">&#x20B9; <%= quantity * price %></dd>
+                    </dl>
+      
+                  
+  
+                  </div>
+                  <!-- End Grid -->
+                </div>
+              </div>
+              <!-- End Flex -->
+    
+            </div>
+
+          </div>
+        </div>
+        <!-- End Invoice -->
+      </body>
+
+</body>
+</html>

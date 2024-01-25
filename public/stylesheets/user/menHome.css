@@ -1,0 +1,36 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html,body{
+    height: 100%;
+    width: 100%;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Stalinist+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+
+
+
+
+
+  .product-card {
+
+    @media (max-width:410px) {
+      width: calc(100% / 1); /* Two products per row on small screens */
+    }
+  
+    @media (min-width: 600px) {
+      width: calc(100% / 2); /* Two products per row on small screens */
+    }
+  
+    @media (min-width: 768px) {
+      width: calc(100% / 3); /* Three products per row on medium screens */
+    }
+  
+    @media (min-width: 1024px) {
+      width: calc(100% / 4); /* Four products per row on large screens */
+    }
+  }
+  

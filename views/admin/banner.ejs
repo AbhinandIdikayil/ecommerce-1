@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Nest Dashboard</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
+       
+        <!-- Template CSS -->
+        <link href="/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="index.html" class="brand-wrap">
+                    <img src="/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/home">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-products-list">
+                            <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/page-products-list">Product List</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-orders-1.html">
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text">Users</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user-list">User  list</a> 
+                        </div>
+                    </li>
+                   
+                    <!-- <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-sellers-cards.html">
+                            <i class="icon material-icons md-store"></i>
+                            <span class="text">Sellers</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-sellers-cards.html">Sellers cards</a>
+                        </div>
+                    </li> -->
+                    <!-- <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-transactions-1.html">
+                            <i class="icon material-icons md-monetization_on"></i>
+                            <span class="text">Transactions</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-transactions-1.html">Transaction 1</a>
+                            <a href="page-transactions-2.html">Transaction 2</a>
+                        </div>
+                    </li> -->
+                    <!-- <li class="menu-item has-submenu">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text">Account</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-account-login.html">User login</a>
+                            <a href="page-account-register.html">User registration</a>
+                            <a href="page-error-404.html">Error 404</a>
+                        </div>
+                    </li> -->
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/category">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Category</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/order-list">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Orders</span>
+                        </a>
+                        
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i> <span class="text">Brands</span> </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" disabled href="/admin/coupon">
+                            <i style=" color: rgb(195, 198, 201);" class="ri-coupon-2-fill ri-xl"></i>
+                            <span style="margin-left: 10px;" class="text">Coupon</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a class="menu-link" href="/admin/banner">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">Banners</span>
+                        </a>
+                    </li>
+                    <!-- <li class="menu-item">
+                        <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i> <span class="text">Brands</span> </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" disabled href="#">
+                            <i class="icon material-icons md-pie_chart"></i>
+                            <span class="text">Statistics</span>
+                        </a>
+                    </li> -->
+                </ul>
+                <hr />
+                <!-- <ul class="menu-aside">
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-settings"></i>
+                            <span class="text">Settings</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-settings-1.html">Setting sample 1</a>
+                            <a href="page-settings-2.html">Setting sample 2</a>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="page-blank.html">
+                            <i class="icon material-icons md-local_offer"></i>
+                            <span class="text"> Starter page </span>
+                        </a>
+                    </li>
+                </ul> -->
+                <br />
+                <br />
+            </nav>
+        </aside>
+        
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                    <form class="searchform">
+                        <div class="input-group">
+                            <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
+                            <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
+                        </div>
+                        <datalist id="search_terms">
+                            <option value="Products"></option>
+                            <option value="New orders"></option>
+                            <option value="Apple iphone"></option>
+                            <option value="Ahmed Hassan"></option>
+                        </datalist>
+                    </form>
+                </div>
+                 <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                  <ul class="nav">
+                        <!-- <li class="nav-item">
+                            <a class="nav-link btn-icon" href="#">
+                                <i class="material-icons md-notifications animation-shake"></i>
+                                <span class="badge rounded-pill">3</span>
+                            </a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon darkmode" href="/home/signout"> logout </a>
+                        </li> 
+                       <!--   <li class="nav-item">
+                            <a href="#" class="requestfullscreen nav-link "> logout </a>
+                        </li>-->
+                        <!-- <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                                <a class="dropdown-item text-brand" href="#"><img src="/imgs/theme/flag-us.png" alt="English" />English</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-fr.png" alt="Français" />Français</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-jp.png" alt="Français" />日本語</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-cn.png" alt="Français" />中国人</a>
+                            </div>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/imgs/people/avatar-2.png" alt="User" /></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul> -->
+                </div> 
+            </header>
+
+
+         
+
+            <section class="content-main" >
+                <div class="content-header"> 
+                    <div>
+                        <h2 class="content-title card-title">Products List</h2>                         
+                    </div>
+                    <div>
+                       <button style="border: none;">
+                        <a href="/admin/banner/get-add-banner" class="btn btn-primary btn-sm rounded">Add banner</a>
+                       </button>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <button style="border: none;" >
+                            <a href="/admin/unlist-product" class="btn btn-primary btn-sm rounded">Unlist product</a>
+                           </button>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <% if(typeof error !== 'undefined'){ %>
+                        <h4 class="text-center" style="color: red;"> <%= error %> </h4>
+                    <% } %>
+                   
+                    <header class="card-header">
+                        
+
+                        <div class="row align-items-center">
+                            <div class="col-lg-2 col-sm-4 col-7 flex-grow-1 col-name">
+                                <a class="itemside" href="#"> 
+                                   
+                                    <div class="info">
+                                        <h6 class="mb-0" id="name"> image </h6>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-lg-2 col-sm-2 col-2 col-date">
+                                <span id="price"> title   </span>
+                            </div>
+                            <div class="col-lg-2 col-sm-2 col-2 col-date">
+                                <span id="price"> start date   </span>
+                            </div>
+                            <div class="col-lg-2 col-sm-2 col-4 col-price"><span id="category">   end date  </span></div>
+                            <div class="col-lg-2 col-sm-2 col-4 col-status">
+                                <span class="badge rounded-pill alert-success" id="section"> expired </span>
+                            </div>
+                            <div class="col-lg-2 col-sm-2 col-3 col-action text-center">
+                                <a href="/admin/edit-product" class="btn btn-sm font-sm rounded btn-brand"   > <i class="material-icons md-edit"></i> Actions </a>
+                            </div>
+                        </div>
+
+                    </header>
+                    <!-- card-header end// -->
+
+
+
+
+
+                    <div class="card-body">
+                        <%if(banners.length >0 ){ %>
+                            <%banners.forEach((banner) => { %>
+                                <div class="row align-items-center">
+                                    <div class="col-lg-2 col-sm-4 col-7 flex-grow-1 col-name">
+                                        <div class="left">
+                                            <img src="/images/banner/<%=banner.image%>" class="img-sm img-thumbnail" alt="Item" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-2 col-sm-2 col-2 col-date">
+                                        <span id="price"> 
+                                            <%=banner.bannerTitle%> 
+                                         </span>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-2 col-date">
+                                        <span id="price"> 
+                                            <%= banner.startDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '-') %>  
+                                         </span>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-4 col-price"><span id="category">
+                                        <%= banner.endDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '-') %> 
+
+                                        </span></div>
+                                    <div class="col-lg-2 col-sm-2 col-4 col-status">
+                                        <span class="badge rounded-pill alert-success" id="section">
+                                             <% if(banner.isExpired ){ %>
+                                                true
+                                             <%} else{ %>
+                                                false
+                                             <% } %>
+                                            </span>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-3 col-action text-center">
+                                        <a href="/admin/edit-product" class="btn btn-sm font-sm rounded btn-brand"   > <i class="material-icons md-edit"></i> unlist </a>
+                                    </div>
+                                </div>
+                                <hr>
+                                <% })%>
+                        <%}%>
+                        <!-- itemlist  .// -->
+                    </div>
+                    <!-- card-body end// -->
+                </div>
+              
+            </section>
+            
+
+
+           
+
+            <!-- content-main end// -->
+           
+        </main>
+
+
+       
+
+        <script src="/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/js/vendors/select2.min.js"></script>
+        <script src="/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/js/main.js?v=1.1" type="text/javascript"></script>
+    </body>
+</html>

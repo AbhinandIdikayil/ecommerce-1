@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+html,body{
+    height: 100%;
+    width: 100%;
+}
+h2{
+    font-size: 28px;
+}
+#page{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#page form{
+    width: 40%;
+    height: 70%;
+    background-color: #d9d9d9;
+    border: 1px solid;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+form div{
+    width: 70%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+form div input{
+        width: 100%;
+        height: 100%;
+        padding: 0px 15px;
+        border-radius: 5px;
+        border: 1px solid;
+}
+form div #btn{
+    width: 50%;
+    background-color:#0038FF;
+    border: none;
+    color: black;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 1px;
+    border-radius: 7px;
+}
+
+
+@media (max-width:600px) {
+    #page form{
+        width: 67%;
+        height: 70%;
+        background-color: #d9d9d9;
+        border: 1px solid;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+    form div{
+        width: 80%;
+        height: 10%;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width:400px) {
+    #page form{
+        width: 77%;
+        height: 70%;
+        background-color: #d9d9d9;
+        border: 1px solid;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+    form div{
+        width: 85%;
+        height: 10%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

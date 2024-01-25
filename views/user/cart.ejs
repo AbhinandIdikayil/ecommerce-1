@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="/js/navbar.js"></script>
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+</head>
+<style>
+    #nav{
+      z-index: 999;
+      height: 90px;
+    }
+    @media (max-width:640px) {
+      #nav{
+        height: 70px;
+      }
+    }
+    .navbar-menu{
+      z-index: 999;
+    }
+    .product-card{
+      z-index: 666;
+    }
+    .product-images {
+      height: 140px;
+    } 
+   @media (max-width:400px) {
+      .product-images{
+      height: 200px;
+    }
+    } 
+</style>
+<body class="bg-indigo-300">
+    
+    <nav id="nav" class="relative py-4 px-4 sm:px-4 sm:py-4 flex justify-between items-center bg-slate-900 shadow-lg ">
+		<a class="xl:text-3xl lg:text-2xl md:text-2xl text-2xl font-bold leading-none"
+         href="/home">
+      <h3 class="h-10 text-white"  alt="logo" viewBox="0 0 100 100">
+          Minishop
+      </h3>
+			
+		</a>
+		<div class="sm:hidden flex">
+      
+      <button class="navbar-burger flex items-center text-white p-3">
+				<svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <a class="hidden sm:inline-block px-3 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
+           href="/home/bag">
+            <i class="ri-handbag-fill ri-lg"></i>
+          </a>
+					<!-- <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path> -->
+				</svg>
+			</button>
+			<button class="navbar-burger flex items-center text-blue-600 p-3">
+				<svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+					<title>Mobile menu</title>
+					<path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+				</svg>
+			</button>
+		</div>
+		<ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 sm:flex sm:mx-auto sm:flex sm:items-center sm:w-auto lg:space-x-6 ">
+			<li><a class="text-sm text-blue-600 font-bold" href="/home/products/men">Men</a></li>
+			<li class="text-gray-300">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+				</svg>
+			</li>
+			<li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women">Women</a></li>		
+		</ul>
+		<!-- <a class="hidden sm:inline-block sm:ml-auto  bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="#">  
+      <i class="ri-user-fill" style="color: rgb(0, 0, 0);"></i> 
+    </a> -->
+    <a class="hidden sm:inline-block sm:ml-auto px-3  hover:bg-blue-600 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="/home/wishlist">
+      <i class="ri-heart-2-fill ri-lg" style="color: white;"></i>
+    </a>
+
+		<a class="hidden sm:inline-block px-3 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
+     href="/home/bag">
+      <i class="ri-handbag-fill ri-lg" style="color:rgb(52, 7, 255) ;"></i>
+    </a>
+
+    <% if(typeof user !== 'undefined'){ %>
+      <a class="hidden sm:inline-block px-3 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
+        href="/home/account">
+        <i class="ri-user-fill ri-lg" style="color: rgb(255, 255, 255);"></i>
+      </a>
+    <% }else {%>
+    <a class="hidden sm:inline-block px-3 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" 
+      href="/home/account">
+      <i class="ri-user-fill ri-lg" style="color: white;"></i>
+    </a>
+    <%  }%>
+
+
+	</nav>
+	<div class="navbar-menu relative z-50 hidden transition-transform ease-in-out duration-300">
+		<div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
+		<nav class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto ">
+			<div class="flex items-center mb-8">
+				<a class="mr-auto text-3xl font-bold leading-none" href="#">
+					<svg class="h-12" alt="logo" viewBox="0 0 100 100">
+						<path d="M100 34.2c-.4-2.6-3.3-4-5.3-5.3-3.6-2.4-7.1-4.7-10.7-7.1-8.5-5.7-17.1-11.4-25.6-17.1-2-1.3-4-2.7-6-4-1.4-1-3.3-1-4.8 0-5.7 3.8-11.5 7.7-17.2 11.5L5.2 29C3 30.4.1 31.8 0 34.8c-.1 3.3 0 6.7 0 10v16c0 2.9-.6 6.3 2.1 8.1 6.4 4.4 12.9 8.6 19.4 12.9 8 5.3 16 10.7 24 16 2.2 1.5 4.4 3.1 7.1 1.3 2.3-1.5 4.5-3 6.8-4.5 8.9-5.9 17.8-11.9 26.7-17.8l9.9-6.6c.6-.4 1.3-.8 1.9-1.3 1.4-1 2-2.4 2-4.1V37.3c.1-1.1.2-2.1.1-3.1 0-.1 0 .2 0 0zM54.3 12.3L88 34.8 73 44.9 54.3 32.4V12.3zm-8.6 0v20L27.1 44.8 12 34.8l33.7-22.5zM8.6 42.8L19.3 50 8.6 57.2V42.8zm37.1 44.9L12 65.2l15-10.1 18.6 12.5v20.1zM50 60.2L34.8 50 50 39.8 65.2 50 50 60.2zm4.3 27.5v-20l18.6-12.5 15 10.1-33.6 22.4zm37.1-30.5L80.7 50l10.8-7.2-.1 14.4z"></path>
+					</svg>
+				</a>
+				<button class="navbar-close">
+					<svg class="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+					</svg>
+				</button>
+			</div>
+			<div>
+				<ul>
+					<li class="mb-1">
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/men">Men</a>
+					</li>
+					<li class="mb-1">
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/women">Women</a>
+					</li>
+					  
+					<li class="mb-1">
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/wishlit">wishlist</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mt-auto">
+				<div class="pt-6">
+          
+					<a class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl" href="#">Sign in</a>
+					<a class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl" href="#">Sign Up</a>
+				</div>
+				<p class="my-4 text-xs text-center text-gray-400">
+					<span id="date">  </span>
+				</p>
+			</div>
+		</nav>
+	</div>
+
+
+
+
+
+
+  
+
+    <!-- for listing the products -->
+
+    <div class="h-screen pt-20">
+     
+        <h1 class="mb-10 text-center text-2xl font-bold text-stone-950" >Cart Items</h1>
+        <%if (Object.keys(carts).length > 0){%>
+        <div class="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+        
+            <div class="rounded-lg md:w-2/3">
+             <%  if(carts !== null){ %>
+              <% carts.forEach((cart,ind) => { %>
+                <%  if(!cart.itemDetails.delete){ %>
+
+                  <div id="cart-div" class="cart-div justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
+                    <img src="/images/product/<%= cart.itemDetails.images[0] %>" alt="product-image" class="product-images w-full rounded-lg sm:w-40" />
+                    <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
+                            <div class="mt-5 sm:mt-0">
+                                <h2 class="text-lg font-bold text-gray-900">  <%= cart.itemDetails.productname %> </h2>
+                                <p class="mt-1 text-xs text-gray-700"> <%= cart.categoryDetails.categoryname %> </p>
+                            </div>
+                            <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6 ">
+                                  <div class="flex items-center  border-gray-100">
+                                   
+                                      <form class="qauntityform flex items-center jusitfy-center"  data-bs-cartId="<%=cart._id%>" action="/home/cart/quantity/<%=cart._id%>" method="post">
+                                        <%  if(typeof warning !== 'undefined' && typeof index !== 'undefined' && ind == index){ %>
+                                          <div>
+                                            <input type="text" class="" style="display: none;" value="<%=ind%>" name="index" id="">
+                                            <input type="text"  class="stock-warning  placeholder-red-600 text-red-600 text-sm font-bold"  readonly placeholder="(<%= warning %>)">
+                                          </div>
+                                        <%  } %>
+                                          <span class="decrement cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
+                                          <input type="number" style="display: none;" name="stock" min="1"  value="<%=cart.itemDetails.stock%>">
+                                          <input readonly class="quantity h-8 w-8 border bg-white text-center text-xs outline-none" type="text" name="quantity" value="<%=cart.items.quantity%>"/>
+                                          <span  class="increment cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
+                                          <input type="submit" style="display: none;">
+                                      </form>
+                                  </div>
+                                  <div  class="flex items-center justify-center">
+                                        <p  class="text-sm"> &#8377;<%= cart.itemDetails.price %></p>                                   
+                                  </div>
+                                  <div class="flex items-center justify-center">
+                                      <form class="delete-form" data-id="<%=cart._id%>" action="/home/cart-delete/<%=cart._id%>" method="post">
+                                        <button type="submit" class="btns btns px-2 py-1 font-semibold rounded-lg" style="background-color: rgb(253, 21, 21);">
+                                          delete
+                                        </button>
+                                      </form>
+                                  </div>
+                            </div>
+                      </div>
+                    </div>
+
+
+                <% } %>
+               
+                <% })%>
+               <% } %>
+          </div>
+          <!-- product details of cart end here -->
+
+          
+          
+          <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
+            
+              
+
+              <%  if(carts !== null ){ %>
+
+                    <% carts.forEach((cart) => { %>
+                      <%  if(!cart.itemDetails.delete){ %>
+                        <div data-bs="<%=cart.itemDetails.price%>" class="cartPrice mb-2 flex flex justify-between">
+                            <p class="text-gray-700">price</p>
+                            <p class="text-gray-700">&#8377; <%= cart.itemDetails.price %></p>
+                        </div>
+                      <% } %>
+                    <% })%>
+                  <% } %>
+
+            
+                <div class="flex justify-between">
+                  <p class="text-gray-700">Shipping</p>
+                  <p class="text-gray-700">$0.0</p>
+                </div>
+                <hr class="my-4" />
+                <div class="flex justify-between">
+                  <p class="text-lg font-bold">Total</p>
+                    <div class="">
+                      <p data-bs="<%=sum.total%>" class="totalprice mb-1 text-lg font-bold"> 
+                        <%if(typeof sum !== 'undefined'){ %>
+                          &#8377; <%=  sum.total%>
+                          <% }else{ %>
+                              0
+                          <% } %>
+                        
+                      </p>
+                    </div>
+                  </div>
+                <%if(warning || typeof stockMessage !== 'undefined'){%>
+                  <button class="mt-6 w-full rounded-md bg-gray-200 py-1.5 font-bold text-red-600 hover:bg-blue-600">Out of stock</button>
+                <%}else{%>
+                  <a href="/home/cart/check-out">
+                    <button class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check out</button>
+                  </a>
+                <% } %>
+          </div>
+          
+        </div>
+       
+      </div>
+
+      <%}else{ %>
+            <h1 class="mb-10 text-center text-2xl font-bold text-stone-950">Your carts is empty</h1>
+        <%}%>
+
+
+      
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
+
+        <script>
+            let quantity = document.getElementsByClassName("quantity");
+            let inc = document.getElementsByClassName("increment");
+            let dec = document.getElementsByClassName("decrement");
+            let qtyForm = document.getElementsByClassName('qauntityform');
+
+            Array.from(inc).forEach((inc,ind) => {
+              inc.addEventListener("click",(e) => {
+                if(quantity[ind].value !== "0"){
+                      let qty = quantity[ind].value;
+                      let previous = parseInt(qty) + 1;
+                      quantity[ind].value = previous
+                      console.log(qtyForm[ind])
+
+                      let stockLabel = document.getElementsByClassName('stock-warning')[ind]
+                     
+                      let cartid = qtyForm[ind].getAttribute('data-bs-cartId')
+                      qtyForm[ind].submit()
+
+                 
+                  }
+              })
+            })
+            
+            Array.from(dec).forEach((dec,ind) => {
+              dec.addEventListener("click",(e) => {
+                    if(quantity[ind].value !== "1"){
+                        let qty = quantity[ind].value;
+                        let previous = parseInt(qty) -1 ;
+                        quantity[ind].value = previous;
+                        console.log(qtyForm[ind])
+                        qtyForm[ind].submit();
+
+
+                        console.log(quantity[ind])
+                    }
+                    
+                })
+            })
+
+            
+          
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                  confirmButton: "text-white bg-green-700 hover:bg-green-800 focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800",
+                  cancelButton: "text-white bg-red-700 hover:bg-red-800 focus:outline-none  focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                },
+                buttonsStyling: false
+              });
+
+            let buttons = document.getElementsByClassName('btns');
+
+            Array.from(buttons).forEach((button,index) => {
+                button.addEventListener("click",async (e) => {
+                    let formDiv = document.getElementsByClassName('delete-form')[index];
+                    let cartPage = document.getElementsByClassName('cart-div')[index];
+                    let cartId = formDiv.getAttribute('data-id');
+
+                    let cartPriceDetail = document.getElementsByClassName('cartPrice')[index];
+                    let cartPrice = parseInt(document.getElementsByClassName('cartPrice')[index].getAttribute('data-bs'));
+                    let total = document.getElementsByClassName('totalprice')[0];
+                    let totalPrice = parseInt(document.getElementsByClassName('totalprice')[0].getAttribute('data-bs'));
+                    let afterPrice = totalPrice - cartPrice
+
+
+                    e.preventDefault();
+                    swalWithBootstrapButtons.fire({
+                      title: "Are you sure?",
+                      text: "Do you want to remove from cart",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonText: "Yes, remove it!",
+                      cancelButtonText: "No, cancel!",
+                      reverseButtons: true
+                      })
+                      .then(async(result) => {
+                        if (result.isConfirmed) {
+                          try {;
+                              let response = await fetch(`/home/cart-delete/${cartId}`,{
+                              method:'DELETE',
+                              headers:{
+                                'Content-type':'application/json'
+                              }
+                            });
+                            if(response.ok){
+                              console.log('removed');
+                              cartPage.remove();
+                              cartPriceDetail.remove();
+                              total.innerHTML = afterPrice;
+                            }else{
+                              console.error('Failed to delete address');
+                            }
+                            console.log('after fetch')
+                            } catch (error) {
+                                  console.log(error);
+                            }
+                        }else{
+                          e.preventDefault()
+                        }
+                      }); 
+                  
+                 }) 
+             })
+            
+
+
+
+            
+           
+  
+
+
+
+        </script>
+</body>
+</html>

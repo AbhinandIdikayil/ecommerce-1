@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/otp.css">
+</head>
+<body>
+
+    <div id="main">
+        <div id="one">
+            <form id="form" action="/otp" method="post">
+                <div>
+                    <h1>Enter 4 digit otp</h1>
+                </div>
+                <div>
+                    <input id="otp" type="number" min="1" name="otp" value="" placeholder="otp">
+                </div>
+               <div>
+                    <input type="submit" value="verify" id="btn">
+               </div>
+               <p id="time" style="color: white; font-weight: 700;"></p>
+               <% if(typeof message !== 'undefined'){%>
+                <p id="invalid-message" style="color: red; font-weight: bolder;"><%=message%></p>
+               <% } %>
+            </form>
+            
+        </div>
+        <form action="/resend-otp" method="post"  id="resend-otp">
+            <button type="submit" style="background-color: transparent;">
+                <!-- <a href="" onclick="resendOTP()" style="color: aliceblue; font-weight: 800; font-family: sans-serif;"> -->
+                    resend otp
+                <!-- </a> -->
+            </button> 
+          </form>
+    </div>
+   
+    
+    
+    <script>
+        
+        let message= '<%=message%>'
+        console.log(message.length)
+        let resend = document.getElementById('resend-otp')
+        if(message !== 'Otp has been expired'){
+            // Set the time limit to 1 minute (60 seconds)
+            const timeLimitInSeconds = 50;  
+            let timeRemaining = timeLimitInSeconds;
+
+            // Get the timer element
+            const timerElement = document.getElementById('time');
+
+            // Function to update the timer display
+            function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+
+            // Set up the initial display
+            updateTimerDisplay();
+
+            // Start the countdown immediately
+            const countdownInterval = setInterval(() => { 
+            timeRemaining--;
+
+            if (timeRemaining <= 0) {
+                clearInterval(countdownInterval);
+                timerElement.textContent = 'Time Expired';
+                resend.style.display = 'block'
+                // Perform other actions when time expires
+            } else {
+                updateTimerDisplay();
+            }
+            }, 1000);
+        }
+        console.log(message)
+           
+        let invalid = document.getElementById('invalid-message');
+        
+        let form = document.getElementById('form')
+        form.addEventListener('submit',(e) => { 
+            let otp = document.getElementById('otp').value
+            e.preventDefault();
+            console.log('prevented')
+            fetch('/otp',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // credentials: 'include',  // Include this line to send cookies
+                body:JSON.stringify({otp})
+            }).then((response) => {  
+                if(response.ok){
+                    return response.json()
+                }else if(response.status == 401){
+                    return response.json()
+                }else if(response.status == 403){
+                    return response.json()
+                }
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }).then((data) => {
+                if(data.success){
+                    form.submit()
+                    window.location.href = '/home'
+                }else if(data.invalid){
+                    invalid.innerHTML = 'Invalid otp'
+                }else if(data.expired){
+                    invalid.innerHTML = 'Otp hass been expired'
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+        })
+       
+    </script>
+
+</body>
+</html>

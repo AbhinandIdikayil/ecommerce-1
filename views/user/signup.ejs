@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <!-- <div id="one">
+        <form method="post" action="/signup">
+            <div>
+                <h1>Sign up</h1>
+            </div>
+            <% if(typeof message !== 'undefined') { %>
+                <label for="" > <%= message %> </label>
+            <% }%>
+            <div>
+                
+                <input type="text" name="fullname" placeholder="User name" required>
+            </div>
+            <div>
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <div>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <div>
+                <input type="submit" value="signup" id="btn">
+            </div>
+            <a style="color: white; padding: 7px;" href="/login">Already have an account</a>
+        </form>
+    </div> -->
+
+
+
+    <div class="bg-indigo-300 flex items-center justify-center h-screen">
+        <div class="bg-white p-4 rounded-lg shadow-lg max-w-sm w-full">
+            <div class="flex justify-center mb-2">
+                <span class="inline-block  rounded-full p-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+                </span>
+            </div>
+            <h2 class="text-2xl font-semibold text-center mb-4">Create a new account</h2>
+            <div class=" text-center mb-6">
+                <p id="email-label" class="text-red-700"></p>
+            <% if(typeof message !== "undefined"){%>
+                 <p class="text-red-700"><%=message%></p>
+                
+            <%}%>
+            </div>
+            
+             
+            
+            
+          
+            <form method="post" action="/signup" id="form">
+
+                <div class="mb-4">
+                    <label for="fullname" class="block text-gray-700 text-sm font-semibold mb-2">Full name</label>
+                    <input type="text" name="fullname" id="fullname" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                     required placeholder="John">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address *</label>
+                    <input type="email"   id="email" name="email" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                     required placeholder="hello@alignui.com">
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
+                    <input type="password" id="password" name="password" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                     required placeholder="••••••••">
+                  
+
+                    
+                   
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Register</button>
+                <p class="text-gray-600 text-xs text-center mt-4">
+                    <a class="text-slate-800 hover:underline" href="/login">
+                       Already have an account
+                    </a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+
+
+</body>
+</html>

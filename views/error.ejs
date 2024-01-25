@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/error.css">
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body class="bg-indigo-300">
+    
+    <div class="py-24 flex flex-col justify-items-center items-center">
+        <p class="lg:text-6xl text-slate-50">  <%= error.status %> </p>
+        <div class="page text-4xl text-red-700">    Ooops!!! <%= message%></div>
+        <a class="back-home xl:text-5xl text-slate-50  underline" href="/home">Back to home</a>
+    </div>
+
+</body>
+</html>
