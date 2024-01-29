@@ -39,3 +39,25 @@ exports.isBlocked = async (req,res,next) => {
         console.log(error)
     }
 }
+exports.isAdminLogged = async (req,res,next) => {
+    try {
+        if(req.session.admin){
+            res.redirect('/admin/home')
+        }else{
+            next()
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+exports.isAdminNotLogged = async (req,res,next) => {
+    try {
+        if(!req.session.admin){
+            res.redirect('/admin')
+        }else{
+            next()
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}

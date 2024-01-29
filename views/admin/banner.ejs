@@ -114,6 +114,13 @@
                             <span class="text">Banners</span>
                         </a>
                     </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/refferal">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">refferal</span>
+                        </a>
+                    </li>
                     <!-- <li class="menu-item">
                         <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i> <span class="text">Brands</span> </a>
                     </li>
@@ -174,8 +181,13 @@
                             </a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link btn-icon darkmode" href="/home/signout"> logout </a>
-                        </li> 
+                            <form action="/admin/home/signout" method="post">
+                                <button type="submit">
+                                    logout
+                                </button>
+                            </form>
+                        </li>
+                      
                        <!--   <li class="nav-item">
                             <a href="#" class="requestfullscreen nav-link "> logout </a>
                         </li>-->
@@ -210,18 +222,18 @@
             <section class="content-main" >
                 <div class="content-header"> 
                     <div>
-                        <h2 class="content-title card-title">Products List</h2>                         
+                        <h2 class="content-title card-title">Banners</h2>                         
                     </div>
                     <div>
                        <button style="border: none;">
                         <a href="/admin/banner/get-add-banner" class="btn btn-primary btn-sm rounded">Add banner</a>
                        </button>
                     </div>
-                    <div class="col-md-2 col-6">
+                    <!-- <div class="col-md-2 col-6">
                         <button style="border: none;" >
                             <a href="/admin/unlist-product" class="btn btn-primary btn-sm rounded">Unlist product</a>
                            </button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="card mb-4">
                     <% if(typeof error !== 'undefined'){ %>

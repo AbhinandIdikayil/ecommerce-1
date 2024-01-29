@@ -186,33 +186,7 @@
                                     logout
                                 </button>
                             </form>
-                        </li>
-                        
-                       <!--   <li class="nav-item">
-                            <a href="#" class="requestfullscreen nav-link "> logout </a>
-                        </li>-->
-                        <!-- <li class="dropdown nav-item">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                                <a class="dropdown-item text-brand" href="#"><img src="/imgs/theme/flag-us.png" alt="English" />English</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-fr.png" alt="Français" />Français</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-jp.png" alt="Français" />日本語</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-cn.png" alt="Français" />中国人</a>
-                            </div>
-                        </li>
-                        <li class="dropdown nav-item">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/imgs/people/avatar-2.png" alt="User" /></a>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                                <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
-                            </div>
-                        </li>
-                    </ul> -->
+                        </li> 
                 </div> 
             </header>
 
@@ -221,48 +195,47 @@
                 <div class="row">
                     <div class="col-9">
                         <div class="content-header">
-                            <h2 class="content-title">Add coupon</h2>
+                            <h2 class="content-title">Add reffer</h2>
                           
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <form id="coupon-form" action="/admin/add/coupon" method="post">
+                                <form id="coupon-form" action="/admin/add/reffer" method="post">
                                     <div class="mb-4">
-                                        <label for="product_title"  class="form-label">Coupon code</label>
+                                        <label class="form-label">refferal amount</label>
                                         <div>
                                             <p  class="text-danger" id="couponcode-label" for=""></p>
                                         </div>
                                         
-                                        <input name="couponcode" type="text"  placeholder="Type here" class="form-control" id="couponcode" />
-                                    </div>     
-                                    <div class="row gx-2">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="product_sku"  class="form-label">MIN-price</label> 
-                                            <div>
-                                                <p class="text-danger" id="minprice-label" for=""></p>
-                                            </div>
-                                            <input name="minprice" type="text" placeholder="Type here" class="form-control" id="minprice" />
+                                        <input name="refferalamount" type="number" min="1" required placeholder="Type here" class="form-control"  />
+                                    </div> 
+                                    <div class="mb-4">
+                                        <label class="form-label">reffered amount</label>
+                                        <div>
+                                            <p class="text-danger" id="couponcode-label" for=""></p>
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="product_size"  class="form-label">discount(percentage(1-99))</label>
-                                            <div>
-                                                <p class="text-danger" id="discount-label" for=""></p>
-                                            </div>
-                                            <input name="discount" min="1" max="99"
-                                              type="number" placeholder="Type here" class="form-control" id="discount" />
+                                        
+                                        <input name="refferedamount" type="number" min="1" required placeholder="Type here" class="form-control"  />
+                                    </div>  
+                                    <div class="mb-4">
+                                        <label class="form-label">Description</label>
+                                        <div>
+                                            <p class="text-danger" id="couponcode-label" for=""></p>
                                         </div>
-                                    </div>
+                                        <input name="description" type="text" required placeholder="Type here" class="form-control"  />
+                                    </div>    
+                                   
                                     <div class="row gx-3">
                                         <div class="col-md-4 mb-3">
                                             <label for="product_sku"  class="form-label">Expiry date</label>
                                             <p id="expdate" for=""></p>
-                                            <input name="expDate" type="date" placeholder="Type here" class="form-control" id="product_sku" />
+                                            <input name="expires" type="date" required placeholder="Type here" class="form-control" id="product_sku" />
                                         </div>
                                     </div>
                                     <div class="row gx-3">
-                                        <a href="/admin/coupon" class="col-md-4 mb-3">
+                                        <a href="/admin/refferal" class="col-md-4 mb-3">
                                             <div >  
                                                 <button type="button" class="btn btn-md rounded font-sm hover-up">Go back</button>
                                             </div>
@@ -276,7 +249,6 @@
                             </div>
                         </div>
                     </div>
-                  
                 </div>
             </section>
            
@@ -287,64 +259,6 @@
             <!-- content-main end// -->
            
         </main>
-
-
-       <script>
-        
-            let form =document.getElementById('coupon-form');
-            let couponlabel = document.getElementById('couponcode-label')
-            let datelabel = document.getElementById('expdate')
-            let minpricelabel = document.getElementById('minprice-label')
-            let discountlabel = document.getElementById('discount-label')
-
-            let isDiscountValid = false
-            let isCouponValid = false
-            let isMinpriceValid = false
-
-            document.getElementById('discount').addEventListener('input',(e) => {
-                const inputRegex =  /^[1-9]?[0-9]$/;
-                isDiscountValid = inputRegex.test(e.target.value)
-                console.log(isDiscountValid)
-            }) 
-
-            document.getElementById('minprice').addEventListener('input',(e) => {
-                const inputRegex =  /^[0-9]+$/;
-                isMinpriceValid = inputRegex.test(e.target.value)     
-                console.log(isMinpriceValid)  
-            }) 
-
-            document.getElementById('couponcode').addEventListener('input',(e) => {
-                isCouponValid = e.target.value.length >= 4
-                console.log(isCouponValid)
-            })
-
-            form.addEventListener('submit',(e) => {
-                e.preventDefault()
-                if (!isDiscountValid) {
-                    discountlabel.innerHTML = 'Invalid input';
-                } else {
-                    discountlabel.innerHTML = ''; // Clear any previous error messages
-                }
-
-                if (!isMinpriceValid) {
-                    minpricelabel.innerHTML = 'Invalid input';
-                } else {
-                    minpricelabel.innerHTML = ''; // Clear any previous error messages
-                }
-
-                if (!isCouponValid) {
-                    couponlabel.innerHTML = 'atleast 4 length';
-                } else {
-                    couponlabel.innerHTML = ''; // Clear any previous error messages
-                }
-                if(isCouponValid && isDiscountValid && isMinpriceValid){
-                    form.submit()
-                }
-            })
-            
-        
-       </script>
-
         <script src="/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="/js/vendors/select2.min.js"></script>

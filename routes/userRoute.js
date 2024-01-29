@@ -1,7 +1,7 @@
 const express = require('express');
 const userRoute = express.Router();
 const userController = require('../controllers/userController');
-
+const cartController = require('../controllers/cartController')
 const auth = require('../middleware/auth')
 
 userRoute.get('/',(req,res) => {
@@ -18,7 +18,7 @@ userRoute.post('/login',userController.postLogin);
 userRoute.get('/signup',auth.notSignInOrLogin,userController.getSignup);
 userRoute.post('/signup',auth.notSignInOrLogin,userController.postSignup);
 userRoute.get('/home/wishlist',auth.isSignInOrLogin,auth.isSignInOrLogin);
-userRoute.get('/home/bag',auth.isSignInOrLogin,userController.getBag)
+userRoute.get('/home/bag',auth.isSignInOrLogin,cartController.getBag)
 
 userRoute.get('/order/success-page',userController.successPage)
 
@@ -42,10 +42,10 @@ userRoute.get('/home/cart/check-out',auth.isSignInOrLogin,userController.loadChe
 userRoute.post('/home/cart/check-out/:id',userController.proceedToPayment);
 userRoute.post('/verify-payment',userController.onlinePayment)
 
-userRoute.delete('/home/cart-delete/:id',userController.deleteCart)
-userRoute.post('/home/add-to-cart/:id',auth.isSignInOrLogin,userController.addToBag);
+userRoute.delete('/home/cart-delete/:id',cartController.deleteCart)
+userRoute.post('/home/add-to-cart/:id',auth.isSignInOrLogin,cartController.addToBag);
 // these routes are for  making an order like checkout page, proceed to payment
-userRoute.post('/home/cart/quantity/:id',userController.updateCartQuantityAndStock);
+userRoute.post('/home/cart/quantity/:id',cartController.updateCartQuantityAndStock);
 // selecting a specific address through a popup or modal
 userRoute.post('/home/cart/add-address/:id',userController.modalAddressSelecting);
 
@@ -54,6 +54,7 @@ userRoute.post('/home/cart/check-out/add-address/:id',userController.postAddress
 
 
 userRoute.get("/home/account",auth.isBlocked,userController.accounDetails);
+userRoute.get('/home/account/reffer',userController.getReffer)
 // related to account , user details, address and orders
 userRoute.get("/home/account/addresses",userController.AddressDetails);
 userRoute.get('/home/account/edit-address/:id',userController.getEditAddress);
@@ -75,5 +76,5 @@ userRoute.get('/home/account/order-invoice/:addressId/:orderId/:productId',userC
 
 
 
-// userRoute.get('/home/:id',userController.getProducts);
+userRoute.get('/home/:id',userController.getProducts);
 module.exports = userRoute;

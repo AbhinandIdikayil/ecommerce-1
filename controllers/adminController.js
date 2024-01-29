@@ -7,6 +7,7 @@ const categoryModel = require('../models/category');
 const createError = require('http-errors');
 const orderModel = require('../models/orderModel');
 const banneModel = require('../models/bannerModel')
+const refferModel = require('../models/refferalModel')
 
 const mongoose = require('mongoose');
 const { error } = require('console');
@@ -71,7 +72,7 @@ exports.postAddProduct = async (req, res, next) => {
       if(productoffer){
         let offerPrice = productprice - (productoffer/100) * productprice
         console.log(offerPrice)
-        addedProduct = new productModel({
+        addedProduct = new productModel({  
             productname,
             category:productcategory,
             description,
@@ -693,8 +694,39 @@ exports.deleteCoupon = async (req,res) => {
 
 exports.signout = async (req,res) => {
     try {
-        
+        req.session.destroy()
+        res.redirect('/admin')
     } catch (error) {
-        
+        console.log(error)
+    }
+}
+exports.getRefferal = async (req,res) => {
+    try {
+        let refferal = await refferModel.find()
+        res.render('admin/referralpage',{reffer:refferal})
+    } catch (error) {
+        console.log(error)
+    }
+}
+exports.getRefferalForm = async (req,res) => {
+    try {
+        res.render('admin/refferForm')
+    } catch (error) {
+        console.log(error);
+    }
+}
+exports.postReffer = async (req,res) => {
+    try {
+        const {refferalamount,refferedamount,expires,description} = req.body;
+        let newReffer = new refferModel({
+            refferalamount,
+            refferedamount,
+            description,
+            expires
+        })
+        let saved = await newReffer.save();
+        res.redirect('/admin/refferal');
+    } catch (error) {
+        console.log(error);
     }
 }

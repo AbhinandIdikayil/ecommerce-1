@@ -11,9 +11,12 @@ const walletModel = require('../models/wallet')
 const bannerModel = require('../models/bannerModel')
 const couponModel = require('../models/coupon');
 const otpModel = require('../models/otp')
+const refferalModel = require('../models/refferalModel')
+
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const mailgen = require('mailgen');
+const shortid = require('shortid');
 
 const mongoose = require('mongoose');
 const { parse } = require('path');
@@ -69,50 +72,72 @@ function sendOTP(email,OTP){
   transporter.sendMail(message)
 }
 
-function generateRazorpay (orderId) {
-
-}
-
 exports.getSignup = async(req,res,next) => {
     res.render('user/signup');
 }
 
 exports.postSignup = async(req,res,next) => {
-  
     console.log('form resubmission')
-      Globalfullname = req.body.fullname;
-      Globalemail = req.body.email;
-      Globalpassword = req.body.password;
+    Globalfullname = req.body.fullname;
+    Globalemail = req.body.email;
+    Globalpassword = req.body.password;
 
-      try { 
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(Globalemail)) {
-                req.session.checkEmail = 'Please enter a valid email address.';
-                return res.render('user/signup',{testEmail:req.session.checkEmail});
+    try { 
+        if(req.query.ref){
+          let refferalcode = req.query.refercode;
+          let id = req.params.userid;
+          let selectedRefer = await refferalModel.findOne()
+          let referedamount = selectedRefer.refferedamount;
+          let refferalamount = selectedRefer.refferalamount
+          let userwallet = await walletModel.findOne({user:new mongoose.type.ObjectId(id)})
+          if(userwallet){
+            let updated = await walletModel.findOneAndUpdate(
+              {user:new mongoose.Types.ObjectId(id)},
+              {
+                $inc:{walletbalance:refferalModel},
+                $push:{transactions:{amount:refferalamount,type:'credit'}}
+              },
+              {new:true},
+            )
+          }else{
+            let wallet = new walletModel({
+              user:id,
+              walletbalance:refferalamount,
+              transactions:[{
+                amount:refferalamount,
+                type:'credit',
+              }]
+            })
+          }
+        }
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(Globalemail)) {
+              req.session.checkEmail = 'Please enter a valid email address.';
+              return res.render('user/signup',{testEmail:req.session.checkEmail});
+          }
+            const existingUser = await userModel.findOne({ $and: [{ firstname:Globalfullname }, { email: { $regex: new RegExp(Globalemail, 'i') } }  ] });
+            if(existingUser){
+                req.session.existingUser="user with same email and username already exists";
+                return res.render('user/signup',{message:req.session.existingUser})
             }
-              const existingUser = await userModel.findOne({ $and: [{ firstname:Globalfullname }, { email: { $regex: new RegExp(Globalemail, 'i') } }  ] });
-              if(existingUser){
-                  req.session.existingUser="user with same email and username already exists";
-                  return res.render('user/signup',{message:req.session.existingUser})
-              }
-              otp = await generateOTP();
-              let generadtedotp = otp
-              console.log(otp)
-              req.session.email = Globalemail;
-              // user.otp = otp;
-              // await user.save();
-              sendOTP(Globalemail,otp);
-              //  render the otp page
-              const savedOtp = await new otpModel({
-                email:req.session.email,
-                otp:generadtedotp,
-              })
-              let saved = await savedOtp.save()
-              
-              res.render('otp',{message:''});
-      } catch (error) {
-          console.log(error)
-      }
+            otp = await generateOTP();
+            let generadtedotp = otp
+            console.log(otp)
+            req.session.email = Globalemail;
+            // user.otp = otp;
+            // await user.save();
+            sendOTP(Globalemail,otp);
+            //  render the otp page
+            const savedOtp = await new otpModel({
+              email:req.session.email,
+              otp:generadtedotp,
+            })
+            let saved = await savedOtp.save()
+            
+            res.render('otp',{message:''});
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 exports.loadLogin = async (req,res,next) => {   
@@ -179,9 +204,9 @@ exports.postOTP = async (req,res,next)=> {
         console.log(userOtp,DBotp)
         if(userOtp.length > 0){
           if(DBotp.includes(parsedOTP)){
-
+            let code = shortid.generate() //creating a unique ID for users refercode
             let hashed = await bcrypt.hash(Globalpassword,10);
-            let user = new userModel({firstname:Globalfullname,email:Globalemail,password:hashed});
+            let user = new userModel({firstname:Globalfullname,email:Globalemail,password:hashed,refercode:code});
             let userData = await user.save();
             if(userData)
             {
@@ -190,25 +215,12 @@ exports.postOTP = async (req,res,next)=> {
 
           }else{
             res.status(401).json({invalid:true})
-            // return  res.render('otp',{message:'Invalid otp'});
           }
         }else{
           res.status(403).json({expired:true})
-          // res.render('otp',{message:'Otp has been expired'});
-          // return;
         }
         
-      
-        // if (parsedOTP === otp) {
-          // Redirect to home page or any other destination
-          // saving the user details in to database
-          
-          
-        // } else {
-        //   console.log(typeof userOTP,typeof otp)
-        //   res.status(400).json({ message: 'Incorrect OTP' });
-        //   res.render('otp',{message:"Incorrect otp"})
-        // }
+  
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -447,128 +459,8 @@ exports.getWishlist = async (req,res,next) => {
   }
 }
 
-exports.getBag = async (req,res,next) => {
-  try {
-    let userDetails = await userModel.findOne({email:req.session.email});
-    let userId = userDetails._id;
-    
-    let carts = await cartModel.aggregate([
-      {
-        $match: { user: new mongoose.Types.ObjectId(userId) }
-      },
-      {
-        $unwind: "$items"
-      },
-      {
-        $lookup: {
-          from: productModel.collection.name,
-          localField: 'items.product',
-          foreignField: '_id',
-          as: 'itemDetails'
-        }
-      },
-      {
-        $unwind: "$itemDetails"
-      },
-      {
-        $lookup: {
-          from: userModel.collection.name,
-          localField: 'user',
-          foreignField: '_id',
-          as: 'userDetails'
-        }
-      },
-      {
-        $unwind: "$userDetails"
-      },
-      {
-        $lookup: {
-          from: categoryModel.collection.name,
-          localField: 'itemDetails.category',
-          foreignField: '_id',
-          as: 'categoryDetails',
-        }
-      },
-      {
-        $unwind:"$categoryDetails"
-      }
-    ]);
-   
-  //  finding the sum of  price of product in the cart page
-  const cartTotal = await cartModel.aggregate([
-    {
-      $match: { user: new mongoose.Types.ObjectId(userId) } // Replace userId with the actual user ID
-    },
-    {
-      $unwind: "$items"
-    },
-    {
-      $lookup: {
-        from: "products", // Replace with the actual name of your Product collection
-        localField: "items.product",
-        foreignField: "_id",
-        as: "product"
-      }
-    },
-    {
-      $unwind: "$product"
-    },
-    {
-      $group: {
-        _id: null,
-        total: {
-          $sum: {
-            $multiply: ["$product.price", "$items.quantity"]
-          }
-        }
-      }
-    }
-  ]);
-  
-    console.log(cartTotal)
-    let warning = req.session.warning ?? null
-    let index = req.session.ind ?? null
-    if(carts){
-      res.render('user/cart',{user:userDetails,carts:carts,sum:cartTotal[0],warning,index});
-    }else{
-      res.render('user/cart',{stockMessage:'out of stock'});
-    }
-    
-  } catch(error) {
-      console.log(error);
-      next(error)
-  }
-}
 
-exports.addToBag = async (req,res,next) => {
-  try {
-      let productIds = req.params.id;
-      let user = await userModel.findOne({email:req.session.email})
-      
-      console.log("userl:"+user)
-      let idOfUser = user._id
-      let product = await productModel.findById(productIds).populate('category');
-      if(product && user){
-        const cart = new cartModel({
-          user:idOfUser.valueOf(),
-          items:[
-            {
-              product:product._id
-            }
-          ]
-       })
 
-       let saved = await cart.save();
-        if(saved){
-          res.redirect(`/home/${product._id}`)
-        }
-    }
-    
-      // 657fc5f4069bfe1e4cdea73a
-  } catch (error) {
-    console.log(error)
-  }
-}
 
 
 exports.loadCheckOut = async (req,res,next) => {
@@ -664,6 +556,7 @@ exports.loadCheckOut = async (req,res,next) => {
   }
 }
 
+
 exports.postAddressFromCheckOut = async(req,res,next) => {
   try {
     let id = req.params.id;
@@ -722,140 +615,6 @@ exports.modalAddressSelecting = async (req,res,next) => {
   }
 }
 
-
-
-
-
-exports.deleteCart = async (req,res,next) => {
-  try {
-    let id = req.params.id;
-    console.log('hai from delete cart'+id)
-    let deletingCart = await cartModel.findByIdAndDelete(id);
-    if(deletingCart){
-      res.status(200).json({succes:true});
-    }else{
-      res.status(400).json({ error: 'Address not found' });
-    }
-  } catch (error) {
-    next(error)
-  }
-}
-
-exports.updateCartQuantityAndStock = async (req,res,next) => {
-  try {
-      let cartId = req.params.id;
-      const {quantity,stock,ind} = req.body
-      let parsed = parseInt(quantity)
-      let editedCart 
-      console.log(parsed)
-    if(parsed <= stock){
-      delete req.session.warning
-      delete req.session.ind
-      editedCart = await cartModel.findByIdAndUpdate(
-        { _id: cartId },
-        {
-          $set: {'items.0.quantity': parsed},
-        },
-        {new: true},
-      )
-    }else if(parsed > stock){  
-      req.session.ind = parseInt(ind)
-      req.session.warning = "Out of stock";
-      res.redirect('/home/bag');  
-    }
-     
-
-      if(editedCart){
-        delete req.session.warning
-        delete req.session.ind
-        res.redirect('/home/bag');
-      }
-     
-  } catch (error) {
-      console.log(error);
-  }
-}
-
-exports.productDetailsMen = async (req,res,next) => {
-  try {
-    let id = req.params.id;
-    let userDetails = await userModel.findOne({email:req.session.email})
-    let isCart;
-    if(userDetails){
-      let userId = userDetails._id;
-      let carts  = await cartModel.aggregate([
-        {
-          $match:{
-            user:userId
-          }
-        },
-        {
-          $unwind:"$items"
-        }
-      ])
-      carts.forEach((carts) => {
-       
-        console.log(typeof id,typeof carts.items.product.valueOf())
-        if(id === carts.items.product.valueOf()){
-         
-          isCart = true
-        }
-      })
-    }
-
-
-    let product = await productModel.findById(id);
-    console.log(product)
-    if(product){
-      res.render('user/productDetails',{product:product,cart:isCart,user:userDetails})
-    }
-    
-  } catch (error) {
-    console.log(error)
-    next(error)
-  }   
-}
-
-
-exports.productDetailsWomen = async (req,res,next) => {
-  try {
-    let id = req.params.id;
-    let userDetails = await userModel.findOne({email:req.session.email})
-    let product = await productModel.findById(id);
-    
-    let isCart;
-    if(userDetails){
-      let userId = userDetails._id;
-      let carts  = await cartModel.aggregate([
-        {
-          $match:{
-            user:userId
-          }
-        },
-        {
-          $unwind:"$items"
-        }
-      ])
-      carts.forEach((carts) => {
-       
-        console.log(typeof id,typeof carts.items.product.valueOf())
-        if(id === carts.items.product.valueOf()){
-         
-          isCart = true
-        }
-      })
-    }
-
-    console.log(product)
-    if(product){
-      res.render('user/productDetails',{product:product,cart:isCart,user:userDetails})
-    }
-    
-  } catch (error) {
-    console.log(error)
-    next(error)
-  }   
-}
 
 exports.accounDetails = async (req,res,next) => {
   try {
@@ -1365,7 +1124,6 @@ exports. proceedToPayment = async (req,res,next) => {
   }
 }
 
-
 exports.wallet =async (req,res) => {
   try {
     let wallet = await walletModel.findOne({user:req.session.userId});
@@ -1409,10 +1167,7 @@ exports.verifyWalletPayment = async (req,res) => {
       let hmac = crypto.createHmac('sha256','FOX2qTI49vLJ5s7uvRjKYGKQ');
       hmac.update(req.body['payment[razorpay_order_id]'] + "|" +req.body['payment[razorpay_payment_id]']);
       hmac = hmac.digest('hex')
-    
-   
-      
-    
+
       if(hmac === req.body['payment[razorpay_signature]']
           && 
         await walletModel.findOne({user:new mongoose.Types.ObjectId(req.session.userId)}) === null
@@ -1587,7 +1342,8 @@ const puppeteer = require('puppeteer')
 const fsExtra = require('fs-extra')
 const fs = require('fs')
 const path = require('path')
-const ejs = require('ejs')
+const ejs = require('ejs');
+
 exports.puppeteerInvoice = async (req,res) => {
   try {
     let orderId = req.params.orderId
@@ -1667,5 +1423,15 @@ exports.puppeteerInvoice = async (req,res) => {
       
   } catch (error) {
     console.log(error);
+  }
+}
+
+exports.getReffer = async (req,res) => {
+  try {
+    let user = await userModel.findOne({email:req.session.email})
+    let refer = await refferalModel.findOne()
+    res.render('user/refferpage',{user,refer})
+  } catch (error) {
+    console.log(error)
   }
 }

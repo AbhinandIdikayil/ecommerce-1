@@ -13,7 +13,15 @@ const userSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'product',
     },
-    otp:String, 
+    refercode:{
+        type:String,
+        required:true,
+    },
+    refercount:{
+        type:Number,
+        required:true,
+        default:0
+    },  
     blocked:{
         type:Boolean,
         default:false,

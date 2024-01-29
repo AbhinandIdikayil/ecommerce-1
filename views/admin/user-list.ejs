@@ -80,6 +80,13 @@
                             <span class="text">Banners</span>
                         </a>
                     </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/refferal">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">refferal</span>
+                        </a>
+                    </li>
                      <!-- <li class="menu-item has-submenu">
                         <a class="menu-link" href="page-sellers-cards.html">
                             <i class="icon material-icons md-store"></i>
@@ -192,8 +199,12 @@
                             <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
                         </li> -->
                         <li class="nav-item">
-                            <a href="/home/signout" class="requestfullscreen nav-link btn-icon"> logout </i></a>
-                        </li>
+                            <form action="/admin/home/signout" method="post">
+                                <button type="submit">
+                                    logout
+                                </button>
+                            </form>
+                        </li>  
                         <!-- <li class="dropdown nav-item">
                             <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
