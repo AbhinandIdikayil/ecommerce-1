@@ -45,7 +45,7 @@ let orderSchema = mongoose.Schema({
     },
     orderDate:{
         type:Date,
-        default:Date.now(),
+        default:Date.now,
     },
     deliveredDate:{
         type:Date,

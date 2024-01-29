@@ -15,6 +15,8 @@ const { use } = require('../routes/adminRoute');
 const addressModel = require('../models/addressModel');
 const couponModel = require('../models/coupon');
 const bannerModel = require('../models/bannerModel');
+const category = require('../models/category');
+const { modalAddressSelecting } = require('./userController');
 
 let credinals = {
     emial:"admin@gmail.com",
@@ -22,7 +24,79 @@ let credinals = {
 }
 exports.loadHome = async (req,res) => {
     if(req.session.admin){
-        res.render('admin/home')
+        let productCount = await productModel.find({delete:false}).count()
+        let categoryCount = await categoryModel.find({delete:false}).count()
+        let orders = await orderModel.aggregate([
+            {
+                $unwind:'$orderItems'
+            },
+            {
+                $match:{'orderItems.orderStatus':{$ne:'cancelled'}}
+            },
+            {
+                $group:{
+                    _id:null,
+                    count:{$sum:1}
+                }
+            }
+        ])
+
+        let revenue = await orderModel.aggregate([
+            {
+                $group:{
+                    _id:null,
+                    total:{$sum:'$price'}
+                }
+            }
+        ])
+        
+        let ordersInMonths = await orderModel.aggregate([
+            {
+                $group: {
+                  _id: { $month: "$orderDate" }, // group by the month *number*, mongodb doesn't have a way to format date as month names
+                  numberofdocuments: { $sum: 1 }
+                }
+              },
+              {
+                $project: {
+                  _id: false, // remove _id
+                  month: { // set the field month as the month name representing the month number
+                    $arrayElemAt: [
+                      [
+                        "", // month number starts at 1, so the 0th element can be anything
+                        "jan",
+                        "feb",
+                        "mar",
+                        "apr",
+                        "may",
+                        "jun",
+                        "jul",
+                        "aug",
+                        "sep",
+                        "oct",
+                        "nov",
+                        "dec",
+                      ],
+                      "$_id"
+                    ]
+                  },
+                  numberofdocuments: true // keep the count
+                }
+              }
+        ])
+        let count = new Array(12).fill(0);
+        if(ordersInMonths.length > 0){
+            ordersInMonths.forEach((obj,ind) => {
+              count[ind] = obj.numberofdocuments
+            })
+        }
+        console.log(count)
+        console.log(ordersInMonths)
+        res.render('admin/home',{productCount,categoryCount,
+            total:revenue[0]?.total ?? 0,
+            count:orders[0]?.count ?? 0,
+            months:count
+        })
     }else{
         res.redirect('/admin')
     }

@@ -89,26 +89,39 @@ exports.postSignup = async(req,res,next) => {
           let selectedRefer = await refferalModel.findOne()
           let referedamount = selectedRefer.refferedamount;
           let refferalamount = selectedRefer.refferalamount
+          // for the user who shared the refer code
           let userwallet = await walletModel.findOne({user:new mongoose.type.ObjectId(id)})
-          if(userwallet){
-            let updated = await walletModel.findOneAndUpdate(
-              {user:new mongoose.Types.ObjectId(id)},
-              {
-                $inc:{walletbalance:refferalModel},
-                $push:{transactions:{amount:refferalamount,type:'credit'}}
-              },
-              {new:true},
-            )
-          }else{
-            let wallet = new walletModel({
-              user:id,
-              walletbalance:refferalamount,
-              transactions:[{
-                amount:refferalamount,
-                type:'credit',
-              }]
-            })
-          }
+            if(userwallet){
+              let updated = await walletModel.findOneAndUpdate(
+                {user:new mongoose.Types.ObjectId(id)},
+                {
+                  $inc:{walletbalance:refferalModel},
+                  $push:{transactions:{amount:refferalamount,type:'credit'}}
+                },
+                {new:true},
+              )
+            }else{
+              let wallet = new walletModel({
+                user:id,
+                walletbalance:refferalamount,
+                transactions:[{
+                  amount:refferalamount,
+                  type:'credit',
+                }]
+              })
+            }
+
+            // for the user who trying to signup with the refercode
+            // let newwallet = new walletModel({
+            //   user:,
+            //   walletbalance:,
+            //   transactions:[
+            //     {
+            //       amount:,
+            //       type:,
+            //     }
+            //   ]
+            // })
         }
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRegex.test(Globalemail)) {
@@ -147,10 +160,8 @@ exports.loadLogin = async (req,res,next) => {
 exports.postLogin = async (req,res,next) => {
 
     let {email,password} = req.body;
-
     try { 
       let user = await userModel.findOne({email});
-   
       if(!user){
         return  res.render('user/login',{message:"No user"})
       }
@@ -177,6 +188,7 @@ exports.loadHome = async (req,res,next) => {
     let product = await productModel.find().populate('category');
     try {
       let userDetails = await userModel.findOne({email:req.session.email})
+    
       console.log(userDetails)
       let banners = await bannerModel.find()
       console.log(userDetails)
