@@ -31,11 +31,15 @@ exports.addToBag = async (req,res,next) => {
         // 657fc5f4069bfe1e4cdea73a
     } catch (error) {
       console.log(error)
+      const customError = new Error('Somthing went wrong');
+      customError.status = 500; // Set the desired status code
+      customError.data = { additionalInfo: 'Additional information about the error' };
+      next(customError);
     }
   }
 
 
-  exports.getBag = async (req,res,next) => {
+exports.getBag = async (req,res,next) => {
     try {
       let userDetails = await userModel.findOne({email:req.session.email});
       let userId = userDetails._id;
@@ -112,24 +116,30 @@ exports.addToBag = async (req,res,next) => {
         }
       }
     ]);
-    
-      console.log(cartTotal)
-      let warning = req.session.warning ?? null
-      let index = req.session.ind ?? null
-      if(carts){
-        res.render('user/cart',{user:userDetails,carts:carts,sum:cartTotal[0],warning,index});
-      }else{
-        res.render('user/cart',{stockMessage:'out of stock'});
-      }
+     
+    console.log(cartTotal)
+    delete req.session.giveWalletError
+    let warning = req.session.warning ?? null
+    let index = req.session.ind ?? null
+    console.log(carts)
+    if(carts){
+        
+      res.render('user/cart',{user:userDetails,carts:carts,sum:cartTotal[0],warning,index});
+    }else{
+      res.render('user/cart',{stockMessage:'out of stock'});
+    }
       
     } catch(error) {
-        console.log(error);
-        next(error)
+      console.log(error);
+      const customError = new Error('Somthing went wrong');
+      customError.status = 500; // Set the desired status code
+      customError.data = { additionalInfo: 'Additional information about the error' };
+      next(customError);
     }
   }
   
 
-  exports.deleteCart = async (req,res,next) => {
+exports.deleteCart = async (req,res,next) => {
     try {
       let id = req.params.id;
       console.log('hai from delete cart'+id)
@@ -140,21 +150,23 @@ exports.addToBag = async (req,res,next) => {
         res.status(400).json({ error: 'Address not found' });
       }
     } catch (error) {
-      next(error)
+      console.log(error)
+      const customError = new Error('Somthing went wrong');
+      customError.status = 500; // Set the desired status code
+      customError.data = { additionalInfo: 'Additional information about the error' };
+      next(customError);
     }
   }
 
 
-
-  
-
 exports.updateCartQuantityAndStock = async (req,res,next) => {
     try {
         let cartId = req.params.id;
-        const {quantity,stock,ind} = req.body
+        const {quantity,stock} = req.body
+        console.log(req.body)
+        console.log(quantity)
         let parsed = parseInt(quantity)
         let editedCart 
-        console.log(parsed)
       if(parsed <= stock){
         delete req.session.warning
         delete req.session.ind
@@ -164,7 +176,7 @@ exports.updateCartQuantityAndStock = async (req,res,next) => {
             $set: {'items.0.quantity': parsed},
           },
           {new: true},
-        )
+        )             
       }else if(parsed > stock){  
         req.session.ind = parseInt(ind)
         req.session.warning = "Out of stock";
@@ -175,10 +187,15 @@ exports.updateCartQuantityAndStock = async (req,res,next) => {
         if(editedCart){
           delete req.session.warning
           delete req.session.ind
+          // return res.status(200).json({quantity:true});
           res.redirect('/home/bag');
         }
        
     } catch (error) {
-        console.log(error);
+      console.log(error)
+      const customError = new Error('Somthing went wrong');
+      customError.status = 500; // Set the desired status code
+      customError.data = { additionalInfo: 'Additional information about the error' };
+      next(customError);
     }
   }

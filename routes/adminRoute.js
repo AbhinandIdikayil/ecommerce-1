@@ -55,20 +55,27 @@ let upload = multer({
   fileFilter : fileFilter,
  });
 
-adminRoute.post('/home/signout',adminController.signout)
-adminRoute.get("/error",adminController.getError)
-adminRoute.get('/',auth.isAdminLogged,adminController.getLogin);
-adminRoute.post('/',adminController.postLogin);
-adminRoute.get('/home',auth.isAdminNotLogged,adminController.loadHome);
 
-adminRoute.get('/page-products-list',auth.isAdminNotLogged,adminController.getProducts);
-adminRoute.get('/user-list',auth.isAdminNotLogged,adminController.showUsers);
+
+adminRoute.get('/',   auth.requireAuth2,    adminController.getLogin);
+
+
+adminRoute.get("/error",adminController.getError)
+adminRoute.get('/home',   auth.requireAuth,   adminController.loadhome2);
+
+
+adminRoute.post('/',adminController.postLogin);
+adminRoute.post('/home/signout',adminController.signout)
+adminRoute.get('/downloadSalesReport',adminController.downloadSalesReport);
+
+adminRoute.get('/page-products-list',adminController.getProducts);
+adminRoute.get('/user-list',adminController.showUsers);
 
 //  for adding the products, here is no get route becuase when user click add product button it will d
 //  display:none the product list page  and display:flex the  form of add product
 adminRoute.post('/add-product',upload.array('images',4),adminController.postAddProduct);
 // for editing the product
-adminRoute.get('/edit-product/:id',auth.isAdminNotLogged,adminController.getEditProduct);
+adminRoute.get('/edit-product/:id',adminController.getEditProduct);
 
 adminRoute.post('/delete-image/:image/:proId',adminController.deleteImages);
 
@@ -83,41 +90,48 @@ adminRoute.post('/unblock-user/:id',adminController.unblockUser);
 
 
 // for adding,edit  and deleting  the category
-adminRoute.get('/category',auth.isAdminNotLogged,adminController.showCategory);
-adminRoute.get('/edit-category/:id',auth.isAdminNotLogged,adminController.getEditCategory);
-adminRoute.put('/edit-category/:id',adminController.postEditCategory);
+adminRoute.get('/category',adminController.showCategory);
+adminRoute.route('/edit-category/:id')
+          .get(adminController.getEditCategory) 
+          .put(adminController.postEditCategory);
 
 adminRoute.put('/add-category',adminController.addCategory);
-adminRoute.get('/unlist-category',auth.isAdminNotLogged,adminController.getUnlistCategory);
-adminRoute.get('/unlist-category/:id',auth.isAdminNotLogged,adminController.updateUnlistCategory)
+adminRoute.get('/unlist-category',adminController.getUnlistCategory);
+adminRoute.get('/unlist-category/:id',adminController.updateUnlistCategory)
 
-adminRoute.get('/delete-category/:id',auth.isAdminNotLogged,adminController.deleteCategory);
+adminRoute.get('/delete-category/:id',adminController.deleteCategory);
 // for editing the categories 
 
 // adminRoute.post('/edit-category/:id',adminController.postEditCategory); 
 
 // for unlisting (restoring) the deleted products
-adminRoute.get('/unlist-product',auth.isAdminNotLogged,adminController.getUnlistProduct);
-adminRoute.get('/unlist-product/:id',auth.isAdminNotLogged,adminController.postUnlistProduct);
+adminRoute.get('/unlist-product',adminController.getUnlistProduct);
+adminRoute.get('/unlist-product/:id',adminController.postUnlistProduct);
 
 // for order listing and order details
-adminRoute.get('/order-list',auth.isAdminNotLogged,adminController.getOrders);
-adminRoute.get('/order/edit/:id',auth.isAdminNotLogged,adminController.editOrder);
-adminRoute.post('/order/edit-order-status/:id',auth.isAdminNotLogged,adminController.postEditOrder)
+adminRoute.get('/order-list',adminController.getOrders);
+adminRoute.get('/order/edit/:id',adminController.editOrder);
+adminRoute.post('/order/edit-order-status/:id',adminController.postEditOrder)
 
 // for coupen management
-adminRoute.get('/coupon',auth.isAdminNotLogged,isCouponExp.isExpired,adminController.getCoupon)
-adminRoute.get('/add-coupon',auth.isAdminNotLogged,isCouponExp.isExpired,adminController.getAddCoupon)
+adminRoute.get('/coupon',isCouponExp.isExpired,adminController.getCoupon)
+adminRoute.get('/add-coupon',isCouponExp.isExpired,adminController.getAddCoupon)
 adminRoute.post('/add/coupon',adminController.postAddCoupon);
 adminRoute.post('/coupon/delete/:id',adminController.deleteCoupon)
 // for banner section
-adminRoute.get('/banner',auth.isAdminNotLogged,adminController.banner);
-adminRoute.get('/banner/get-add-banner',auth.isAdminNotLogged,adminController.getAddBanner);
+adminRoute.get('/banner',adminController.banner);
+adminRoute.get('/banner/get-add-banner',adminController.getAddBanner);
 adminRoute.post('/banner/add-banner',upload.single('image'),adminController.postAddBanner);
 // for refferal section
-adminRoute.get('/refferal',auth.isAdminNotLogged,adminController.getRefferal);
-adminRoute.get('/get-add-reffer',auth.isAdminNotLogged,adminController.getRefferalForm)
-adminRoute.post('/add/reffer',adminController.postReffer)
+adminRoute.get('/refferal',adminController.getRefferal);
+adminRoute.get('/get-add-reffer',adminController.getRefferalForm)
+adminRoute.post('/add/reffer',adminController.postReffer);
 
-
+// for offer section
+adminRoute.get('/offer',adminController.getOffer)
+adminRoute.route('/add-category-offer')
+          .get(adminController.getOfferForm)
+          .post(adminController.postOfferForm);
+adminRoute.delete('/unlist-offer/:offerId',adminController.unlistOffer)
+adminRoute.delete('/list-offer/:offerId',adminController.listOffer)
 module.exports = adminRoute;

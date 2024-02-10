@@ -120,6 +120,13 @@
                             <span class="text">refferal</span>
                         </a>
                     </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/offer">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">offer</span>
+                        </a>
+                    </li>
                 </ul>
                 <hr />
               
@@ -210,9 +217,9 @@
                                     <div class="text">
                                         <h6 class="mb-1">Deliver to</h6>
                                         <p class="mb-1">
-                                             <%=order[0].address_Details.housename%> <br /> <%=order[0].address_Details.address%> <br />
-                                            CIty:<%=order[0].address_Details.districtORcity%> -
-                                            <%=order[0].address_Details.state%>
+                                             <%=order[0].address.housename%> <br /> <%=order[0].address.address%> <br />
+                                            CIty:<%=order[0].address.districtORcity%> -
+                                            <%=order[0].address.state%>
                                         </p>
                                         <a href="#">View profile</a>
                                     </div>
@@ -341,6 +348,8 @@
             <!-- content-main end// -->
            
         </main>
+       
+        <script src="/socket.io/socket.io.js"></script>
         <script src="/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="/js/vendors/select2.min.js"></script>
@@ -348,5 +357,6 @@
         <script src="/js/vendors/jquery.fullscreen.min.js"></script>
         <!-- Main Script -->
         <script src="/js/main.js?v=1.1" type="text/javascript"></script>
+        
     </body>
 </html>

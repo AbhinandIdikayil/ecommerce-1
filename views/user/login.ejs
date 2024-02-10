@@ -56,7 +56,7 @@
             </div>
             <h2 class="text-2xl font-semibold text-center mb-4">Login</h2>
             <div class=" text-center mb-6">
-                <p id="email-label" class="text-red-700"></p>
+               
             <% if(typeof message !== "undefined"){%>
                  <p class="text-red-700"> <%= message %></p>
                 
@@ -70,8 +70,9 @@
             <form method="post" action="/login" id="form">
                 
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address *</label>
-                    <input type="email"   id="email" name="email" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                    <label for="email" class="block text-gray-700 text-sm font-semibold mb-1">Email Address *</label>
+                    <label for="" class="text-red-500 font-medium text-xs" id="email-label"></label>
+                    <input type="email" id="email" name="email" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
                      required placeholder="hello@alignui.com">
                 </div>
                 <div class="mb-6">
@@ -83,7 +84,7 @@
                     </a>
                    
                 </div>
-                <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Register</button>
+                <button type="submit" id="btn" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Login</button>
                
             </form>
         </div>
@@ -136,7 +137,7 @@
   </div> 
 
 
-  <!--  otp page -->
+  <!--  otp page for forgot password -->
     
     <div id="otp-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-5 w-full max-w-md max-h-full">
@@ -202,7 +203,7 @@
 
     <script>
 
-        let newPassword = document.getElementById('newpassword-form').addEventListener('submit',(e) => {
+    let newPassword = document.getElementById('newpassword-form').addEventListener('submit',(e) => {
             e.preventDefault();
             let password = document.getElementById('password').value;
             let confirmPassword = document.getElementById('confirmPassword').value;
@@ -231,7 +232,7 @@
 
 
 
-      let otpSuccess = document.getElementById('otp-form').addEventListener('submit',(e) => {
+    let otpSuccess = document.getElementById('otp-form').addEventListener('submit',(e) => {
         e.preventDefault();
         console.log('in client')
         let confirmPasswordModal = document.getElementById('newpassword-modal');
@@ -288,46 +289,40 @@
 
     })
 
-
-
+    let emailLabel = document.getElementById('email-label')
+    let login_button = document.getElementById('btn')
+    let form = document.getElementById('form')
+    document.getElementById('form').addEventListener('input',(e) => {
+        let isEmail = false;
+        if(e.target.type === 'email'){
+            const regex = /^[a-z0-9.]+@[a-z0-9.-]+\.[a-z]{3}$/
+            let email = e.target.value
+            isEmail = regex.test(email)
+            if(!isEmail){
+                login_button.type = 'button'
+                return emailLabel.innerHTML = 'please enter a valid email'
+            }else {
+                login_button.type = 'submit'
+            }
+            if(e.target.value.trim('').length > 0){
+                emailLabel.innerHTML = ''
+            }
+        }
+    })        
     
-        
-    document.getElementById('form').addEventListener('submit', function(event) {
-      
-      event.preventDefault();
-      // Get the email input value
-      var emailInput = document.getElementById('email').value;
-      
-      var emailRegex =    /^[a-zA-Z0-9]+@gmail\.com$/
 
-      if (!emailRegex.test(emailInput)) {
-        // Display an error message
-        document.getElementById('email-label').innerHTML = 'Invalid characters in email address.';
-      } else {
-        // Reset the error message
-        document.getElementById('email-label').innerHTML = '';
-          // The email is valid, submit the form
-          this.submit();
-        
-      }
-    });
+    let button = document.getElementById('button');
+    let modal = document.getElementById('authentication-modal');
+    let close = document.getElementById('close')
+    button.addEventListener('click',() => {
+    modal.style.display = 'flex';
+    })
 
-      let button = document.getElementById('button');
-      let modal = document.getElementById('authentication-modal');
-      let close = document.getElementById('close')
-      button.addEventListener('click',() => {
-        modal.style.display = 'flex';
-      })
-
-      close.addEventListener('click',() => {
-        modal.style.display = 'none'
-      })
+    close.addEventListener('click',() => {
+    modal.style.display = 'none'
+    })
      
-      
-
     </script>
-
-    
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
 
 </body>

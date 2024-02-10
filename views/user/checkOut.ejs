@@ -10,7 +10,7 @@
 </head>
 <style>
     #nav{
-      z-index: 999;
+      z-index: 910;
       height: 90px;
     }
     @media (max-width:640px) {
@@ -19,7 +19,7 @@
       }
     }
     .navbar-menu{
-      z-index: 999;
+      z-index: 910;
     }
     
     #address-modal{
@@ -76,13 +76,13 @@
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
 				</svg>
 			</li>
-			<li><a class="text-sm text-blue-600 font-bold" href="/home/products/men">Men</a></li>
+			<li><a class="text-sm text-blue-600 font-bold" href="/home/products/men?page=1">Men</a></li>
 			<li class="text-gray-300">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
 				</svg>
 			</li>
-			<li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women">Women</a></li>
+			<li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women?page=1">Women</a></li>
 			<li class="text-gray-300">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -147,7 +147,7 @@
 					</li>
 					  
 					<li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/wishlit">wishlist</a>
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/account">user</a>
 					</li>
 				</ul>
 			</div>
@@ -243,6 +243,14 @@
                                          class="w-4 h-4 text-blue-600  border-gray-300   dark:bg-gray-700 dark:border-gray-600">                                        
                                         <span  id="" class="cursor-pointer rounded-r py-1 px-3 duration-100 "> online payment </span>
                                     </div>
+                                    <div class="flex items-center border-gray-100">
+
+                                      <input id="wallet" type="radio" required value="wallet" name="disabled-radio"
+                                     
+                                      onclick="handlePaymentMethodChange(this)"
+                                       class="w-4 h-4 text-blue-600  border-gray-300   dark:bg-gray-700 dark:border-gray-600">                                        
+                                      <span  id="" class="cursor-pointer rounded-r py-1 px-3 duration-100 "> Wallet </span>
+                                  </div>
                                     <!-- <div class="flex items-center space-x-4">
                                         <p class="text-sm"> asdfsdf  </p> 
                                         <form class="delete-form" data-id="" action="/home/account/cart-delete/" method="post">
@@ -301,7 +309,11 @@
 
               </p>
             </div>
-            
+            <%if(walletError){%>
+              <p class="text-lg  text-center font-semibold text-red-600">
+                <%=walletError%>
+              </p>
+            <%}%>
             <% for(i=0; i< address.length; i++){ %>
                 <% if(address[i].selected == true){ %>
                     <form id="proceed-form" class="proceed-form" data-address-id="<%=address[i].id%>" action="/home/cart/check-out/<%= address[i]._id %>" method="post">
@@ -311,26 +323,37 @@
                             Proceed to payment
                         </button>
                     </form>
+
+
+                    <div class="mt-4">
+                      <form id="coupon-form" action="/home/cart/check-out/coupon" method="post" enctype="application/x-www-form-urlencoded">
+                        <label for="email" class="block text-gray-700 text-sm font-semibold">Apply coupon</label>
+                        <label id="coupon-msg" class="text-red-600 font-bold" for=""></label>
+                        <input type="text" id="couponcode" name="couponcode" class="form-input border-zinc-700 w-full px-4 py-1 border-2 rounded-lg text-gray-700 focus:ring-blue-500"
+                        required value="" placeholder="Enter coupon code">
+                        
+                          <input style="display: none;" id="check-price" type="number" name="price" class="form-input border-zinc-700 w-full px-4 py-1 border-2 rounded-lg text-gray-700 focus:ring-blue-500"
+                        required value="<%=sum[0].total%>" >
+                        <div>
+                          <input id="apply-btn" class="w-1/3 py-1 bg-blue-500 hover:bg-blue-600 rounded-lg mt-3 font-semibold text-white"
+                          type="submit" value="apply">
+                          <input style="display: none;" id="remove-btn" class="w-1/3 py-1 bg-blue-500 hover:bg-blue-600 rounded-lg mt-3 font-semibold text-white"
+                          type="submit" value="remove">
+                        </div>
+                      </form>
+                    </div>
+
+
                 <%}%>
             <% } %>
-
             <div class="mt-4">
-              <form id="coupon-form" action="/home/cart/check-out/coupon" method="post" enctype="application/x-www-form-urlencoded">
-                <label for="email" class="block text-gray-700 text-sm font-semibold">Apply coupon</label>
                 <label id="coupon-msg" class="text-red-600 font-bold" for=""></label>
-                <input type="text" id="couponcode" name="couponcode" class="form-input border-zinc-700 w-full px-4 py-1 border-2 rounded-lg text-gray-700 focus:ring-blue-500"
-                required value="" placeholder="Enter coupon code">
                 <div>
-                  <input style="display: none;" id="check-price" type="number" name="price" class="form-input border-zinc-700 w-full px-4 py-1 border-2 rounded-lg text-gray-700 focus:ring-blue-500"
-                required value="<%=sum[0].total%>" >
-                <div>
-                  <input id="apply-btn" class="w-1/3 py-1 bg-blue-500 hover:bg-blue-600 rounded-lg mt-3 font-semibold text-white"
-                  type="submit" value="apply">
-                  <input style="display: none;" id="remove-btn" class="w-1/3 py-1 bg-blue-500 hover:bg-blue-600 rounded-lg mt-3 font-semibold text-white"
-                  type="submit" value="remove">
+                  <input id="apply-btn" class="w-3/4 py-1 px-2 bg-blue-500 hover:bg-blue-600 rounded-lg mt-3 font-semibold text-white"
+                  type="submit" value="wallet balance ₹<%=wallet.walletbalance%>">
                 </div>
-              </form>
             </div>
+            
           </div>
         </div>
       </div>
@@ -382,16 +405,18 @@
       </div>
   </div> 
   
+  
+
+
+
+
 
 
   <!-- ADD ADDRESS MODEL -->
-  <div class="relative z-40  flex justify-center items-center" id="add-address-form">
-    <div id="address-add-modal-form" class="hidden items-center justify-center  fixed top-0  bg-opacity-60 w-full max-w-3xl mx-auto p-4"> <!--Modal Dialog -->
+  <div  class="relative z-40  flex justify-center items-center" id="add-address-form">
+    
+      <div  id="address-add-modal-form" class="hidden fixed top-0 justify-center  bg-opacity-60 w-full max-w-3xl mx-auto p-4"> <!--Modal Dialog -->
         <div class="bg-white rounded-md"> <!--Modal Content -->
-             <!-- <div class="p-3 flex items-center justify-between border-b border-b-gray-300">
-                <h3 class="font-semibold text-xl">Modal Header</h3>
-                <span class="modal-close cursor-pointer">×</span> 
-            </div> -->
 
             <div class="w-full max-w-3xl mx-auto p-2">
               <div id="form-white-bg" class="bg-white dark:bg-gray-400 p-4 rounded-lg shadow-md border dark:border-gray-700">              
@@ -444,32 +469,16 @@
                     </form>
                    
                   </div>
-      
-                  <!-- Payment Information -->
-                  <!-- <div>
-                      <h2 class="text-xl font-semibold text-gray-700 dark:text-white mb-2">Payment Information</h2>
-                      <div class="mt-4">
-                          <label for="card_number" class="block text-gray-700 dark:text-white mb-1">Card Number</label>
-                          <input type="text" id="card_number" class="w-full rounded-lg border-2 py-2 px-3">
-                      </div>
-      
-                      <div class="grid grid-cols-2 gap-4 mt-4">
-                          <div>
-                              <label for="exp_date" class="block text-gray-700 dark:text-white mb-1">Expiration Date</label>
-                              <input type="text" id="exp_date" class="w-full rounded-lg border-2 py-2 px-3">
-                          </div>
-                          <div>
-                              <label for="cvv" class="block text-gray-700 dark:text-white mb-1">CVV</label>
-                              <input type="text" id="cvv" class="w-full rounded-lg border-2 py-2 px-3">
-                          </div>
-                      </div>
-                  </div> -->  
+
               </div>
           </div>
             
         </div>
     </div>
+
+    
   </div>
+
 
   <script src="/js/navbar.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -505,14 +514,15 @@
         proceedForm.addEventListener('submit', (e) => {
           const cod = document.getElementById('cash-on-delivery');
           const onlinePayment = document.getElementById('online-payment');
+          const wallet = document.getElementById('wallet');
           const message = document.getElementById('payment-specify');
 
 
-          if (!cod.checked && !onlinePayment.checked) {
+          if (!cod.checked && !onlinePayment.checked && !wallet.checked) {
             e.preventDefault();
               message.innerHTML = "Select a payment method";
               console.log(cod.checked,onlinePayment.checked)
-          } else if(cod.checked){
+          } else if(cod.checked || wallet.checked){
               // If a payment method is selected, proceed with form submission
               // Assuming you have a form with the id 'proceedForm', you can submit it like this:
               $('#proceed-form').submit();

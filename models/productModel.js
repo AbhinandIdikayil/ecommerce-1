@@ -34,6 +34,13 @@ const productSchema = new Schema({
         type:Number,
         default:0,
     },
+    categoryOffer:{
+        type:mongoose.Types.ObjectId,
+        ref:'Offer'
+    }, 
+    afterCategoryOfferPrice:{
+        type:Number,
+    },
     originalprice:{
         type:Number,
     },

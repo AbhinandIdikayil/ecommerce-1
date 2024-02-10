@@ -46,7 +46,6 @@
             </div>
             <h2 class="text-2xl font-semibold text-center mb-4">Create a new account</h2>
             <div class=" text-center mb-6">
-                <p id="email-label" class="text-red-700"></p>
             <% if(typeof message !== "undefined"){%>
                  <p class="text-red-700"><%=message%></p>
                 
@@ -57,29 +56,36 @@
             
             
           
-            <form method="post" action="/signup" id="form">
+            <form method="post"
+            <%if(typeof refercode !== 'undefined' && typeof userId !== 'undefined'){ %>
+                    action="/signup?refercode=<%=refercode%>&userid=<%=userId%>" 
+            <%}else{%>
+                action="/signup"
+            <%}%>
+            
+             
+             id="form">
 
                 <div class="mb-4">
-                    <label for="fullname" class="block text-gray-700 text-sm font-semibold mb-2">Full name</label>
+                    <label for="fullname" class="block text-gray-700 text-sm font-semibold mb-1">Full name</label>
+                    <label for="" id="name-label" class="text-xs text-red-500"></label>
                     <input type="text" name="fullname" id="fullname" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
                      required placeholder="John">
                 </div>
                 
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address *</label>
+                    <label for="email" class="block text-gray-700 text-sm font-semibold mb-1">Email Address *</label>
+                    <label for="" id="email-label" class="text-xs text-red-500"></label>
                     <input type="email"   id="email" name="email" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
                      required placeholder="hello@alignui.com">
                 </div>
                 <div class="mb-6">
                     <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
+                    <label for="" id="password-label"></label>
                     <input type="password" id="password" name="password" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
-                     required placeholder="••••••••">
-                  
-
-                    
-                   
+                     required placeholder="••••••••">  
                 </div>
-                <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Register</button>
+                <button id="btn" type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Register</button>
                 <p class="text-gray-600 text-xs text-center mt-4">
                     <a class="text-slate-800 hover:underline" href="/login">
                        Already have an account
@@ -89,7 +95,59 @@
         </div>
     </div>
 
+    <script>
+    let emailLabel = document.getElementById('email-label')
+    let nameLabel = document.getElementById('name-label');
+    let passwordLabel = document.getElementById('password-label')
+    let button = document.getElementById('btn')
+    let form = document.getElementById('form')
+    
+    let isEmail = false;
+    let fullname = false;
 
+    form.addEventListener('submit',(e) => {
+        if(isEmail && fullname){
+            
+        }else{
+            e.preventDefault()
+        }
+    })
+
+    document.getElementById('form').addEventListener('input',(e) => {
+        if(e.target.type === 'email'){
+            const regex = /^[a-z0-9.]+@[a-z0-9.-]+\.[a-z]{3}$/
+            let email = e.target.value.trim('')
+            isEmail = regex.test(email)
+            if(!isEmail){
+                button.type = 'button'
+                return emailLabel.innerHTML = 'please enter a valid email'
+            }else {
+                button.type = 'submit'
+            }
+            if(e.target.value.trim('').length > 0){
+                emailLabel.innerHTML = ''
+            }
+        }else if(e.target.type === 'text'){
+            const regex = /^[a-zA-Z0-9]{3,}$/
+            let name = e.target.value
+            fullname = regex.test(name)
+           
+            if(!fullname){
+                button.type = 'button'
+                console.log(fullname)
+                return nameLabel.innerHTML = 'Please enter your name(atleast 3 characters)'
+            }else{
+                button.type = 'submit'
+            }
+            if(e.target.value.trim('').length > 0){
+                
+                nameLabel.innerHTML = ''
+            }
+            console.log(fullname)
+            
+        }
+    })   
+    </script>
 
 </body>
 </html>

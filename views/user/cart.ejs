@@ -35,6 +35,11 @@
       height: 200px;
     }
     } 
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+    }
 </style>
 <body class="bg-indigo-300">
     
@@ -65,13 +70,13 @@
 			</button>
 		</div>
 		<ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 sm:flex sm:mx-auto sm:flex sm:items-center sm:w-auto lg:space-x-6 ">
-			<li><a class="text-sm text-blue-600 font-bold" href="/home/products/men">Men</a></li>
+			<li><a class="text-sm text-blue-600 font-bold" href="/home/products/men?page=1">Men</a></li>
 			<li class="text-gray-300">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
 				</svg>
 			</li>
-			<li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women">Women</a></li>		
+			<li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women?page=1">Women</a></li>		
 		</ul>
 		<!-- <a class="hidden sm:inline-block sm:ml-auto  bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="#">  
       <i class="ri-user-fill" style="color: rgb(0, 0, 0);"></i> 
@@ -124,7 +129,7 @@
 					</li>
 					  
 					<li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/wishlit">wishlist</a>
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/account">user</a>
 					</li>
 				</ul>
 			</div>
@@ -143,10 +148,6 @@
 
 
 
-
-
-
-  
 
     <!-- for listing the products -->
 
@@ -180,7 +181,7 @@
                                         <%  } %>
                                           <span class="decrement cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
                                           <input type="number" style="display: none;" name="stock" min="1"  value="<%=cart.itemDetails.stock%>">
-                                          <input readonly class="quantity h-8 w-8 border bg-white text-center text-xs outline-none" type="text" name="quantity" value="<%=cart.items.quantity%>"/>
+                                          <input readonly class="quantity pl-2 h-8 w-8 border bg-white text-center text-xs outline-none" type="number" name="quantity" value="<%=cart.items.quantity%>"/>
                                           <span  class="increment cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
                                           <input type="submit" style="display: none;">
                                       </form>
@@ -275,17 +276,13 @@
             Array.from(inc).forEach((inc,ind) => {
               inc.addEventListener("click",(e) => {
                 if(quantity[ind].value !== "0"){
-                      let qty = quantity[ind].value;
-                      let previous = parseInt(qty) + 1;
-                      quantity[ind].value = previous
-                      console.log(qtyForm[ind])
-
-                      let stockLabel = document.getElementsByClassName('stock-warning')[ind]
-                     
-                      let cartid = qtyForm[ind].getAttribute('data-bs-cartId')
-                      qtyForm[ind].submit()
-
-                 
+                    let qty = quantity[ind].value;
+                    let previous = parseInt(qty) + 1;
+                    quantity[ind].value = previous
+                    console.log(qtyForm[ind])
+                    let stockLabel = document.getElementsByClassName('stock-warning')[ind] 
+                    let cartid = qtyForm[ind].getAttribute('data-bs-cartId')
+                    qtyForm[ind].submit()
                   }
               })
             })
@@ -293,15 +290,13 @@
             Array.from(dec).forEach((dec,ind) => {
               dec.addEventListener("click",(e) => {
                     if(quantity[ind].value !== "1"){
-                        let qty = quantity[ind].value;
-                        let previous = parseInt(qty) -1 ;
-                        quantity[ind].value = previous;
-                        console.log(qtyForm[ind])
-                        qtyForm[ind].submit();
-
-
-                        console.log(quantity[ind])
-                    }
+                      let qty = quantity[ind].value;
+                      let previous = parseInt(qty) -1 ;
+                      quantity[ind].value = previous;
+                      console.log(qtyForm[ind])
+                      qtyForm[ind].submit();
+                      console.log(quantity[ind])
+                  }
                     
                 })
             })
@@ -309,67 +304,68 @@
             
           
 
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                  confirmButton: "text-white bg-green-700 hover:bg-green-800 focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800",
-                  cancelButton: "text-white bg-red-700 hover:bg-red-800 focus:outline-none  focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                },
-                buttonsStyling: false
-              });
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "text-white bg-green-700 hover:bg-green-800 focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800",
+          cancelButton: "text-white bg-red-700 hover:bg-red-800 focus:outline-none  focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+        },
+        buttonsStyling: false
+    });
 
-            let buttons = document.getElementsByClassName('btns');
+    let buttons = document.getElementsByClassName('btns');
 
-            Array.from(buttons).forEach((button,index) => {
-                button.addEventListener("click",async (e) => {
-                    let formDiv = document.getElementsByClassName('delete-form')[index];
-                    let cartPage = document.getElementsByClassName('cart-div')[index];
-                    let cartId = formDiv.getAttribute('data-id');
+    Array.from(buttons).forEach((button,index) => {
+        button.addEventListener("click",async (e) => {
 
-                    let cartPriceDetail = document.getElementsByClassName('cartPrice')[index];
-                    let cartPrice = parseInt(document.getElementsByClassName('cartPrice')[index].getAttribute('data-bs'));
-                    let total = document.getElementsByClassName('totalprice')[0];
-                    let totalPrice = parseInt(document.getElementsByClassName('totalprice')[0].getAttribute('data-bs'));
-                    let afterPrice = totalPrice - cartPrice
+          let formDiv = document.getElementsByClassName('delete-form')[index];
+          let cartPage = document.getElementsByClassName('cart-div')[index];
+          let cartId = formDiv.getAttribute('data-id');
+
+          let cartPriceDetail = document.getElementsByClassName('cartPrice')[index];
+          let cartPrice = parseInt(document.getElementsByClassName('cartPrice')[index].getAttribute('data-bs'));
+          let total = document.getElementsByClassName('totalprice')[0];
+          let totalPrice = parseInt(document.getElementsByClassName('totalprice')[0].getAttribute('data-bs'));
+          let afterPrice = totalPrice - cartPrice
 
 
-                    e.preventDefault();
-                    swalWithBootstrapButtons.fire({
-                      title: "Are you sure?",
-                      text: "Do you want to remove from cart",
-                      icon: "warning",
-                      showCancelButton: true,
-                      confirmButtonText: "Yes, remove it!",
-                      cancelButtonText: "No, cancel!",
-                      reverseButtons: true
-                      })
-                      .then(async(result) => {
-                        if (result.isConfirmed) {
-                          try {;
-                              let response = await fetch(`/home/cart-delete/${cartId}`,{
-                              method:'DELETE',
-                              headers:{
-                                'Content-type':'application/json'
-                              }
-                            });
-                            if(response.ok){
-                              console.log('removed');
-                              cartPage.remove();
-                              cartPriceDetail.remove();
-                              total.innerHTML = afterPrice;
-                            }else{
-                              console.error('Failed to delete address');
-                            }
-                            console.log('after fetch')
-                            } catch (error) {
-                                  console.log(error);
-                            }
-                        }else{
-                          e.preventDefault()
-                        }
-                      }); 
-                  
-                 }) 
-             })
+            e.preventDefault();
+            swalWithBootstrapButtons.fire({
+              title: "Are you sure?",
+              text: "Do you want to remove from cart",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Yes, remove it!",
+              cancelButtonText: "No, cancel!",
+              reverseButtons: true
+              })
+              .then(async(result) => {
+                if (result.isConfirmed) {
+                  try {;
+                      let response = await fetch(`/home/cart-delete/${cartId}`,{
+                      method:'DELETE',
+                      headers:{
+                        'Content-type':'application/json'
+                      }
+                    });
+                    if(response.ok){
+                      console.log('removed');
+                      cartPage.remove();
+                      cartPriceDetail.remove();
+                      total.innerHTML = afterPrice;
+                    }else{
+                      console.error('Failed to delete address');
+                    }
+                    console.log('after fetch')
+                    } catch (error) {
+                          console.log(error);
+                    }
+                }else{
+                  e.preventDefault()
+                }
+              }); 
+          
+          }) 
+      })
             
 
 

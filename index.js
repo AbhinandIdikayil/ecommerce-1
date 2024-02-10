@@ -7,6 +7,7 @@ const path = require('path');
 const morgan = require("morgan");
 const connectDB = require('./database/connection')
 const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
 
 const cors = require('cors')
 require('dotenv').config()
@@ -15,10 +16,12 @@ const app = express();
 
 const userRoute = require('./routes/userRoute');
 const adminRoute = require('./routes/adminRoute');
+const { Server } = require('http');
 
 app.set('view engine','ejs');
 
 app.use(cors())
+app.use(cookieParser())
 // app.use(morgan('combined', { stream: accessLogStream }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -54,10 +57,18 @@ app.use(function(err, req, res, next) {
         res.status(400).render('error', { error: '404' });
       } else {
         // For other errors, use the standard error handling
-        res.locals.message = err.message;
-        res.locals.error = req.app.get('env') === 'development' ? err : {};
-        res.status(err.status || 500);
-        res.render('error', { error: err });
+        if(!req.path.includes('/admin')){
+            res.locals.message = err.message;
+            res.locals.error = req.app.get('env') === 'development' ? err : {};
+            res.status(err.status || 500);
+            res.render('error', { error: err });
+        }else{
+            console.log('in admin')
+            res.locals.message = err.message;
+            res.locals.error = req.app.get('env') === 'development' ? err : {};
+            res.status(err.status || 500);
+            res.render('adminError', { error: err });
+        }
       }
 });
 
@@ -66,5 +77,6 @@ app.listen(PORT,(err) => {
     connectDB();
     console.log(`server is running`)  
 })
+
 
 module.exports = app;

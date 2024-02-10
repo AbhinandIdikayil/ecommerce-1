@@ -6,134 +6,243 @@ const userModel = require('../models/userModel')
 const categoryModel = require('../models/category');
 const createError = require('http-errors');
 const orderModel = require('../models/orderModel');
-const banneModel = require('../models/bannerModel')
 const refferModel = require('../models/refferalModel')
-
 const mongoose = require('mongoose');
-const { error } = require('console');
-const { use } = require('../routes/adminRoute');
 const addressModel = require('../models/addressModel');
 const couponModel = require('../models/coupon');
 const bannerModel = require('../models/bannerModel');
-const category = require('../models/category');
-const { modalAddressSelecting } = require('./userController');
+const offerModel = require('../models/offerModel')
 
 let credinals = {
     emial:"admin@gmail.com",
     password:"admin123"
 }
-exports.loadHome = async (req,res) => {
-    if(req.session.admin){
-        let productCount = await productModel.find({delete:false}).count()
-        let categoryCount = await categoryModel.find({delete:false}).count()
-        let orders = await orderModel.aggregate([
-            {
-                $unwind:'$orderItems'
-            },
-            {
-                $match:{'orderItems.orderStatus':{$ne:'cancelled'}}
-            },
-            {
-                $group:{
-                    _id:null,
-                    count:{$sum:1}
-                }
-            }
-        ])
 
-        let revenue = await orderModel.aggregate([
-            {
-                $group:{
-                    _id:null,
-                    total:{$sum:'$price'}
-                }
-            }
-        ])
+exports.loadhome2 = async (req,res,next) => {
+try {
+    let labelObj = {};
+    let salesCount;
+    let findQuerry;
+    let currentYear;
+    let currentMonth;
+    let index;
+   
+    switch (req.query.filter) {
+    case "Weekly":
+        currentYear = new Date().getFullYear();
+        currentMonth = new Date().getMonth() + 1;
+
+        labelObj = {
+        Sun: 0,
+        Mon: 1,
+        Tue: 2,
+        Wed: 3,
+        Thu: 4,
+        Fri: 5,
+        Sat: 6,
+        };
+
+        salesCount = new Array(7).fill(0);
+
+        findQuerry = {
+        orderDate: {
+            $gte: new Date(currentYear, currentMonth - 1, 1),
+            $lte: new Date(currentYear, currentMonth, 0, 23, 59, 59),
+        },
+        };
+        index = 0;
+        break;
+    case "Monthly":
+        currentYear = new Date().getFullYear();
+        labelObj = {
+        Jan: 0,
+        Feb: 1,
+        Mar: 2,
+        Apr: 3,
+        May: 4,
+        Jun: 5,
+        Jul: 6,
+        Aug: 7,
+        Sep: 8,
+        Oct: 9,
+        Nov: 10,
+        Dec: 11,
+        };
+
+        salesCount = new Array(12).fill(0);
+
+        findQuerry = {
+        orderDate: {
+            $gte: new Date(currentYear, 0, 1),
+            $lte: new Date(currentYear, 11, 31, 23, 59, 59),
+        },
+        };
+        index = 1;
+        break;
+
+   
+    case "Yearly":
+        findQuerry = {};
+
+        const ord = await orderModel.find().sort({ orderDate: 1 });
+      
+        const stDate = ord[0].orderDate.getFullYear();
+        const endDate = ord[ord.length - 1].orderDate.getFullYear();
         
-        let ordersInMonths = await orderModel.aggregate([
-            {
-                $group: {
-                  _id: { $month: "$orderDate" }, // group by the month *number*, mongodb doesn't have a way to format date as month names
-                  numberofdocuments: { $sum: 1 }
-                }
-              },
-              {
-                $project: {
-                  _id: false, // remove _id
-                  month: { // set the field month as the month name representing the month number
-                    $arrayElemAt: [
-                      [
-                        "", // month number starts at 1, so the 0th element can be anything
-                        "jan",
-                        "feb",
-                        "mar",
-                        "apr",
-                        "may",
-                        "jun",
-                        "jul",
-                        "aug",
-                        "sep",
-                        "oct",
-                        "nov",
-                        "dec",
-                      ],
-                      "$_id"
-                    ]
-                  },
-                  numberofdocuments: true // keep the count
-                }
-              }
-        ])
-        let count = new Array(12).fill(0);
-        if(ordersInMonths.length > 0){
-            ordersInMonths.forEach((obj,ind) => {
-              count[ind] = obj.numberofdocuments
-            })
+        for (let i = 0; i <= Number(endDate) - Number(stDate); i++) {
+            
+            labelObj[`${stDate + i}`] = i;
         }
-        console.log(count)
-        console.log(ordersInMonths)
-        res.render('admin/home',{productCount,categoryCount,
-            total:revenue[0]?.total ?? 0,
-            count:orders[0]?.count ?? 0,
-            months:count
-        })
-    }else{
-        res.redirect('/admin')
+
+        salesCount = new Array(Object.keys(labelObj).length).fill(0);
+
+        index = 3;
+        break;
+    default:
+       return res.redirect('/admin/home?filter=Weekly')
     }
+
+    // const orders = await orderModel.find(findQuerry);
+
+    const orders = await orderModel.aggregate(
+    [
+        {
+        $match: findQuerry
+        },
+        {
+        $unwind:'$orderItems'
+        }
+    ]
+    );
+
+    orders.forEach((order) => {
+        salesCount[labelObj[String(order.orderDate).split(" ")[index]]] += 1;    
+    });
+    let productCount = await productModel.find({delete:false}).count()
+    let categoryCount = await categoryModel.find({delete:false}).count()
+    let revenue = await orderModel.aggregate([
+        {
+            $group:{
+                _id:null,
+                total:{$sum:'$price'}
+            }
+        }
+    ])
+    let order = await orderModel.aggregate([
+        {
+            $unwind:'$orderItems'
+        },
+        {
+            $match:{'orderItems.orderStatus':'delivered'}
+        },
+        {
+           $group:{
+            _id:null,
+            total:{$sum:1}
+           } 
+        }
+    ]);
+
+
+    // category sales
+    let category = await orderModel.aggregate([
+        {
+            $unwind:'$orderItems'
+        },
+        {
+            $match:{'orderItems.orderStatus':'delivered'}
+        },
+        {
+            $group:{
+                _id:'$orderItems.category',
+                total:{$sum:1}
+            }
+        }
+    ]);
+    
+    res.render('admin/home',{
+        category,
+        order:order[0].total,
+        revenue,
+        productCount,
+        categoryCount,
+        list:Object.keys(labelObj),
+        yaxis:salesCount,
+        req,
+        message:req.session.empty 
+    })
+  
+    
+} catch (err) {
+    console.log(err);
+    const customError = new Error('Somthing went wrong');
+    customError.status = 500; // Set the desired status code
+    customError.data = { additionalInfo: 'Additional information about the error' };
+    next(customError);
+}
+      
 }
 
-exports.getLogin = async (req,res) => {
-    if(req.session.admin){
-        res.redirect('/admin/home')
-    }else{
-        res.render('admin/login');
+
+exports.getLogin = async (req,res,next) => {
+    try {
+        res.render('admin/login');  
+    } catch (error) {
+        console.log(error)  
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError); 
     }
+    
 };
 
-exports.postLogin = async (req,res) => { 
+const jwt = require('jsonwebtoken');
+const { resourceLimits } = require('worker_threads');
+
+const maxAge = 3 * 24 * 60 * 30
+function createToken  (id)  {
+    return jwt.sign({id},process.env.JWT_SECRET,{
+        expiresIn:maxAge
+    })
+}
+
+exports.postLogin = async (req,res,next) => { 
     let {email,password} =req.body;
     try {
         if(email === credinals.emial && password === credinals.password)
         {
-            req.session.admin = true;
-            res.redirect('/admin/home')
+            const adminToken = createToken(credinals.emial);
+            res.cookie('admin-token',adminToken,{
+                httpOnly: true,
+                maxAge:maxAge * 1000,
+            })
+            console.log('in post')
+            res.redirect('/admin/home?filter=Weekly')
         }else{
             res.render('admin/login',{message:'username or password is incorrect'})
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' }); 
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.getProducts = async (req,res) => {
+exports.getProducts = async (req,res,next) => {
+    delete req.session.empty
    try {
     let category = await categoryModel.find();
     let productList = await productModel.find().populate('category').sort({createdOn:-1});
 
     res.render('admin/page-products-list',{product:productList,category:category});
    } catch (error) {
-    console.log(error)
+    const customError = new Error('Somthing went wrong');
+    customError.status = 500; // Set the desired status code
+    customError.data = { additionalInfo: 'Additional information about the error' };
+    next(customError);
    }
 }
 
@@ -142,6 +251,7 @@ exports.postAddProduct = async (req, res, next) => {
       const { productname, productcategory, productprice, productstock, productsection , description ,productoffer} = req.body;
       const productimages = await req.files.map((file) => file.filename);
       let addedProduct;
+      console.log(req.body)
     //   checking is there any value in productoffer input
       if(productoffer){
         let offerPrice = productprice - (productoffer/100) * productprice
@@ -172,12 +282,16 @@ exports.postAddProduct = async (req, res, next) => {
       await addedProduct.save();   
       res.redirect('/admin/page-products-list')
     } catch (error) {
-      console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
   };
   
 
-exports.showUsers = async (req,res) => {
+exports.showUsers = async (req,res,next) => {
+    delete req.session.empty
     try {
         let search = '';
         if (req.query.search) {
@@ -200,11 +314,14 @@ exports.showUsers = async (req,res) => {
        
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+    customError.status = 500; // Set the desired status code
+    customError.data = { additionalInfo: 'Additional information about the error' };
+    next(customError);
     }
 }
 
-exports.blockUser = async (req,res) => {
+exports.blockUser = async (req,res,next) => {
     try {
         let id  = req.params.id;
         let user = await userModel.findByIdAndUpdate(id,{blocked:true});
@@ -213,11 +330,14 @@ exports.blockUser = async (req,res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.unblockUser = async (req,res) => {
+exports.unblockUser = async (req,res,next) => {
     try {
         let id  = req.params.id;
         let user = await userModel.findByIdAndUpdate(id,{blocked:false});
@@ -226,18 +346,25 @@ exports.unblockUser = async (req,res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
 
-exports.showCategory = async (req,res) => {
+exports.showCategory = async (req,res,next) => {
+    delete req.session.empty
     try {
         let category = await categoryModel.find();
         res.render('admin/category',{category:category});
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
@@ -271,16 +398,19 @@ exports.addCategory = async (req,res,next) => {
     }
 }
 
-exports.getUnlistCategory = async (req,res)=> {
+exports.getUnlistCategory = async (req,res,next)=> {
     try {
         let category = await categoryModel.find();
         res.render('admin/unlistCategory',{category:category})
     } catch (error) {
-        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.updateUnlistCategory = async (req,res) => {
+exports.updateUnlistCategory = async (req,res,next) => {
     try {
         let id = req.params.id;
         let update = {
@@ -295,12 +425,15 @@ exports.updateUnlistCategory = async (req,res) => {
             res.redirect('/admin/category');
         }
     } catch (error) {
-        console.log(error)
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
 
-exports.deleteCategory = async (req,res) => {
+exports.deleteCategory = async (req,res,next) => {
     try {
         let id = req.params.id;
         let delt = await categoryModel.findByIdAndUpdate(
@@ -313,23 +446,29 @@ exports.deleteCategory = async (req,res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
 
-exports.getEditCategory  = async (req,res) => {
+exports.getEditCategory  = async (req,res,next) => {
     try {
         let id = req.params.id;
         let category = await categoryModel.findById(id)
         res.render('admin/editCategory',{category:category});
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.postEditCategory = async (req,res) => {
+exports.postEditCategory = async (req,res,next) => {
     try {
         let id = req.params.id;
         let {categoryname} = req.body;
@@ -358,12 +497,15 @@ exports.postEditCategory = async (req,res) => {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }   
 }
 
 
-exports.deleteProduct = async (req,res) => {
+exports.deleteProduct = async (req,res,next) => {
     try {
         let id = req.params.id;
         let product = await productModel.findByIdAndUpdate(
@@ -379,12 +521,16 @@ exports.deleteProduct = async (req,res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
 
-exports.getEditProduct = async (req,res) => {
+exports.getEditProduct = async (req,res,next) => {
+    delete req.session.empty
     try {
         let id =req.params.id;
         let category = await categoryModel.find()
@@ -393,10 +539,13 @@ exports.getEditProduct = async (req,res) => {
         res.render('admin/editProduct',{product:product,category:category})
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
-exports.deleteImages = async (req,res) => {
+exports.deleteImages = async (req,res,next) => {
     try {
        
         let proId = req.params.proId;
@@ -414,17 +563,20 @@ exports.deleteImages = async (req,res) => {
         }
     } catch (error) {
         console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
-exports.postEditProduct = async (req,res) => {
+exports.postEditProduct = async (req,res,next) => {
     try {
-        console.log('in post')
         let id = req.params.id;
         let {productname,productprice,productstock,
             productcategory,productsection,productDescription,
             originalprice,offerInPercentage} = req.body;
         const productimages = await req.files.map((file) => file.filename);
-
+      
         if (!mongoose.Types.ObjectId.isValid(productcategory)) {
             return res.status(400).send('Invalid product category ID');
         }
@@ -444,7 +596,7 @@ exports.postEditProduct = async (req,res) => {
         const updatedProduct = {
             ...(productname && { productname }), 
             ...(productcategory && { category: categoryId }),
-            ...(productsection && { category: categoryId }),
+            ...(productsection && { section:productsection }),
             ...(productDescription && { description: productDescription }),
             ...(productprice && { price: afterOffer }),
             ...(productstock && { stock:productstock }),
@@ -468,25 +620,31 @@ exports.postEditProduct = async (req,res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
 
 
-exports.getUnlistProduct = async(req,res) => {
+exports.getUnlistProduct = async(req,res,next) => {
      try {
         let product = await productModel.find().populate('category')
         let category = await categoryModel.find();
         return res.render('admin/unlistProduct',{product:product,category:category})
      } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-     }
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
+    }
 }
 
 
-exports.postUnlistProduct = async (req,res) => {
+exports.postUnlistProduct = async (req,res,next) => {
     try {
         let id = req.params.id;
         let restore = {
@@ -504,25 +662,17 @@ exports.postUnlistProduct = async (req,res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.getOrders = async (req,res) => {
+exports.getOrders = async (req,res,next) => {
+    delete req.session.empty
     try {
         let orders = await orderModel.aggregate([
-           
-            {
-                $lookup:{
-                    from:addressModel.collection.name,
-                    localField:'address',
-                    foreignField:'_id',
-                    as:'user_address'
-                }
-            },
-            {
-                $unwind:'$user_address'
-            },
             {
                 $lookup:{
                     from:userModel.collection.name,
@@ -553,10 +703,14 @@ exports.getOrders = async (req,res) => {
         res.render('admin/ordersList',{order:orders})
     } catch (error) {
         console.log(error)
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.editOrder = async (req,res) => {
+exports.editOrder = async (req,res,next) => {
     try {
         
         let id = req.params.id;
@@ -594,17 +748,6 @@ exports.editOrder = async (req,res) => {
             {
                 $unwind:'$user_Details'
             },
-            {  // getting address details
-                $lookup:{
-                    from:addressModel.collection.name,
-                    localField:'address',
-                    foreignField:'_id',
-                    as:'address_Details'
-                }
-            },
-            {
-                $unwind:'$address_Details'
-            },
         ])
         console.log('from find order')
         console.log(findOrder)
@@ -613,9 +756,13 @@ exports.editOrder = async (req,res) => {
         }
     } catch (error) {
         console.log(error)
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
-exports.postEditOrder = async (req,res) => {
+exports.postEditOrder = async (req,res,next) => {
     try {
         let orderId = req.params.id;
         let productId = req.query.proId;
@@ -673,29 +820,42 @@ exports.postEditOrder = async (req,res) => {
         console.log(Order)
     } catch (error) {
         console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
 // for banner mangement 
-exports.banner = async (req,res) => {
+exports.banner = async (req,res,next) => {
+    delete req.session.empty
     try {
         let banners = await bannerModel.find();
         res.render("admin/banner",{banners})
     } catch (error) {
         console.log(error)
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.getAddBanner = async (req,res) => {
+exports.getAddBanner = async (req,res,next) => {
     try {
         let products = await productModel.find({delete:false});
         res.render('admin/addBanner',{products})
     } catch (error) {
         console.log(error)
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports. postAddBanner = async (req,res) => {
+exports. postAddBanner = async (req,res,next) => {
     try {
         const {bannerTitle,startDate,endDate,image,productRoute} = req.body;
         let SingleImage = req.file;
@@ -709,98 +869,354 @@ exports. postAddBanner = async (req,res) => {
         let save = await banner.save()
         res.redirect('/admin/banner')
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
 
-exports.getError = async (req,res) => {
+exports.getError = async (req,res,next) => {
     try {
         res.render('error')
     } catch (error) {
         console.log(error)
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 // for coupon management
-exports.getCoupon = async (req,res) => {
+exports.getCoupon = async (req,res,next) => {
+    delete req.session.empty
     try {
         let coupons = await couponModel.find()
         res.render('admin/coupons',{coupons})
     } catch (error) {
         console.log(error)
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }   
 }
 
-exports.getAddCoupon = async(req,res) => {
+exports.getAddCoupon = async(req,res,next) => {
     try {
         res.render('admin/Addcoupon')
     } catch (error) {
-        console.log(error);
+        console.log(error);const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.postAddCoupon = async(req,res) => {
+exports.postAddCoupon = async(req,res,next) => {
     try {
         let {couponcode,minprice,discount,expDate} = req.body
+        let existingCoupon = await couponModel.findOne({couponcode});
+        if(existingCoupon){
+           return res.render('admin/Addcoupon',{message:'Coupon code exists'})
+        }
         let coupon = await couponModel.create({
             couponcode,
             minprice:parseInt(minprice),
             discount:parseInt(discount),
-            
             expiryDate:expDate
         });
         let saved = await coupon.save();
         res.redirect('/admin/coupon');
-    } catch (error) {
+    } catch (error) { 
         console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.deleteCoupon = async (req,res) => {
+exports.deleteCoupon = async (req,res,next) => {
     try {
         let couponId = req.params.id;
         let deleted = await couponModel.findByIdAndDelete(couponId);
         res.redirect('/admin/coupon')
     } catch (error) {
         console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
 
-exports.signout = async (req,res) => {
+exports.signout = async (req,res,next) => {
     try {
-        req.session.destroy()
+        res.cookie('admin-token','',{maxAge:1})
         res.redirect('/admin')
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
-exports.getRefferal = async (req,res) => {
+exports.getRefferal = async (req,res,next) => {
+    delete req.session.empty
     try {
         let refferal = await refferModel.find()
         res.render('admin/referralpage',{reffer:refferal})
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
-exports.getRefferalForm = async (req,res) => {
+exports.getRefferalForm = async (req,res,next) => {
     try {
         res.render('admin/refferForm')
     } catch (error) {
         console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
-exports.postReffer = async (req,res) => {
+exports.postReffer = async (req,res,next) => {
     try {
         const {refferalamount,refferedamount,expires,description} = req.body;
-        let newReffer = new refferModel({
+        let newReffer = {
             refferalamount,
             refferedamount,
             description,
             expires
-        })
-        let saved = await newReffer.save();
-        res.redirect('/admin/refferal');
+        }
+        let saved = await refferModel.findOneAndReplace({}, newReffer, { upsert: true, new: true });
+        if(saved){
+            res.redirect('/admin/refferal');
+        }
+        
     } catch (error) {
         console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
     }
 }
+
+exports.getOffer = async (req,res,next) => {
+    delete req.session.empty
+    try {
+        let offers = await offerModel.find().populate('categoryId')
+        res.render('admin/categoryOffers',{offers})
+        // updateCategoryOfferInProduct('65bcd4a639b0270c0e0d15df')
+    } catch (error) {
+        console.log(error)
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
+    }
+}
+exports.getOfferForm = async (req,res,next) => {
+    try {
+        let categories = await categoryModel.find({delete:false})
+        res.render('admin/addOffer',{categories})
+    } catch (error){
+        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
+    }
+}
+exports.postOfferForm = async (req,res,next) => {
+    try {
+        let {offer,categoryid} = req.body;
+        if(offer && categoryid){
+            let parsedOffer = parseInt(offer)
+            if(parsedOffer < 1 && parsedOffer > 99){
+                return res.render('admin/addOffer',{message:'offer should be between 1 and 99'})
+            }
+            let newOffer = new offerModel({
+                categoryId:categoryid,
+                offer:parsedOffer,
+            })
+            let saved = await newOffer.save(); 
+            let products = await productModel.updateMany({category:categoryid},{categoryOffer:saved._id});
+            res.redirect('/admin/offer');
+            
+        }else{
+            return res.render('admin/addOffer',{message:'Please enter offer'})
+        }
+    } catch (error) {
+        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
+    }   
+}
+exports.unlistOffer = async (req,res,next) => {
+    try {
+        let offerId = req.params.offerId
+        let updated = await offerModel.findOneAndUpdate(
+            {_id:offerId},
+            {$set:{delete:true}},
+            {new:true}
+        );
+        let id = updated.catgoryId
+        updateCategoryOfferInProduct(offerId,0)
+       
+        res.status(200).json({success:true})
+    } catch (error) {
+        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
+    }
+}
+exports.listOffer = async (req,res,next) => {
+    try {
+        let offerId = req.params.offerId;
+        let updated = await offerModel.updateOne(
+            {_id:offerId},
+            {$set:{delete:false}},
+        );
+        updateCategoryOfferInProduct(offerId,updated.offer)
+        res.status(200).json({success:true})
+    } catch (error) { 
+        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
+    }
+}
+async function updateCategoryOfferInProduct(id,changePrice){
+    try {
+        console.log(changePrice);
+        let products = await productModel.find({categoryOffer:id}).populate('categoryOffer')
+        for (const product of products) {
+            let offer = 0;
+            if(changePrice === 0){
+                offer = 0;
+            }else{
+                offer = product.categoryOffer.offer;
+            }
+            console.log(offer)
+            let priceAfterOffer = parseInt(product.originalprice - (product.originalprice * (offer / 100)))
+            console.log(priceAfterOffer)
+            let updatedProduct = await productModel.updateOne(
+                {_id:product._id},
+                {$set:{price:priceAfterOffer}},
+                {new:true}
+            )
+        }
+    } catch (error) {
+        console.log(error);
+        const customError = new Error('Somthing went wrong');
+        customError.status = 500; // Set the desired status code
+        customError.data = { additionalInfo: 'Additional information about the error' };
+        next(customError);
+    }
+}
+
+const CsvParser = require('json2csv').Parser;
+//Sales Report
+exports.downloadSalesReport = async (req, res, next) => {
+    try {
+      console.log("salesreport");
+      const fromDate = req.query.fromDate
+      const toDate = req.query.toDate
+  
+      console.log(fromDate, toDate);
+      const agg = [
+        {
+          $unwind: "$orderItems"
+        },
+        {
+          $match: {
+            "orderDate": { $gte: new Date(fromDate), $lte: new Date(toDate) },
+          },
+        },
+        {
+            $lookup:{
+                from:productModel.collection.name,
+                localField:'orderItems.productId',
+                foreignField:'_id',
+                as:'productDetails'
+            }
+        },
+        {
+            $unwind:'$productDetails'
+        },
+        {
+          $sort: {
+            orderDate: -1,
+          },
+        },
+  
+      ]
+      const results = await orderModel.aggregate(agg);
+      console.log(results)
+      if(results.length <= 0){
+        req.session.empty = 'No sales are available'
+        return res.redirect('/admin/home?filter=Weekly')
+      }
+      const users = [];
+      let count = 1;
+      
+      results.forEach((orders) => {
+        orders.sI = count;
+        users.push({
+          SI: orders.sI,
+          "Orders ID": orders._id,
+          "Order Date": orders.orderDate.toISOString().split("T")[0],
+          "Product Name": orders.productDetails.productname,
+          "Price of a unit": orders.orderItems.productPrice,
+          "Qty": orders.orderItems.quantity,
+          "Payment Method": orders.paymentMethod,
+          "Total amount": orders.orderItems.quantity * orders.orderItems.productPrice,
+        });
+        count++;
+      });
+      console.log(users);
+      // const csv = new CsvParser(results);
+      const csvFields = [
+        "SI",
+        "Orders ID",
+        "Order Date",
+        "Product Name",
+        "Price of a unit",
+        "Qty",
+        "Payment Method",
+        "Total amount",
+      ];
+      const csvParser = new CsvParser({ csvFields });
+      let csvData = csvParser.parse(users);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        "attatchment: filename=salesReport.csv"
+      );
+        
+      res.send(csvData);
+    } catch (error) {
+      // res.send(error) 
+      console.log(error);
+      const customError = new Error('Somthing went wrong');
+      customError.status = 500; // Set the desired status code
+      customError.data = { additionalInfo: 'Additional information about the error' };
+      next(customError);
+    }
+  }

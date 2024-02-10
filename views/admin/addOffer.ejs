@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Nest Dashboard</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
+        
+        <!-- Template CSS -->
+        <link href="/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="index.html" class="brand-wrap">
+                    <img src="/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/home?filter=Weekly">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-products-list">
+                            <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/page-products-list">Product List</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-orders-1.html">
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text">Users</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user-list">User  list</a> 
+                        </div>
+                    </li>
+                
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/category">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Category</span>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/order-list">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Orders</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" disabled href="/admin/coupon">
+                            <i style=" color: rgb(195, 198, 201);" class="ri-coupon-2-fill ri-xl"></i>
+                            <span style="margin-left: 10px;" class="text">Coupon</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/banner">
+                            <i class="icon material-icons md-image"></i>
+                            <span class="text">Banners</span>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/refferal">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">refferal</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a class="menu-link" href="/admin/offer">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">offer</span>
+                        </a>
+                    </li>
+                </ul>
+                <hr />
+               
+                </ul> 
+                <br />
+                <br />
+            </nav>
+        </aside>
+        
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                    <form class="searchform">
+                        <div class="input-group">
+                            <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
+                            <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
+                        </div>
+                        <datalist id="search_terms">
+                            <option value="Products"></option>
+                            <option value="New orders"></option>
+                            <option value="Apple iphone"></option>
+                            <option value="Ahmed Hassan"></option>
+                        </datalist>
+                    </form>
+                </div>
+                 <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                  <ul class="nav">
+                    <form action="/admin/home/signout" method="post">
+                        <button type="submit">
+                            logout
+                        </button>
+                    </form>
+                    </ul> 
+                </div> 
+            </header>
+
+            <div class="container my-5" id="form" >
+                <div class="row justify-content-center" id="form-2" >
+                  <div class="col-lg-9">
+                    <h1 class="mb-3"> Add offer for category</h1>
+                    <form id="main-form" method="post" action="/admin/add-category-offer"  >
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <label for="your-name" class="form-label">Offer in percentage</label> <br>
+                          <label for="your-name" id="existing-category" class="form-label text-danger"></label>
+                          <input name="offer" type="number" min="1" max="99" class="form-control border" id="offer" required>
+
+                          <label for="your-name" class="form-label mt-1">Categories</label> <br>
+                          <select name="categoryid" id="" class="form-label border w-100">
+                            
+                            <% if(categories.length > 0){ %>
+                                
+                                <% categories.forEach((category) => { %>
+                                    <option name="categoryid" value="<%=category._id%>"><%=category.categoryname%></option>
+                                <% }) %>
+                            <% }else{ %>
+                                Add category
+                            <% } %>
+                          </select>
+                        </div> 
+        
+                        <div class="col-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <button  type="submit" id="submit-btn" class="btn btn-success w-100 fw-bold my-2" >Add</button>
+                              <a href="/admin/offer">
+                                <button  type="button" class="btn btn-dark w-100 fw-bold" id="go-back-btn" > Go back</button>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+        </main>
+    
+        <script src="/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/js/vendors/select2.min.js"></script>
+        <script src="/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/js/main.js?v=1.1" type="text/javascript"></script>
+    </body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Nest Dashboard</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
+        
+        <!-- Template CSS -->
+        <link href="/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="index.html" class="brand-wrap">
+                    <img src="/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/home?filter=Weekly">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-products-list">
+                            <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/page-products-list">Product List</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-orders-1.html">
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text">Users</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user-list">User  list</a> 
+                        </div>
+                    </li>
+                
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/category">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Category</span>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/order-list">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Orders</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" disabled href="/admin/coupon">
+                            <i style=" color: rgb(195, 198, 201);" class="ri-coupon-2-fill ri-xl"></i>
+                            <span style="margin-left: 10px;" class="text">Coupon</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/banner">
+                            <i class="icon material-icons md-image"></i>
+                            <span class="text">Banners</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/refferal">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">refferal</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a class="menu-link" href="/admin/offer">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">offer</span>
+                        </a>
+                    </li>
+                </ul>
+                <hr />
+               
+                </ul> 
+                <br />
+                <br />
+            </nav>
+        </aside>
+        
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                    <form class="searchform">
+                        <div class="input-group">
+                            <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
+                            <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
+                        </div>
+                        <datalist id="search_terms">
+                            <option value="Products"></option>
+                            <option value="New orders"></option>
+                            <option value="Apple iphone"></option>
+                            <option value="Ahmed Hassan"></option>
+                        </datalist>
+                    </form>
+                </div>
+                 <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                  <ul class="nav">
+                    <form action="/admin/home/signout" method="post">
+                        <button type="submit">
+                            logout
+                        </button>
+                    </form>
+                    </ul> 
+                </div> 
+            </header>
+
+
+        
+
+            <section class="content-main" id="list-category" style="display: block;">
+                <div class="content-header">
+                    <div>
+                        <h2 class="content-title card-title">Category offers</h2>
+                    </div>
+                        <div>
+                           <button style="border: none;">
+                            <a href="/admin/add-category-offer" class="btn btn-primary btn-sm rounded">Add category offer</a>
+                           </button>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <button style="border: none;" >
+                                <a href="#" class="btn btn-primary btn-sm rounded">Unlist category</a>
+                               </button>
+                        </div>
+                    </div>
+                   
+                <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                            <div class="col-lg-4 col-md-6 me-auto">
+                                <input type="text" placeholder="Search..." class="form-control" />
+                            </div>
+                           
+                        </div>
+                    </header>
+                    <!-- card-header end// -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                       
+                                        <th>No</th>
+                                        <th>categories</th>
+                                        <th>Offers</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                 
+                                    <% if(offers.length > 0){ %>
+                                        <% offers.forEach((offer,ind) => { %>
+                                            <tr class="tr">
+                                                <td> <%=ind+1%> </td>
+                                                <td>  <%=offer.categoryId.categoryname%> </td>
+                                                <td><%=offer.offer%>%</td>
+                                                <td  class="text-center">
+                                                    <a href="/admin/edit-offer/<%=offer._id%>">
+                                                        <i class="ri-edit-2-fill ri-lg m-1"></i>
+                                                    </a>
+                                                    <% if(offer.delete){ %>
+                                                        <form class="unlist-form" style="display: inline;" action="/admin/list-offer/<%=offer._id%>" data-bs="<%=offer._id%>" method="post">
+                                                            <button value="list" class="unlist-button" type="submit" style="background-color: transparent; border: 1px solid black;">list</button>
+                                                        </form>
+                                                    <% }else{ %>
+                                                        <form class="unlist-form" style="display: inline;" action="/admin/unlist-offer/<%=offer._id%>" data-bs="<%=offer._id%>" method="post">
+                                                            <button value="unlist" class="unlist-button" type="submit" style="background-color: transparent; border: 1px solid black;">unlist</button>
+                                                        </form>
+                                                    <% } %>
+                                                </td>  
+                                            </tr>
+                                        <% }) %>
+                                    <% }else{ %>
+                                        <h4>Category is empty</h4> 
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- table-responsive//end -->
+                    </div>
+                    <!-- card-body end// -->
+                </div>
+               
+            </section>
+            
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/js/vendors/select2.min.js"></script>
+        <script src="/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/js/main.js?v=1.1" type="text/javascript"></script>
+
+        <script>
+            let tr = document.getElementsByClassName('tr')
+            let form = document.getElementsByClassName('unlist-form')
+            let deleteButton = document.getElementsByClassName('unlist-button');
+            Array.from(deleteButton).forEach((button,ind) => {
+                let offerId = form[ind].getAttribute('data-bs');
+                button.addEventListener('click',async(e) => {
+                    e.preventDefault()
+                    try {
+                        console.log(deleteButton[ind].value)
+                    if(deleteButton[ind].value === 'unlist'){
+                        const response = await axios.delete(`/admin/unlist-offer/${offerId}`);
+                        if (response.status === 200) {
+                            deleteButton[ind].value = 'list'
+                            deleteButton[ind].innerHTML = 'list'
+                        } else {
+                            throw new Error('Something went wrong');
+                        }
+                    }else{
+                        const response = await axios.delete(`/admin/list-offer/${offerId}`);
+                        if (response.status === 200) {
+                            deleteButton[ind].value = 'unlist'
+                            deleteButton[ind].innerHTML = 'unlist'
+                        } else {
+                            throw new Error('Something went wrong');
+                        }
+                    }   
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
+            })
+            
+        </script>
+    </body>
+</html>

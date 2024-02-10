@@ -12,29 +12,34 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <style>
-     #nav{
-      z-index: 999;
-      height: 90px;
+  #nav{
+  z-index: 999;
+  height: 90px;
+}
+@media (max-width:640px) {
+  #nav{
+    height: 70px;
+  }
+}
+.navbar-menu{
+  z-index: 999;
+}
+
+@media (max-width:768px) {
+    .cancel-btn-1{
+      display: none;
     }
-    @media (max-width:640px) {
-      #nav{
-        height: 70px;
-      }
+    .cancel-btn-2{
+      display: block;
     }
-    .navbar-menu{
-      z-index: 999;
+}
+#drawer-left-example{
+      z-index: 777;
     }
-   
-    @media (max-width:768px) {
-        .cancel-btn-1{
-          display: none;
-        }
-        .cancel-btn-2{
-          display: block;
-        }
-    }
-    @media (max-width:768px) {
-      
+    @media (max-width:350px) {
+      #drawer-left-example{
+        width: 85%;
+     } 
     }
 </style>
 <body class="bg-indigo-300">
@@ -69,13 +74,13 @@
             <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 sm:flex sm:mx-auto sm:flex sm:items-center sm:w-auto lg:space-x-6 ">
                 
                 
-                <li><a class="text-sm text-blue-600 font-bold" href="/home/men">Men</a></li>
+                <li><a class="text-sm text-blue-600 font-bold" href="/home/products/men?page=1">Men</a></li>
                 <li class="text-gray-300">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                     </svg>
                 </li>
-                <li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/women">Women</a></li>
+                <li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women?page=1">Women</a></li>
                 
                 
             </ul>
@@ -127,7 +132,7 @@
 					</li>
 					  
 					<li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/wishlit">wishlist</a>
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/account">account</a>
 					</li>
 				</ul>
 			</div>
@@ -145,8 +150,11 @@
 	</div>
 
 
+  <%- include('orderSidebarSmallDevice'); -%>
+
+
     <!-- side navbar -->
-    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+    <button id="account-sidebar" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
         <span class="sr-only">Open sidebar</span>
         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
@@ -265,10 +273,10 @@
                   <dt class="font-bold text-zinc-950">Shipping address</dt>
                   <dd class="mt-2 text-slate-900">
                     <address class="not-italic font-bold">
-                      <span class="block">name : <%=order[0].addressDetails.firstname%></span>
-                      <span class="block">housename : <%=order[0].addressDetails.housename%></span>
-                      <span class="block">address : <%=order[0].addressDetails.address%></span>
-                      <span>city/district : <%=order[0].addressDetails.districtORcity%></span>
+                      <span class="block">name : <%=order[0].address.firstname%></span>
+                      <span class="block">housename : <%=order[0].address.housename%></span>
+                      <span class="block">address : <%=order[0].address.address%></span>
+                      <span>city/district : <%=order[0].address.districtORcity%></span>
                     </address>
                   </dd>
                 </div>
@@ -305,13 +313,10 @@
       
 
 
-      <script src="/js/navbar.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
+  <script src="/js/navbar.js"></script>
+  <script src="/js/orderSidebar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
 
-    <script>
-
-
-    </script>
 
    
 </body>

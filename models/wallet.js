@@ -22,7 +22,6 @@ let wallet = mongoose.Schema({
         },
         type:{
             type:String,
-            enum:['credit','debit'],
             required:true,
         }
     }]

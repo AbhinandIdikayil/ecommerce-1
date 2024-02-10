@@ -76,13 +76,13 @@
 		<ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 sm:flex sm:mx-auto sm:flex sm:items-center sm:w-auto lg:space-x-6 ">
                 
                 
-      <li><a class="text-sm text-blue-600 font-bold" href="/home/products/men">Men</a></li>
+      <li><a class="text-sm text-blue-600 font-bold" href="/home/products/men?page=1">Men</a></li>
       <li class="text-gray-300">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
           </svg>
       </li>
-      <li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women">Women</a></li>
+      <li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women?page=1">Women</a></li>
       
       
   </ul>
@@ -129,14 +129,14 @@
 			<div>
 				<ul>
 					<li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/products/men">Men</a>
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/products/men?page=1">Men</a>
 					</li>
 					<li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/products/women">Women</a>
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/products/women?page=1">Women</a>
 					</li>
 					  
 					<li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/wishlit">wishlist</a>
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/account">user</a>
 					</li>
 				</ul>
 			</div>
@@ -242,7 +242,8 @@
                           
                           
                           <p>
-                            <span class="sm:text-lg lg:text-2xl  text-dark"> &#8377; <%= products.price %> </span> 
+                            <span class="sm:text-lg lg:text-2xl text-stone-900 line-through "> &#8377; <%=products.originalprice%> </span>
+                            <span class="sm:text-lg lg:text-2xl  text-dark ml-3"> &#8377;<%= products.price %> </span> 
                             <!-- <span class="text-sm text-slate-900 line-through">$699</span> -->
                           </p>
                           <div class="flex items-center">
@@ -274,7 +275,73 @@
         
       <% } %>
     </div>
+
     
+    <div id="default-carousel" class="relative w-full" data-carousel="slide">
+      <div class="relative h-60 overflow-hidden  md:h-96">   
+         <% if(typeof reffer !== 'undefined' && user !== null){ %>
+          <div class="image-div hidden duration-700 ease-in-out" data-carousel-item>
+            <div class="images bg-gray-100 p-10 rounded-lg absolute block w-3/4 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+              <p class="text-center text-3xl"><%=reffer.description%></p> <br>
+                    <a id="myLink" style="text-decoration: underline;" href="http://localhost:3000/signup?refercode=<%=user.refercode%>&userid=<%=user._id%>" class='flex justify-center items-center text-blue-500 hover:underline bg-white p-2 rounded'>
+                      http:localhost:3000/signup?refercode=<%=user.refercode%>
+                    </a>
+                  
+            </div>
+          </div>
+          <% } %>
+          <% if(typeof offers !== 'undefined'){ %>
+            <% offers.forEach((offer) => { %>
+              <div class="image-div hidden duration-700 ease-in-out" data-carousel-item>
+                <div class="images bg-gray-100 p-12 rounded-lg absolute block w-3/4 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                  <p class="text-center text-3xl"><%=offer.offer%>% offer for <%=offer.categoryId.categoryname%></p>
+                </div>
+              </div>
+            <% }) %>
+          <% } %>
+          <% if(typeof coupon !== 'undefined' && user !== null){ %>
+            <% coupon.forEach((coup) => { %>
+              <div class="image-div hidden duration-700 ease-in-out" data-carousel-item>
+                <div class="images bg-gray-100 p-12 rounded-lg absolute block w-3/4 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                  <p class="text-center text-3xl">Appply this coupon code and get <%=coup.discount%>% discount on purchases over <%=coup.minprice%>rs. </p>
+                </div>
+              </div>
+            <% }) %>
+          <% } %>
+          <div class="image-div hidden duration-700 ease-in-out" data-carousel-item>
+            <div class="images bg-gray-100 p-12 rounded-lg absolute block w-3/4 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+              <p class="text-center text-3xl">Happy Shopping!</p>
+            </div>
+          </div>
+      </div>
+   
+      <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+          <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+          <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+          <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+          <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
+          <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
+      </div>
+      
+      <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+              <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+              </svg>
+              <span class="sr-only">Previous</span>
+          </span>
+      </button>
+      <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+              <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+              </svg>
+              <span class="sr-only">Next</span>
+          </span>
+      </button>
+    </div> 
+
+
     <%- include('footer'); -%>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>

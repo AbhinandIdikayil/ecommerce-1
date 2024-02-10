@@ -7,15 +7,43 @@ let orderSchema = mongoose.Schema({
         required:true,
     },
     address:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Address',
-        required:true,
-    },
+        firstname:{
+            type:String,
+            required:true,
+        },
+        mobile:{
+            type:String,
+            required:true,
+        },
+        pincode:{
+            type:String,
+            required:true,
+        },
+        address:{
+            type:String,
+            required:true,
+        },
+        housename:{
+            type:String,
+            required:true,
+        },
+        districtORcity:{
+            type:String,
+            required:true,
+        },
+        state:{
+            type:String,
+            required:true,
+        },
+    }, 
     orderItems:[{
         productId:{
             type: mongoose.Schema.Types.ObjectId,
             ref:'product',
             required:true,
+        },
+        category:{
+            type:String,
         },
         productPrice:{
             type:Number,
@@ -31,9 +59,12 @@ let orderSchema = mongoose.Schema({
         },
         orderStatus:{
             type:String,
-            enum: ["ordered", "shipped", "delivered","cancelled","pending"],
+            enum: ["ordered", "shipped", "delivered","cancelled","pending","returned"],
             required:true,
         },
+        returnreason:{
+            type:String,
+        }
      }],
     price:{
         type:Number,

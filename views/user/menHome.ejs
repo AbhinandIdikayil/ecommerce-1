@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="/styles/style.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
    
-
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
 </head>
 <style>
    #nav{
@@ -25,6 +23,14 @@
     }
     .product-card{
       z-index: 666;
+    }
+    #drawer-left-example{
+        z-index: 777;
+    }
+    @media (max-width:350px) {
+      #drawer-left-example{
+        width: 85%;
+     } 
     }
 </style>
 <body class="bg-indigo-300">
@@ -59,13 +65,13 @@
             <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 sm:flex sm:mx-auto sm:flex sm:items-center sm:w-auto lg:space-x-6 ">
                 
                 
-                <li><a class="text-sm text-blue-600 font-bold" href="/home/products/men">Men</a></li>
+                <li><a class="text-sm text-blue-600 font-bold" href="/home/products/men?page=1">Men</a></li>
                 <li class="text-gray-300">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                     </svg>
                 </li>
-                <li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women">Women</a></li>
+                <li><a class="text-sm text-blue-600 hover:text-gray-500 font-bold" href="/home/products/women?page=1">Women</a></li>
                 
                 
             </ul>
@@ -73,12 +79,12 @@
             <!-- <a class="hidden sm:inline-block sm:ml-auto  bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="#">  
         <i class="ri-user-fill" style="color: rgb(0, 0, 0);"></i> 
         </a> -->
-        <a class="hidden sm:inline-block sm:ml-auto px-3  hover:bg-blue-600 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="/home/products/wishlist">
+        <a class="hidden sm:inline-block sm:ml-auto px-3  hover:bg-blue-600 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="/home/wishlist">
         <i class="ri-heart-2-fill ri-lg" style="color: white;"></i>
         </a>
 
 
-            <a class="hidden sm:inline-block px-3 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="/home/products/bag">
+            <a class="hidden sm:inline-block px-3 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="/home/bag">
         <i class="ri-handbag-fill ri-lg"></i>
         </a>
 
@@ -94,18 +100,55 @@
         </nav>
 
 
+        <div class="navbar-menu relative z-50 hidden transition-transform ease-in-out duration-300">
+          <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
+          <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto ">
+            <div class="flex items-center mb-8">
+              <a class="mr-auto text-3xl font-bold leading-none" href="#">
+                <svg class="h-12" alt="logo" viewBox="0 0 100 100">
+                  <path d="M100 34.2c-.4-2.6-3.3-4-5.3-5.3-3.6-2.4-7.1-4.7-10.7-7.1-8.5-5.7-17.1-11.4-25.6-17.1-2-1.3-4-2.7-6-4-1.4-1-3.3-1-4.8 0-5.7 3.8-11.5 7.7-17.2 11.5L5.2 29C3 30.4.1 31.8 0 34.8c-.1 3.3 0 6.7 0 10v16c0 2.9-.6 6.3 2.1 8.1 6.4 4.4 12.9 8.6 19.4 12.9 8 5.3 16 10.7 24 16 2.2 1.5 4.4 3.1 7.1 1.3 2.3-1.5 4.5-3 6.8-4.5 8.9-5.9 17.8-11.9 26.7-17.8l9.9-6.6c.6-.4 1.3-.8 1.9-1.3 1.4-1 2-2.4 2-4.1V37.3c.1-1.1.2-2.1.1-3.1 0-.1 0 .2 0 0zM54.3 12.3L88 34.8 73 44.9 54.3 32.4V12.3zm-8.6 0v20L27.1 44.8 12 34.8l33.7-22.5zM8.6 42.8L19.3 50 8.6 57.2V42.8zm37.1 44.9L12 65.2l15-10.1 18.6 12.5v20.1zM50 60.2L34.8 50 50 39.8 65.2 50 50 60.2zm4.3 27.5v-20l18.6-12.5 15 10.1-33.6 22.4zm37.1-30.5L80.7 50l10.8-7.2-.1 14.4z"></path>
+                </svg>
+              </a>
+              <button class="navbar-close">
+                <svg class="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div>
+              <ul>
+                <li class="mb-1">
+                  <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/products/men">Men</a>
+                </li>
+                <li class="mb-1">
+                  <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/products/women">Women</a>
+                </li>
+                  
+                <li class="mb-1">
+                  <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/home/account">account</a>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-auto">
+              <div class="pt-6">
+                
+                <a class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl" href="#">Sign in</a>
+                <a class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl" href="#">Sign Up</a>
+              </div>
+              <p class="my-4 text-xs text-center text-gray-400">
+                <span id="date">  </span>
+              </p>
+            </div>
+          </nav>
+        </div>
       
 
-       
-      
-
-
-
+        <%- include('sidebarForSmallDevice'); -%>
 
 
         <!-- for filtering in the left side -->
 
-        <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+        <button id="filter-sidebar-button" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
             <span class="sr-only">Open sidebar</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
@@ -116,80 +159,38 @@
             <div class="h-full px-3 py-4 overflow-y-auto bg-slate-900">
                <ul class="space-y-2 font-medium">
                 <% category.forEach((category) => { %>
+                  
                     <li class="border-b border-gray-200 py-1">   
-                        <a href="/home/products/<%=menOrWomen%>/<%= category._id %>" class="flex items-center p-2 font-bold text-white rounded-lg text-stone-900 hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                           <span class="ms-3"> <%= category.categoryname  %></span>
-                        </a>
-                     </li>
+                      <a href="/home/products/<%=menOrWomen%>/<%= category._id %>?page=1" class="flex items-center p-2 font-bold text-white rounded-lg text-stone-900 hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                         <span class="ms-3"> <%= category.categoryname  %></span>
+                      </a>
+                      
+                   </li>
+
                 <% }) %>
                 <!-- categeoryname=<%=category.categoryname%>& -->
                 <div class="border-b border-gray-200 px-4 py-6">
                   <h3 class="-mx-2 -my-3 flow-root">
-                    <!-- Expand/collapse section button -->
-                    <button type="button" class="flex w-full items-center justify-between bg-white rounded px-2 py-3 text-gray-400 hover:text-gray-500" aria-controls="filter-section-mobile-0" aria-expanded="false">
-                      <span class="font-medium text-slate-900">Price</span>
-                      <span class="ml-6 flex items-center">
-                        <!-- Expand icon, show/hide based on section open state. -->
-                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" id="plus" aria-hidden="true">
-                          <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-                        </svg>
-                        <!-- Collapse icon, show/hide based on section open state. -->
-                        <svg style="display: none;" id="minize" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                          <path fill-rule="evenodd" d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z" clip-rule="evenodd" />
-                        </svg>
-                      </span>
-                    </button>
+                  
                   </h3>
                   <!-- Filter section, show/hide based on section state. -->
-                  <div style="display: none;" class="pt-6" id="filter-section-mobile-0">
-                    <div class="space-y-6">
+                  <div class="pt-2" id="filter-section-mobile-0">
+                    <div class="space">
                       <form action="" class="flex flex-col items-start justify-start gap-2">
                         <!-- <input id="filter-mobile-color-0" name="color[]" value="white" type="checkbox" class="h-10 w-20 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"> -->
-                        <div class="flex gap-5">
-                          <input type="number" min="1" name="min" placeholder="min" class="h-6 w-20  rounded border-gray-300 text-indigo-600 py-1 px-1 outline-none">
-                          <input type="number" max="9999999" name="max" placeholder="max" class="h-6 w-20  rounded border-gray-300 text-indigo-600 py-1 px-1 outline-none">
-                        </div>
-                        
+                        <div class="">
+                          <input type="number" min="1" name="min" placeholder="min" style="width: 55px; height: 30px; border-radius: 5px; " class=" border-gray-300 text-indigo-600 py-1 px-1 outline-none"> <span class="text-white">-</span>
+                          <input type="number" max="9999999" name="max" placeholder="max" style="width: 55px; height: 30px; border-radius: 5px; " class=" border-gray-300 text-indigo-600 py-1 px-1 outline-none">-
                           <button class="px-1 bg-white rounded">
                             submit
                           </button>
+                        </div>
+                      
                  
                       </form>
                     </div>
                   </div>
-                </div>
-                  
-                   <!-- <li>
-                     <a href="/home/men" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                           <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Kanban</span>
-                        <span class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
-                     </a>
-                  </li> -
-                  <li>
-                     <a href="/home/men" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                           <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
-                        <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
-                     </a>
-                  </li> -->
-
-                  <!-- <li>
-                    <form action="" class="ms-3">
-                       <div class="flex w-3/4 ">
-                        <input type="text" class="w-1/2 px-2" placeholder="1,000">
-                        <input type="text" class="w-1/2 px-2 ml-3" placeholder="10,000">
-                       </div>
-                      <button type="submit" class="bg-white text-dark mt-2 px-3 py-1 rounded">
-                        Apply
-                      </button>
-                    </form>
-                 </li> -->
-                 
+                </div>           
                   <li>
                      <a href="/home/signout" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
@@ -204,7 +205,7 @@
             
          </aside>  
 
-         <form action="">
+         <form action=" ">
          <div class='flex items-center justify-center sm:ml-64'>
             <div class="flex w-1/2 sm:w-1/2 w-3/4 mt-5 rounded bg-white">
                 <input class=" w-full border-none bg-transparent px-4 py-1 text-gray-400 outline-none focus:outline-none " type="search" name="search" placeholder="Search..." />
@@ -219,10 +220,21 @@
        </form>
            
 
+      <%if(typeof req.query.min !== 'undefined' && typeof req.query.max !== 'undefined'){%>
+        <div class="sm:ml-64 mt-2 flex justify-center items-center gap-2">
+          <div class="remove-price bg-black px-1">
+            <button  class="p-1 text-white">
+              <%=req.query.min%>-<%=req.query.max%>
+            </button>
+            <i style="color: white;" class="ri-close-fill "></i>
+          </div>
+         </div>
+      <%}%>
+
         <!-- for listing the products-->
 
          <div class="relative z-40 p-2 sm:ml-64">
-	
+          
 
             <div class="flex flex-wrap justify-center p-10 ">
                 
@@ -313,24 +325,38 @@
           </li> -->
         </ol>
 
+        
 
-      <script src="/js/navbar.js"></script>
-      <script>
-        let add = document.getElementById('plus');
-        let remove = document.getElementById('minize');
-        let displayDiv = document.getElementById('filter-section-mobile-0')
+  <script src="/js/navbar.js"></script>
+  <script src="/js/filterSIdebar.js"></script>
+    
+  <script>
+// document.addEventListener('DOMContentLoaded', function () {
+    let add = document.getElementById('plus');
+    let remove = document.getElementById('minize');
+    let displayDiv = document.getElementById('filter-section-mobile-0')
+    let removePrice = document.getElementsByClassName('remove-price')[0];
 
-        add.addEventListener('click',(e) => {
-          add.style.display = 'none';
-          remove.style.display = 'flex';
-          displayDiv.style.display = 'block'
-        })
-        remove.addEventListener('click',(e) => {
-          add.style.display = 'block';
-          remove.style.display = 'none'
-          displayDiv.style.display = 'none'
-        })
-      </script>
+    removePrice.addEventListener('click',() => {
+      let url = window.location.href.split('?');
+      url.pop()
+      let newUrl  = url.join('');
+      window.location.href = newUrl
+    }) 
+
+    add.addEventListener('click',(e) => {
+      add.style.display = 'none';
+      remove.style.display = 'flex';
+      displayDiv.style.display = 'block'
+    })
+    remove.addEventListener('click',(e) => {
+      add.style.display = 'block';
+      remove.style.display = 'none'
+      displayDiv.style.display = 'none'
+    })
+
   
+// });     
+</script>
 </body>
 </html>

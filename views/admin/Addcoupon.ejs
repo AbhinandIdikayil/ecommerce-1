@@ -15,6 +15,7 @@
        
         <!-- Template CSS -->
         <link href="/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+
     </head>
 
     <body>
@@ -31,7 +32,7 @@
             <nav>
                 <ul class="menu-aside">
                     <li class="menu-item">
-                        <a class="menu-link" href="/admin/home">
+                        <a class="menu-link" href="/admin/home?filter=Weekly">
                             <i class="icon material-icons md-home"></i>
                             <span class="text">Dashboard</span>
                         </a>
@@ -121,35 +122,16 @@
                             <span class="text">refferal</span>
                         </a>
                     </li>
-                    <!-- <li class="menu-item">
-                        <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i> <span class="text">Brands</span> </a>
-                    </li>
                     <li class="menu-item">
-                        <a class="menu-link" disabled href="#">
-                            <i class="icon material-icons md-pie_chart"></i>
-                            <span class="text">Statistics</span>
+                        <a class="menu-link" href="/admin/offer">
+                            <i class="icon material-icons md-image"></i>
+                          
+                            <span class="text">offer</span>
                         </a>
-                    </li> -->
+                    </li>
                 </ul>
                 <hr />
-                <!-- <ul class="menu-aside">
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="#">
-                            <i class="icon material-icons md-settings"></i>
-                            <span class="text">Settings</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="page-settings-1.html">Setting sample 1</a>
-                            <a href="page-settings-2.html">Setting sample 2</a>
-                        </div>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" href="page-blank.html">
-                            <i class="icon material-icons md-local_offer"></i>
-                            <span class="text"> Starter page </span>
-                        </a>
-                    </li>
-                </ul> -->
+             
                 <br />
                 <br />
             </nav>
@@ -174,12 +156,7 @@
                  <div class="col-nav">
                     <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
                   <ul class="nav">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link btn-icon" href="#">
-                                <i class="material-icons md-notifications animation-shake"></i>
-                                <span class="badge rounded-pill">3</span>
-                            </a>
-                        </li> -->
+                      
                         <li class="nav-item">
                             <form action="/admin/home/signout" method="post">
                                 <button type="submit">
@@ -187,32 +164,8 @@
                                 </button>
                             </form>
                         </li>
-                        
-                       <!--   <li class="nav-item">
-                            <a href="#" class="requestfullscreen nav-link "> logout </a>
-                        </li>-->
-                        <!-- <li class="dropdown nav-item">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                                <a class="dropdown-item text-brand" href="#"><img src="/imgs/theme/flag-us.png" alt="English" />English</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-fr.png" alt="Français" />Français</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-jp.png" alt="Français" />日本語</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-cn.png" alt="Français" />中国人</a>
-                            </div>
-                        </li>
-                        <li class="dropdown nav-item">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/imgs/people/avatar-2.png" alt="User" /></a>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                                <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
-                            </div>
-                        </li>
-                    </ul> -->
+                    
+                    </ul> 
                 </div> 
             </header>
 
@@ -232,6 +185,9 @@
                                     <div class="mb-4">
                                         <label for="product_title"  class="form-label">Coupon code</label>
                                         <div>
+                                            <%if(typeof message !== 'undefined'){%>
+                                                <p  class="text-danger" id="couponcode-label" for=""><%=message%></p>
+                                            <%}%>
                                             <p  class="text-danger" id="couponcode-label" for=""></p>
                                         </div>
                                         
@@ -289,68 +245,81 @@
         </main>
 
 
-       <script>
-        
-            let form =document.getElementById('coupon-form');
-            let couponlabel = document.getElementById('couponcode-label')
-            let datelabel = document.getElementById('expdate')
-            let minpricelabel = document.getElementById('minprice-label')
-            let discountlabel = document.getElementById('discount-label')
 
-            let isDiscountValid = false
-            let isCouponValid = false
-            let isMinpriceValid = false
+    <script src="/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/js/vendors/select2.min.js"></script>
+    <script src="/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/js/main.js?v=1.1" type="text/javascript"></script>
 
-            document.getElementById('discount').addEventListener('input',(e) => {
-                const inputRegex =  /^[1-9]?[0-9]$/;
-                isDiscountValid = inputRegex.test(e.target.value)
-                console.log(isDiscountValid)
-            }) 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-            document.getElementById('minprice').addEventListener('input',(e) => {
-                const inputRegex =  /^[0-9]+$/;
-                isMinpriceValid = inputRegex.test(e.target.value)     
-                console.log(isMinpriceValid)  
-            }) 
 
-            document.getElementById('couponcode').addEventListener('input',(e) => {
-                isCouponValid = e.target.value.length >= 4
-                console.log(isCouponValid)
-            })
+    <script>
+    
+        let form =document.getElementById('coupon-form');
+        let couponlabel = document.getElementById('couponcode-label')
+        let datelabel = document.getElementById('expdate')
+        let minpricelabel = document.getElementById('minprice-label')
+        let discountlabel = document.getElementById('discount-label')
 
-            form.addEventListener('submit',(e) => {
-                e.preventDefault()
-                if (!isDiscountValid) {
-                    discountlabel.innerHTML = 'Invalid input';
-                } else {
-                    discountlabel.innerHTML = ''; // Clear any previous error messages
-                }
+        let isDiscountValid = false
+        let isCouponValid = false
+        let isMinpriceValid = false
 
-                if (!isMinpriceValid) {
-                    minpricelabel.innerHTML = 'Invalid input';
-                } else {
-                    minpricelabel.innerHTML = ''; // Clear any previous error messages
-                }
+        document.getElementById('discount').addEventListener('input',(e) => {
+            const inputRegex =  /^[1-9]?[0-9]$/;
+            isDiscountValid = inputRegex.test(e.target.value)
+            console.log(isDiscountValid)
+        }) 
 
-                if (!isCouponValid) {
-                    couponlabel.innerHTML = 'atleast 4 length';
-                } else {
-                    couponlabel.innerHTML = ''; // Clear any previous error messages
-                }
-                if(isCouponValid && isDiscountValid && isMinpriceValid){
-                    form.submit()
-                }
-            })
+        document.getElementById('minprice').addEventListener('input',(e) => {
+            const inputRegex =  /^[0-9]+$/;
+            isMinpriceValid = inputRegex.test(e.target.value)     
+            console.log(isMinpriceValid)  
+        }) 
+
+        document.getElementById('couponcode').addEventListener('input',(e) => {
+            isCouponValid = e.target.value.length >= 4
+            console.log(isCouponValid)
+        })
+
+        let submit = 0;
+        form.addEventListener('submit',async(e) => {
             
-        
-       </script>
 
-        <script src="/js/vendors/jquery-3.6.0.min.js"></script>
-        <script src="/js/vendors/bootstrap.bundle.min.js"></script>
-        <script src="/js/vendors/select2.min.js"></script>
-        <script src="/js/vendors/perfect-scrollbar.js"></script>
-        <script src="/js/vendors/jquery.fullscreen.min.js"></script>
-        <!-- Main Script -->
-        <script src="/js/main.js?v=1.1" type="text/javascript"></script>
+            if (!isDiscountValid) {
+                e.preventDefault()
+                discountlabel.innerHTML = 'Invalid input';
+            } else {
+                discountlabel.innerHTML = ''; // Clear any previous error messages
+            }
+
+            if (!isMinpriceValid) {
+                e.preventDefault()
+                minpricelabel.innerHTML = 'Invalid input';
+            } else {
+                minpricelabel.innerHTML = ''; // Clear any previous error messages
+            }
+
+            if (!isCouponValid) {
+                e.preventDefault()
+                couponlabel.innerHTML = 'atleast 4 length';
+            } else {
+                couponlabel.innerHTML = ''; // Clear any previous error messages
+            }
+            if(isCouponValid && isDiscountValid && isMinpriceValid){
+                form.submit()
+            }
+        })
+
+        
+
+    </script>
+
+
+
     </body>
 </html>
