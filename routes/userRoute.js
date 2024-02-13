@@ -11,19 +11,18 @@ userRoute.get('/',(req,res) => {
     res.redirect('/home')
 })
 
-userRoute.use(auth.isBlocked);
 
 userRoute.get('/home',userController.loadHome);
 
 // for login and signout (get and post)
-userRoute.get('/login',     auth.notSignInOrLogin     ,userController.loadLogin);
+userRoute.get('/login',   auth.isBlocked,  auth.notSignInOrLogin     ,userController.loadLogin);
 userRoute.post('/login',userController.postLogin);
 
-userRoute.get('/signup' , auth.notSignInOrLogin   , userController.getSignup);
+userRoute.get('/signup' , auth.isBlocked,auth.notSignInOrLogin   , userController.getSignup);
 userRoute.post('/signup',userController.postSignup);
 
 userRoute.get('/home/wishlist',     auth.isSignInOrLogin    ,userController.getWishlist);
-userRoute.get('/home/bag',      auth.isSignInOrLogin  ,cartController.getBag)
+userRoute.get('/home/bag',      auth.isBlocked,auth.isSignInOrLogin  ,cartController.getBag)
 
 
 
@@ -59,14 +58,14 @@ userRoute.post('/home/cart/add-address/:id',userController.modalAddressSelecting
 userRoute.post('/home/cart/check-out/add-address/:id',userController.postAddressFromCheckOut)
 
 
-userRoute.get("/home/account",      auth.isSignInOrLogin    ,   userController.accounDetails);
-userRoute.get('/home/account/reffer',     auth.isSignInOrLogin      ,userController.getReffer)
+userRoute.get("/home/account",      auth.isBlocked,auth.isSignInOrLogin    ,   userController.accounDetails);
+userRoute.get('/home/account/reffer',     auth.isBlocked,auth.isSignInOrLogin      ,userController.getReffer)
 // related to account , user details, address and orders
-userRoute.get("/home/account/addresses",    auth.isSignInOrLogin    ,addressController.AddressDetails);
+userRoute.get("/home/account/addresses",    auth.isBlocked,auth.isSignInOrLogin    ,addressController.AddressDetails);
 userRoute.get('/home/account/edit-address/:id',addressController.getEditAddress);
-userRoute.get('/home/account/orders',    auth.isSignInOrLogin    , orderDetailsController.getOrders);
+userRoute.get('/home/account/orders',    auth.isBlocked,auth.isSignInOrLogin    , orderDetailsController.getOrders);
 userRoute.get('/home/account/orders/:id',orderDetailsController.getOrderSummary)
-userRoute.get('/home/account/wallet',   auth.isSignInOrLogin      ,userController.wallet);
+userRoute.get('/home/account/wallet',       auth.isBlocked,auth.isSignInOrLogin      ,userController.wallet);
 userRoute.post('/home/account/wallet/:id',userController.addMoneyToWallet);
 
 userRoute.post('/home/account/update-info/:id',userController.updateUserInformation);  
