@@ -4,7 +4,7 @@ const session = require("express-session");
 const multer = require('multer')
 const createError = require('http-errors');
 const path = require('path'); 
-const morgan = require("morgan");
+
 const connectDB = require('./database/connection')
 const cookieParser = require('cookie-parser');
 

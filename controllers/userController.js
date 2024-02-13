@@ -1,5 +1,5 @@
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const nodemailor = require('nodemailer');
 const productModel = require('../models/productModel');
 const cartModel = require("../models/cart");
