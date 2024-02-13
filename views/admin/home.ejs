@@ -141,7 +141,7 @@
                                 <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
                                 <div class="text">
                                     <h6 class="mb-1 card-title">Revenue</h6>
-                                     <%=revenue[0].total%>
+                                     <%=revenue[0]?.total || 0%>
                                     <span class="text-sm"> Shipping fees are not included </span>
                                 </div>
                             </article>

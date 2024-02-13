@@ -142,6 +142,7 @@ try {
            } 
         }
     ]);
+    let total = order[0]?.total || 0
 
 
     // category sales
@@ -162,7 +163,7 @@ try {
     
     res.render('admin/home',{
         category,
-        order:order[0].total,
+        order:total,
         revenue,
         productCount,
         categoryCount,
