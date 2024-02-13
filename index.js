@@ -6,7 +6,6 @@ const createError = require('http-errors');
 const path = require('path'); 
 const morgan = require("morgan");
 const connectDB = require('./database/connection')
-const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 
 const cors = require('cors')
@@ -35,7 +34,6 @@ app.use(session({
     saveUninitialized:true,
 }));
 
-app.use(flash())
 
 app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
