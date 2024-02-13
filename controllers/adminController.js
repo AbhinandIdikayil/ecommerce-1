@@ -130,29 +130,17 @@ try {
     ])
     let order = await orderModel.aggregate([
         {
-            $unwind:'$orderItems'
-        },
-        {
-            $match:{'orderItems.orderStatus':'delivered'}
-        },
-        {
            $group:{
             _id:null,
             total:{$sum:1}
            } 
         }
     ]);
-    let total = order[0]?.total || 0
+    let total = order[0]?.total ?? 0
 
-
+    console.log(order)
     // category sales
     let category = await orderModel.aggregate([
-        {
-            $unwind:'$orderItems'
-        },
-        {
-            $match:{'orderItems.orderStatus':'delivered'}
-        },
         {
             $group:{
                 _id:'$orderItems.category',

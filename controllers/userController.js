@@ -20,7 +20,7 @@ const shortid = require('shortid');
 
 const mongoose = require('mongoose');
 const offerModel = require('../models/offerModel');
-let SignupWithCoupon = false;
+let SignupWithReffer = false;
 
 
 let otp;
@@ -110,7 +110,7 @@ exports.postSignup = async(req,res,next) => {
           let refferedamount = selectedRefer.refferedamount;
           let refferalamount = selectedRefer.refferalamount
           
-          SignupWithCoupon = true;
+          SignupWithReffer = true;
           // for the user who shared the refer code
           let userwallet = await walletModel.findOne({user:new mongoose.Types.ObjectId(id)})
             if(userwallet !== null){
@@ -236,26 +236,31 @@ exports.postOTP = async (req,res,next)=> {
             console.log(userData)
             if(userData)
             {
-                  // storing userId on session
-                  req.session.userId = userData._id;
+              // storing userId on session
+              req.session.userId = userData._id;
 
-              if(SignupWithCoupon){
+              if(SignupWithReffer){
                 let reffer = await refferalModel.findOne()
                 let refferedamount = reffer.refferedamount
                 let refferalamount = reffer.refferalamount
-  // for the user who trying to signup with the refercode
-             let newwallet = new walletModel({
-               user:userData._id,
-               walletbalance:refferedamount,
-               transactions:[
-                 {
-                   amount:refferedamount,
-                   type:'credit(signup bonus)',
-                 }
-               ] 
-             })
-             let save = await newwallet.save();
-             SignupWithCoupon = false;
+                // for the user who trying to signup with the refercode
+                let newwallet = new walletModel({
+                  user:userData._id,
+                  walletbalance:refferedamount,
+                  transactions:[
+                    {
+                      amount:refferedamount,
+                      type:'credit(signup bonus)',
+                    }
+                  ] 
+                })
+                let save = await newwallet.save();
+                SignupWithReffer = false;
+              }else{
+                let newWallet = new walletModel({
+                  user:userData._id
+                })
+                await newWallet.save()
               }
               res.status(200).json({success:true})
             }

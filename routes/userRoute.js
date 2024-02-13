@@ -59,14 +59,14 @@ userRoute.post('/home/cart/add-address/:id',userController.modalAddressSelecting
 userRoute.post('/home/cart/check-out/add-address/:id',userController.postAddressFromCheckOut)
 
 
-userRoute.get("/home/account",auth.isBlocked,userController.accounDetails);
-userRoute.get('/home/account/reffer',userController.getReffer)
+userRoute.get("/home/account",      auth.isSignInOrLogin    ,   userController.accounDetails);
+userRoute.get('/home/account/reffer',     auth.isSignInOrLogin      ,userController.getReffer)
 // related to account , user details, address and orders
-userRoute.get("/home/account/addresses",addressController.AddressDetails);
+userRoute.get("/home/account/addresses",    auth.isSignInOrLogin    ,addressController.AddressDetails);
 userRoute.get('/home/account/edit-address/:id',addressController.getEditAddress);
-userRoute.get('/home/account/orders',orderDetailsController.getOrders);
+userRoute.get('/home/account/orders',    auth.isSignInOrLogin    , orderDetailsController.getOrders);
 userRoute.get('/home/account/orders/:id',orderDetailsController.getOrderSummary)
-userRoute.get('/home/account/wallet',userController.wallet);
+userRoute.get('/home/account/wallet',   auth.isSignInOrLogin      ,userController.wallet);
 userRoute.post('/home/account/wallet/:id',userController.addMoneyToWallet);
 
 userRoute.post('/home/account/update-info/:id',userController.updateUserInformation);  
