@@ -120,7 +120,7 @@ try {
 }
 
 
-exports.getOrderSummary = async (req,res) => {
+exports.getOrderSummary = async (req,res,next) => {
 try {
     let id = req.params.id;
     let orderId = req.query.order
@@ -151,7 +151,7 @@ try {
 
 
   
-exports.puppeteerInvoice = async (req,res) => {
+exports.puppeteerInvoice = async (req,res,next) => {
 try {
     let orderId = req.params.orderId
     let productId = req.params.productId
@@ -226,7 +226,7 @@ try {
 }
 }
 
-exports.returnOrder = async (req,res) => {
+exports.returnOrder = async (req,res,next) => {
     try {
     let offerId = req.params.orderId;
     let orderItemId = req.params.orderItemId;
