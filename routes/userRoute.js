@@ -48,7 +48,7 @@ userRoute.post('/home/cart/check-out/:id',userController.proceedToPayment);
 userRoute.post('/verify-payment',userController.onlinePayment)
 
 userRoute.delete('/home/cart-delete/:id',cartController.deleteCart)
-userRoute.post('/home/add-to-cart/:id',cartController.addToBag);
+userRoute.post('/home/add-to-cart/:id',auth.isSignInOrLogin,cartController.addToBag);
 // these routes are for  making an order like checkout page, proceed to payment
 userRoute.post('/home/cart/quantity/:id',cartController.updateCartQuantityAndStock);
 // selecting a specific address through a popup or modal
