@@ -204,7 +204,7 @@ try {
     const ejsData = await ejs.renderFile(ejsTemplate,data);
 
     // Launch Puppeteer and generate PDF
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({ headless: "new", executablePath: "/snap/bin/chromium" });
     const page = await browser.newPage();
     await page.setContent(ejsData, { waitUntil: "networkidle0" });
     const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
