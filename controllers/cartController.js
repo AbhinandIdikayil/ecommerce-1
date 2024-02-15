@@ -63,6 +63,9 @@ exports.getBag = async (req,res,next) => {
           $unwind: "$itemDetails"
         },
         {
+          $match:{'itemDetails.delete':false}
+        },
+        {
           $lookup: {
             from: userModel.collection.name,
             localField: 'user',
@@ -106,6 +109,9 @@ exports.getBag = async (req,res,next) => {
         $unwind: "$product"
       },
       {
+        $match:{'product.delete':false}
+      },
+      {
         $group: {
           _id: null,
           total: {
@@ -116,12 +122,11 @@ exports.getBag = async (req,res,next) => {
         }
       }
     ]);
-     
-    console.log(cartTotal)
+  
     delete req.session.giveWalletError
     let warning = req.session.warning ?? null
     let index = req.session.ind ?? null
-    console.log(carts)
+  
     if(carts){
         
       res.render('user/cart',{user:userDetails,carts:carts,sum:cartTotal[0],warning,index});

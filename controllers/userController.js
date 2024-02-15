@@ -470,6 +470,9 @@ exports.loadCheckOut = async (req,res,next) => {
         $unwind: "$itemDetails"
       },
       {
+        $match:{'itemDetails.delete':false}
+      },
+      {
         $lookup: {
           from: userModel.collection.name,
           localField: 'user',
@@ -512,6 +515,9 @@ exports.loadCheckOut = async (req,res,next) => {
         $unwind:"$itemDetails"
       },
       {
+        $match:{'itemDetails.delete':false}
+      },
+      {
         $group:{
           _id:null,
           total: {
@@ -530,6 +536,7 @@ exports.loadCheckOut = async (req,res,next) => {
     let address = await addressModel.find({user:userId});
     let wallet = await walletModel.findOne({user:req.session.userId});
     console.log(wallet)
+    console.log('hai')
     console.log('SDFSAD'+address)
 
     res.render('user/checkOut',{
@@ -694,7 +701,10 @@ exports.onlinePayment = async(req,res,next) => {
       },
       {
         $unwind:'$cart_product'
-      },       
+      },  
+      {
+        $match:{'cart_product.delete':false}
+      }     
     ])
   
     let productIds = carts.map((cart) => {
@@ -804,6 +814,9 @@ exports.proceedToPayment = async (req,res,next) => {
       },
       {
         $unwind:'$cart_product'
+      },
+      {
+        $match:{'cart_product.delete':false}
       },
       {
         $lookup:{

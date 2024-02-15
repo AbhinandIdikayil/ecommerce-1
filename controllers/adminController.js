@@ -503,8 +503,7 @@ exports.deleteProduct = async (req,res,next) => {
             {new:true}
         )
         if(product){
-            console.log('hai')
-            res.json({success:true})
+            return res.status(200).json({success:true})
         }else{
             console.log('haii')
         }
