@@ -1,6 +1,6 @@
 FROM node:20.9.0-alpine
-WORKDIR /user/ecommerce
-COPY package*.json ./
+WORKDIR /app
+COPY package*.json /app
 RUN npm install
 COPY . .
 EXPOSE 3000

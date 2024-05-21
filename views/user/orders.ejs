@@ -275,7 +275,7 @@
                   <div class="sm:flex justify-between sm:items-start text-center space-x-8  w-full h-full">
                     <p class="text-base font-bold leading-6">status:<span class="text-stone-950 font-bold"> <%=products.orderItems.orderStatus%> </span></p>
                     <p class="text-base  xl:text-lg leading-6 text-gray-800"> <%=products.orderItems.quantity%> </p>
-                    <p class="text-base  xl:text-lg font-semibold leading-6 text-gray-800"> &#8377; <%=products.orderItems.productPrice%>  </p>
+                    <p class="text-base  xl:text-lg font-semibold leading-6 text-gray-800"> &#8377; <%=products.price%>  </p>
                     <div class="flex-wrap sm:flex gap-2 jusitfy-center items-center">
                       <% if(products.orderItems.orderStatus === 'cancelled'){ %>
                         

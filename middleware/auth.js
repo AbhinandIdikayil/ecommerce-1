@@ -54,7 +54,7 @@ exports.requireAuth = (req, res, next) => {
         }
       });
     } else {
-      res.redirect('/admin'); // Redirect to login if token is not present
+      res.redirect('/admin'); // Redirect to loginif token is not present
     }
 };
 
