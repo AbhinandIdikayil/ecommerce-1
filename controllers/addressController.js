@@ -56,6 +56,7 @@ exports.getEditAddress = async (req,res,next) => {
 
   exports.delelteAddress = async (req,res,next) => {
     try {
+      // for deleting the address
      let id = req.params.id;
      let address = await addressModel.findByIdAndDelete(id);
      console.log('in server')
@@ -65,6 +66,7 @@ exports.getEditAddress = async (req,res,next) => {
        res.status(400).json({ error: 'Address not found' });
      }
     } catch (error) {
+
       console.log(error);
       const customError = new Error('Somthing went wrong');
       customError.status = 500; // Set the desired status code
