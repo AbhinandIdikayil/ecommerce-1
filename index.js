@@ -4,7 +4,7 @@ const session = require("express-session");
 const multer = require('multer')
 const createError = require('http-errors');
 const path = require('path'); 
-
+const fetch = require("node-fetch");
 const connectDB = require('./database/connection')
 const cookieParser = require('cookie-parser');
 
@@ -69,6 +69,22 @@ app.use(function(err, req, res, next) {
         }
       }
 });
+
+
+const fetchApiData = async () => {
+    try {
+      const response = await fetch("https://ecommerce-1-yp3a.onrender.com/");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      console.log("API Response:", response.status);
+    } catch (error) {
+      console.error("Error fetching API data:", error);
+    }
+  };
+  
+const intervalId = setInterval(fetchApiData, 14000);
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT,(err) => {
