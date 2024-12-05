@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 exports.getEditAddress = async (req,res,next) => {
     try {
-      let id = req.params.id;
+      let id = req.params?.id;
       let address = await addressModel.findById(id).populate('firstname');
       if(address){
         res.render('user/editAddress',{address:address})
@@ -24,7 +24,7 @@ exports.getEditAddress = async (req,res,next) => {
 
   exports.postEditAddress = async (req,res,next) => {
     try {
-      let id = req.params.id;
+      let id = req.params?.id;
       let {firstname,mobile,pincode,address,housename,state,districtORcity} = req.body;
       let updating = {
         firstname:firstname,
@@ -57,7 +57,7 @@ exports.getEditAddress = async (req,res,next) => {
   exports.delelteAddress = async (req,res,next) => {
     try {
       // for deleting the address
-     let id = req.params.id;
+     let id = req.params?.id;
      let address = await addressModel.findByIdAndDelete(id);
      console.log('in server')
      if(address){

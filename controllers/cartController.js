@@ -6,11 +6,11 @@ const mongoose = require('mongoose')
 
 exports.addToBag = async (req,res,next) => {
     try {
-        let productIds = req.params.id;
-        let user = await userModel.findOne({email:req.session.email})
+        let productIds = req?.params?.id;
+        let user = await userModel.findOne({email:req?.session?.email})
         
         console.log("userl:"+user)
-        let idOfUser = user._id
+        let idOfUser = user?._id
         let product = await productModel.findById(productIds).populate('category');
         if(product && user){
           const cart = new cartModel({
@@ -24,7 +24,7 @@ exports.addToBag = async (req,res,next) => {
   
          let saved = await cart.save();
           if(saved){
-            res.redirect(`/home/${product._id}`)
+            res.redirect(`/home/${product?._id}`)
           }
       }
       
@@ -41,8 +41,8 @@ exports.addToBag = async (req,res,next) => {
 
 exports.getBag = async (req,res,next) => {
     try {
-      let userDetails = await userModel.findOne({email:req.session.email});
-      let userId = userDetails._id;
+      let userDetails = await userModel.findOne({email:req?.session?.email});
+      let userId = userDetails?._id;
       
       let carts = await cartModel.aggregate([
         {
@@ -123,13 +123,13 @@ exports.getBag = async (req,res,next) => {
       }
     ]);
   
-    delete req.session.giveWalletError
-    let warning = req.session.warning ?? null
-    let index = req.session.ind ?? null
+    delete req?.session?.giveWalletError
+    let warning = req?.session?.warning ?? null
+    let index = req?.session?.ind ?? null
   
     if(carts){
         
-      res.render('user/cart',{user:userDetails,carts:carts,sum:cartTotal[0],warning,index});
+      res.render('user/cart',{user:userDetails,carts:carts,sum:cartTotal?.[0],warning,index});
     }else{
       res.render('user/cart',{stockMessage:'out of stock'});
     }
@@ -166,15 +166,15 @@ exports.deleteCart = async (req,res,next) => {
 
 exports.updateCartQuantityAndStock = async (req,res,next) => {
     try {
-        let cartId = req.params.id;
+        let cartId = req?.params?.id;
         const {quantity,stock} = req.body
         console.log(req.body)
         console.log(quantity)
         let parsed = parseInt(quantity)
         let editedCart 
       if(parsed <= stock){
-        delete req.session.warning
-        delete req.session.ind
+        delete req?.session?.warning
+        delete req?.session?.ind
         editedCart = await cartModel.findByIdAndUpdate(
           { _id: cartId },
           {
@@ -190,8 +190,8 @@ exports.updateCartQuantityAndStock = async (req,res,next) => {
        
   
         if(editedCart){
-          delete req.session.warning
-          delete req.session.ind
+          delete req?.session?.warning
+          delete req?.session?.ind
           // return res.status(200).json({quantity:true});
           res.redirect('/home/bag');
         }

@@ -27,7 +27,7 @@ try {
     let currentMonth;
     let index;
    
-    switch (req.query.filter) {
+    switch (req.query?.filter) {
     case "Weekly":
         currentYear = new Date().getFullYear();
         currentMonth = new Date().getMonth() + 1;
@@ -158,7 +158,7 @@ try {
         list:Object.keys(labelObj),
         yaxis:salesCount,
         req,
-        message:req.session.empty 
+        message:req?.session?.empty 
     })
   
     
@@ -199,7 +199,7 @@ function createToken  (id)  {
 exports.postLogin = async (req,res,next) => { 
     let {email,password} =req.body;
     try {
-        if(email === credinals.emial && password === credinals.password)
+        if(email === credinals?.emial && password === credinals?.password)
         {
             const adminToken = createToken(credinals.emial);
             res.cookie('admin-token',adminToken,{
@@ -221,7 +221,7 @@ exports.postLogin = async (req,res,next) => {
 }
 
 exports.getProducts = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
    try {
     let category = await categoryModel.find();
     let productList = await productModel.find().populate('category').sort({createdOn:-1});
@@ -280,11 +280,11 @@ exports.postAddProduct = async (req, res, next) => {
   
 
 exports.showUsers = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
     try {
         let search = '';
-        if (req.query.search) {
-            search = req.query.search;
+        if (req.query?.search) {
+            search = req.query?.search;
         }
 
         let userData;
@@ -312,7 +312,7 @@ exports.showUsers = async (req,res,next) => {
 
 exports.blockUser = async (req,res,next) => {
     try {
-        let id  = req.params.id;
+        let id  = req.params?.id;
         let user = await userModel.findByIdAndUpdate(id,{blocked:true});
         if(user){
             res.redirect('/admin/user-list');
@@ -328,7 +328,7 @@ exports.blockUser = async (req,res,next) => {
 
 exports.unblockUser = async (req,res,next) => {
     try {
-        let id  = req.params.id;
+        let id  = req.params?.id;
         let user = await userModel.findByIdAndUpdate(id,{blocked:false});
         if(user){
             res.redirect('/admin/user-list');
@@ -344,7 +344,7 @@ exports.unblockUser = async (req,res,next) => {
 
 
 exports.showCategory = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
     try {
         let category = await categoryModel.find();
         res.render('admin/category',{category:category});
@@ -401,7 +401,7 @@ exports.getUnlistCategory = async (req,res,next)=> {
 
 exports.updateUnlistCategory = async (req,res,next) => {
     try {
-        let id = req.params.id;
+        let id = req.params?.id;
         let update = {
             delete:false,
         }
@@ -424,7 +424,7 @@ exports.updateUnlistCategory = async (req,res,next) => {
 
 exports.deleteCategory = async (req,res,next) => {
     try {
-        let id = req.params.id;
+        let id = req.params?.id;
         let delt = await categoryModel.findByIdAndUpdate(
             id,
             {delete:true},
@@ -445,7 +445,7 @@ exports.deleteCategory = async (req,res,next) => {
 
 exports.getEditCategory  = async (req,res,next) => {
     try {
-        let id = req.params.id;
+        let id = req.params?.id;
         let category = await categoryModel.findById(id)
         res.render('admin/editCategory',{category:category});
     } catch (error) {
@@ -459,7 +459,7 @@ exports.getEditCategory  = async (req,res,next) => {
 
 exports.postEditCategory = async (req,res,next) => {
     try {
-        let id = req.params.id;
+        let id = req.params?.id;
         let {categoryname} = req.body;
         let name = categoryname.toLowerCase().replace(/\s+/g, ' ').trim('')
         console.log(name)
@@ -496,7 +496,7 @@ exports.postEditCategory = async (req,res,next) => {
 
 exports.deleteProduct = async (req,res,next) => {
     try {
-        let id = req.params.id;
+        let id = req.params?.id;
         let product = await productModel.findByIdAndUpdate(
             id,
             {delete:true},
@@ -518,9 +518,9 @@ exports.deleteProduct = async (req,res,next) => {
 
 
 exports.getEditProduct = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
     try {
-        let id =req.params.id;
+        let id =req.params?.id;
         let category = await categoryModel.find()
         let product = await productModel.findOne({_id:id}).populate('category')
         console.log(product)
@@ -536,8 +536,8 @@ exports.getEditProduct = async (req,res,next) => {
 exports.deleteImages = async (req,res,next) => {
     try {
        
-        let proId = req.params.proId;
-        let image = req.params.image;
+        let proId = req.params?.proId;
+        let image = req.params?.image;
        
         
         console.log(image)
@@ -559,7 +559,7 @@ exports.deleteImages = async (req,res,next) => {
 }
 exports.postEditProduct = async (req,res,next) => {
     try {
-        let id = req.params.id;
+        let id = req.params?.id;
         let {productname,productprice,productstock,
             productcategory,productsection,productDescription,
             originalprice,offerInPercentage} = req.body;
@@ -634,7 +634,7 @@ exports.getUnlistProduct = async(req,res,next) => {
 
 exports.postUnlistProduct = async (req,res,next) => {
     try {
-        let id = req.params.id;
+        let id = req.params?.id;
         let restore = {
             delete:false,
         }
@@ -658,7 +658,7 @@ exports.postUnlistProduct = async (req,res,next) => {
 }
 
 exports.getOrders = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
     try {
         let orders = await orderModel.aggregate([
             {
@@ -701,8 +701,8 @@ exports.getOrders = async (req,res,next) => {
 exports.editOrder = async (req,res,next) => {
     try {
         
-        let id = req.params.id;
-        let productId = req.query.proId
+        let id = req.params?.id;
+        let productId = req.query?.proId
         
         let findOrder = await orderModel.aggregate([
             {
@@ -752,8 +752,8 @@ exports.editOrder = async (req,res,next) => {
 }
 exports.postEditOrder = async (req,res,next) => {
     try {
-        let orderId = req.params.id;
-        let productId = req.query.proId;
+        let orderId = req.params?.id;
+        let productId = req.query?.proId;
         console.log(orderId,productId)
         const {orderStatus} = req.body
         console.log(orderStatus);
@@ -817,7 +817,7 @@ exports.postEditOrder = async (req,res,next) => {
 
 // for banner mangement 
 exports.banner = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
     try {
         let banners = await bannerModel.find();
         res.render("admin/banner",{banners})
@@ -879,7 +879,7 @@ exports.getError = async (req,res,next) => {
 }
 // for coupon management
 exports.getCoupon = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
     try {
         let coupons = await couponModel.find()
         res.render('admin/coupons',{coupons})
@@ -929,7 +929,7 @@ exports.postAddCoupon = async(req,res,next) => {
 
 exports.deleteCoupon = async (req,res,next) => {
     try {
-        let couponId = req.params.id;
+        let couponId = req.params?.id;
         let deleted = await couponModel.findByIdAndDelete(couponId);
         res.redirect('/admin/coupon')
     } catch (error) {
@@ -954,7 +954,7 @@ exports.signout = async (req,res,next) => {
     }
 }
 exports.getRefferal = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
     try {
         let refferal = await refferModel.find()
         res.render('admin/referralpage',{reffer:refferal})
@@ -1001,7 +1001,7 @@ exports.postReffer = async (req,res,next) => {
 }
 
 exports.getOffer = async (req,res,next) => {
-    delete req.session.empty
+    delete req?.session?.empty
     try {
         let offers = await offerModel.find().populate('categoryId')
         res.render('admin/categoryOffers',{offers})
@@ -1055,7 +1055,7 @@ exports.postOfferForm = async (req,res,next) => {
 }
 exports.unlistOffer = async (req,res,next) => {
     try {
-        let offerId = req.params.offerId
+        let offerId = req.params?.offerId
         let updated = await offerModel.findOneAndUpdate(
             {_id:offerId},
             {$set:{delete:true}},
@@ -1075,7 +1075,7 @@ exports.unlistOffer = async (req,res,next) => {
 }
 exports.listOffer = async (req,res,next) => {
     try {
-        let offerId = req.params.offerId;
+        let offerId = req.params?.offerId;
         let updated = await offerModel.updateOne(
             {_id:offerId},
             {$set:{delete:false}},
@@ -1124,8 +1124,8 @@ const CsvParser = require('json2csv').Parser;
 exports.downloadSalesReport = async (req, res, next) => {
     try {
       console.log("salesreport");
-      const fromDate = req.query.fromDate
-      const toDate = req.query.toDate
+      const fromDate = req.query?.fromDate
+      const toDate = req.query?.toDate
   
       console.log(fromDate, toDate);
       const agg = [

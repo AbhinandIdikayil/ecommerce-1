@@ -2,8 +2,8 @@ const userModel = require('../models/userModel')
 const jwt = require('jsonwebtoken');
 exports.isSignInOrLogin = async (req,res,next) => {
     try {
-        if(!req.session.email)
-        {
+      console.log(req.session)
+        if(!req?.session?.email || !req.session.userId){
             res.redirect('/signup')
         }else{
             next();
@@ -16,7 +16,7 @@ exports.isSignInOrLogin = async (req,res,next) => {
 
 exports.notSignInOrLogin = async (req,res,next) => {
     try {
-        if(req.session.email)
+        if(req.session.userId)
         {
             res.redirect('/home')
         }else{

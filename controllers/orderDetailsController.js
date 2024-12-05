@@ -14,13 +14,13 @@ const wallet = require('../models/wallet');
 
 exports.cancelOrder = async (req,res,next) => {
 try {
-    let id = req.params.id;
+    let id = req.params?.id;
     const {quantity} = req.body;
     let stock = parseInt(quantity)
-    let user = await userModel.findOne({email:req.session.email});
+    let user = await userModel.findOne({email:req.session?.email});
     let userId = user._id
     let productId = new mongoose.Types.ObjectId(id);
-    let orderId = new mongoose.Types.ObjectId(req.params.orderId)
+    let orderId = new mongoose.Types.ObjectId(req.params?.orderId)
  
     let cancelledOrderData = await orderModel.aggregate([
     {
@@ -34,13 +34,13 @@ try {
     }
     ]);
     if(cancelledOrderData[0].paymentMethod !== 'cash-on-delivery'){
-        let orderAmount = cancelledOrderData[0].orderItems.productPrice;
+        let orderAmount = cancelledOrderData?.[0].orderItems.productPrice;
         let wallet = await walletModel.findOneAndUpdate({user:userId},{$inc:{walletbalance:orderAmount}})
     }  
 
     // Step 2: Perform a separate update operation
-    if (cancelledOrderData.length > 0) {
-    let updatePromises = cancelledOrderData.map(async (doc) => {
+    if (cancelledOrderData?.length > 0) {
+    let updatePromises = cancelledOrderData?.map(async (doc) => {
         await orderModel.updateOne(
         {
             _id: doc._id,
@@ -122,8 +122,8 @@ try {
 
 exports.getOrderSummary = async (req,res,next) => {
 try {
-    let id = req.params.id;
-    let orderId = req.query.order
+    let id = req.params?.id;
+    let orderId = req.query?.order
 
     let userDetails = await userModel.findOne({email:req.session.email});
     let product = await productModel.findById(id);

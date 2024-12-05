@@ -94,12 +94,12 @@ exports.postSignup = async(req,res,next) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(Globalemail)){
           req.session.checkEmail = 'Please enter a valid email address.';
-          return res.render('user/signup',{testEmail:req.session.checkEmail});
+          return res.render('user/signup',{testEmail:req.session?.checkEmail});
       }
       const existingUser = await userModel.findOne({ $and: [{ firstname:Globalfullname }, { email: { $regex: new RegExp(Globalemail, 'i') } }  ] });
       if(existingUser){
           req.session.existingUser="user with same email and username already exists";
-          return res.render('user/signup',{message:req.session.existingUser})
+          return res.render('user/signup',{message:req.session?.existingUser})
       }
 
         if(req.query.refercode){
@@ -146,7 +146,7 @@ exports.postSignup = async(req,res,next) => {
         sendOTP(Globalemail,otp);
         //  render the otp page
         const savedOtp = await new otpModel({
-          email:req.session.email,
+          email:req.session?.email,
           otp:generadtedotp,
         })
         let saved = await savedOtp.save()
@@ -189,7 +189,7 @@ exports.postLogin = async (req,res,next) => {
 exports.loadHome = async (req,res,next) => {
   let product = await productModel.find().populate('category');
   try {
-    let userDetails = await userModel.findOne({email:req.session.email})
+    let userDetails = await userModel.findOne({email:req.session?.email})
     let banners = await bannerModel.find();
     let coupon = await couponModel.find({isExpired:false});
     let offers = await offerModel.find().populate('categoryId');
@@ -219,7 +219,7 @@ exports.postOTP = async (req,res,next)=> {
       let parsedOTP= parseInt(otp)
       try {       
         // Check if OTP is correct
-        let userOtp = await otpModel.find({email:req.session.email})
+        let userOtp = await otpModel.find({email:req.session?.email})
         let DBotp = userOtp.map(doc => doc.otp)
         console.log(userOtp,DBotp)
         if(userOtp.length > 0){
@@ -286,9 +286,9 @@ exports.resendOTP = async (req,res,next) => {
   try {
     let resendedOtp = generateOTP();
 
-    sendOTP(req.session.email,otp);
+    sendOTP(req.session?.email,otp);
     let DBotp = new otpModel({
-      email:req.session.email,
+      email:req.session?.email,
       otp:resendedOtp
     })
     let saved = await DBotp.save();
@@ -382,7 +382,7 @@ exports.postNewPassword = async (req,res,next) => {
 }
 
 exports.Signout = async (req,res,next) => {
-    req.session.destroy();
+    req.session?.destroy();
     res.redirect('/home');
 }
 exports.getProducts = async (req,res,next) => {
@@ -391,7 +391,7 @@ exports.getProducts = async (req,res,next) => {
     let id = req.params.id;
 
     let product = await productModel.findById(id);
-    let userDetails = await userModel.findOne({email:req.session.email});
+    let userDetails = await userModel.findOne({email:req.session?.email});
     
     if(userDetails !== null){
       let userId = userDetails._id;
@@ -446,7 +446,7 @@ exports.getWishlist = async (req,res,next) => {
 
 exports.loadCheckOut = async (req,res,next) => {
   try {
-    let userDetails = await userModel.findOne({email:req.session.email});
+    let userDetails = await userModel.findOne({email:req.session?.email});
     let userId = userDetails._id;
 
                                                       
@@ -531,17 +531,17 @@ exports.loadCheckOut = async (req,res,next) => {
     console.log(`ASFD${sum}`)
    
     
-    req.session.sumOfPrice = sum[0].total;
+    req.session.sumOfPrice = sum?.[0]?.total;
     let user = await userModel.findById(userId);
     let address = await addressModel.find({user:userId});
-    let wallet = await walletModel.findOne({user:req.session.userId});
+    let wallet = await walletModel.findOne({user:req.session?.userId});
     console.log(wallet)
     console.log('hai')
     console.log('SDFSAD'+address)
 
     res.render('user/checkOut',{
       sum,carts,address:address,
-      user,wallet,walletError:req.session.giveWalletError || ''
+      user,wallet,walletError:req.session?.giveWalletError || ''
     })
   } catch (error) {
     console.log(error);
@@ -598,7 +598,7 @@ exports.modalAddressSelecting = async (req,res,next) => {
     req.session.idOfAddress = id;
 
     let updateAllAddress = await addressModel.updateMany(
-      {user:req.session.userId},
+      {user:req.session?.userId},
       {$set:{selected:false}}
     )
       
@@ -624,7 +624,7 @@ exports.modalAddressSelecting = async (req,res,next) => {
 
 exports.accounDetails = async (req,res,next) => {
   try {
-    let userDetails = await userModel.findOne({email:req.session.email});
+    let userDetails = await userModel.findOne({email:req.session?.email});
     res.render('user/accountDetails',{user:userDetails});
   } catch (error) {
     console.log(error);
@@ -682,7 +682,7 @@ exports.successPage = async (req,res,next) => {
 exports.onlinePayment = async(req,res,next) => {
   try {
     
-    let userId = req.session.userId;
+    let userId = req.session?.userId;
     let objectId = new mongoose.Types.ObjectId(userId)
     let carts = await cartModel.aggregate([
       {
@@ -735,7 +735,7 @@ exports.onlinePayment = async(req,res,next) => {
         {new:true}
       )
     })
-    let address = await addressModel.findById(req.session.addressId);
+    let address = await addressModel.findById(req.session?.addressId);
     let dbaddress = {
       firstname:address.firstname,
       mobile:address.mobile,
@@ -751,9 +751,9 @@ exports.onlinePayment = async(req,res,next) => {
     hmac = hmac.digest('hex')
     console.log(hmac)
     if(hmac === req.body['payment[razorpay_signature]']){
-        let price = req.session.sumOfPrice ??  req.session.priceAfterCoupon;
+        let price = req.session?.sumOfPrice ??  req.session?.priceAfterCoupon;
         let order = new orderModel({
-          user:req.session.userId,
+          user:req.session?.userId,
           address:dbaddress,
           orderItems:
             productIds.map((ids) => {
@@ -768,8 +768,8 @@ exports.onlinePayment = async(req,res,next) => {
           {$set:{items:[]}},
           {new:true}
         )
-      delete req.session.giveWalletError 
-      delete req.session.couponAvailable
+      delete req.session?.giveWalletError 
+      delete req.session?.couponAvailable
       res.json({status:true})
     }else{
         res.json({status:false,errMessage:''})
@@ -793,9 +793,9 @@ exports.proceedToPayment = async (req,res,next) => {
     let id = req.params.id;
   
     req.session.addressId = id;
-    let userId = req.session.userId;
+    let userId = req.session?.userId;
     let objectId = new mongoose.Types.ObjectId(userId)
-    // let carts = await cartModel.find({user:req.session.userId});
+    // let carts = await cartModel.find({user:req.session?.userId});
 
     let carts = await cartModel.aggregate([
       {
@@ -872,22 +872,22 @@ exports.proceedToPayment = async (req,res,next) => {
     }
 
     let afterApplyingCoupon=undefined;
-    if(req.session.couponAvailable){
-      let price = req.session.sumOfPrice
+    if(req.session?.couponAvailable){
+      let price = req.session?.sumOfPrice
       console.log(price)
-      afterApplyingCoupon = parseInt(price - req.session.couponAvailable/100 *price) ;
+      afterApplyingCoupon = parseInt(price - req.session?.couponAvailable/100 *price) ;
       
       req.session.sumOfPrice = undefined
       req.session.priceAfterCoupon = parseInt(afterApplyingCoupon)  
     }
 
-    let price =  req.session.sumOfPrice ?? afterApplyingCoupon
+    let price =  req.session?.sumOfPrice ?? afterApplyingCoupon
   
     if(carts && address)
     {        
       if(paymentMethod === 'cash-on-delivery'){
         let order = new orderModel({
-          user:req.session.userId,
+          user:req.session?.userId,
           address:dbaddress,
           orderItems:
           productIds.map((ids) => {
@@ -904,18 +904,18 @@ exports.proceedToPayment = async (req,res,next) => {
             {$set:{items:[]}},
             {new:true}
           )
-        delete req.session.giveWalletError 
+        delete req.session?.giveWalletError 
         res.redirect('/order/success-page');
-        delete req.session.couponAvailable
+        delete req.session?.couponAvailable
       }else if(paymentMethod === 'wallet'){
-        let wallet = await walletModel.findOne({user:req.session.userId});
+        let wallet = await walletModel.findOne({user:req.session?.userId});
         let amount = wallet.walletbalance;
         
         if(priceAfterOffer <= amount){
           let changeWalletprice = amount - priceAfterOffer;
-          await walletModel.findOneAndUpdate({user:req.session.userId},{$set:{walletbalance:changeWalletprice}})
+          await walletModel.findOneAndUpdate({user:req.session?.userId},{$set:{walletbalance:changeWalletprice}})
           let order = new orderModel({
-            user:req.session.userId,
+            user:req.session?.userId,
             address:dbaddress,
             orderItems:
             productIds.map((ids) => {
@@ -936,9 +936,9 @@ exports.proceedToPayment = async (req,res,next) => {
           return res.redirect('/home/cart/check-out')
         }
         res.redirect('/order/success-page');
-        delete req.session.couponAvailable
+        delete req.session?.couponAvailable
       }else{
-        let total = parseInt(req.session.sumOfPrice);
+        let total = parseInt(req.session?.sumOfPrice);
   
         let options = {
           amount:priceAfterOffer*100,
@@ -954,7 +954,7 @@ exports.proceedToPayment = async (req,res,next) => {
               Onlinesuccess:true,
               order,
               address:address.firstname,
-              email:req.session.email,
+              email:req.session?.email,
               contact:address.mobile,
             }).status(200);
           }
@@ -975,9 +975,9 @@ exports.proceedToPayment = async (req,res,next) => {
 
 exports.wallet =async (req,res,next) => {
   try {
-    let wallet = await walletModel.findOne({user:req.session.userId});
+    let wallet = await walletModel.findOne({user:req.session?.userId});
     console.log(wallet)
-    res.render('user/wallet',{userId:req.session.userId,wallet})
+    res.render('user/wallet',{userId:req.session?.userId,wallet})
   } catch (error) {
     console.log(error)
   }
@@ -1023,12 +1023,12 @@ exports.verifyWalletPayment = async (req,res,next) => {
 
       if(hmac === req.body['payment[razorpay_signature]']
           && 
-        await walletModel.findOne({user:new mongoose.Types.ObjectId(req.session.userId)}) === null
+        await walletModel.findOne({user:new mongoose.Types.ObjectId(req.session?.userId)}) === null
       ){
   
-        let price =  req.session.walletPrice
+        let price =  req.session?.walletPrice
         let wallet = await walletModel.create({
-          user:req.session.userId,
+          user:req.session?.userId,
           walletbalance:price,
           transactions:[
             {
@@ -1040,13 +1040,13 @@ exports.verifyWalletPayment = async (req,res,next) => {
         await wallet.save();
         res.json({status:true})
       }else{
-        let price = req.session.walletPrice
+        let price = req.session?.walletPrice
         let newTransaction = {
           amount:price,
           type:'credit'
         }
         let wallet = await walletModel.findOneAndUpdate(
-          {user:new mongoose.Types.ObjectId(req.session.userId)},
+          {user:new mongoose.Types.ObjectId(req.session?.userId)},
           {
             $inc:{walletbalance:price},
             $push:{transactions:newTransaction}
@@ -1102,7 +1102,7 @@ exports.coupon = async (req,res,next) => {
 
 exports.getReffer = async (req,res,next) => {
   try {
-    let user = await userModel.findOne({email:req.session.email})
+    let user = await userModel.findOne({email:req.session?.email})
     let refer = await refferalModel.findOne()
     res.render('user/refferpage',{user,refer})
   } catch (error) {
