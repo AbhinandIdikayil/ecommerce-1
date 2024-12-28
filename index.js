@@ -84,7 +84,7 @@ const fetchApiData = async () => {
     }
   };
   
-const intervalId = setInterval(fetchApiData, 14000);
+const intervalId = setInterval(fetchApiData, 30000);
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT,(err) => {
